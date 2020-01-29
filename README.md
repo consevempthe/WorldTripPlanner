@@ -5,4 +5,4 @@
 | Ethan Liem | 829123947 | consevempthe | ealiem@rams.colostate.edu |
 | Axel Wahlstrom | 831409230 | rwahlst | rwahlst@rams.colostate.edu |
 | Brandon Vasquez | 830984463 | btvasque | btvasque@colostate.edu |
-| First Last | eID | mygit | eID@colostate.edu |
+| Moise Lacrete | 831054939 | Moise98 | moise@rams.colostate.edu |
