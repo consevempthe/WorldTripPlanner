@@ -1,4 +1,7 @@
 # t03 - Hugh-Lit Pack-Herd
+![Team Logo](team/images/dq.jpg)
+|:--:|
+|*Upside down HP logo -- Plz don't sue us*|
 
 | name | eID | GitHub Username | Email |
 |------|-----|-----------------|-------|
