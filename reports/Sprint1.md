@@ -1,9 +1,9 @@
-# Sprint # - *your team number* - *your team name*
+# Sprint # - t03 - Hugh-Lit Pack-Herd
 
 ## Goal
 
 ### Where Am I?
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Ethan Liem*
 
 ## Definition of Done
 
@@ -22,7 +22,7 @@
 
 Epics planned for this release.
 
-* *## title*
+* *Where Am I?*
 *
 
 
@@ -30,8 +30,8 @@ Epics planned for this release.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
-| Tasks |  *count*   | *count* | 
+| Epics | 4 | *count* |
+| Tasks |  3   | *count* | 
 | Story Points |  *count*  | *count* | 
 
 
