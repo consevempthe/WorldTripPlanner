@@ -35,10 +35,7 @@ Epics planned for this release.
 | --- | ---: | ---: |
 | Epics | 5 | 0 |
 | Tasks |  18   | 0 | 
-| Story Points |  26  | 0 | 
-| Epics | 5 | *count* |
-| Tasks |  18   | *count* | 
-| Story Points |  *count*  | *count* | 
+| Story Points |  26  | 0 |
 
 
 ## Scrums
