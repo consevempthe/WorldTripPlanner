@@ -1,4 +1,4 @@
-# Sprint # - t03 - Hugh-Lit Pack-Herd
+# Sprint #1 - T03 - Hugh-Lit Pack-Herd
 
 ## Goal
 
@@ -30,8 +30,8 @@ Epics planned for this release.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | 4 | *count* |
-| Tasks |  3   | *count* | 
+| Epics | 5 | *count* |
+| Tasks |  18   | *count* | 
 | Story Points |  *count*  | *count* | 
 
 
