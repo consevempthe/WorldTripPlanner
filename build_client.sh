@@ -6,7 +6,7 @@ if [ ! -d "./client/node_modules" ]; then
 fi
 
 # compile and bundle client side JavaScript into a single distribution
-if [[ "$ENV" == "dev" ]]; then
+if [[ "$CS314MODE" == "dev" ]]; then
   npm run dev --prefix client
 else
   npm run bundle --prefix client

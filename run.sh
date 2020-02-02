@@ -8,11 +8,11 @@ check_error() {
   fi
 }
 
-if [ -z "$ENV" ]; then
-  export ENV=dev
+if [ -z "$CS314MODE" ]; then
+  export CS314MODE=dev
 fi
 
-if [[ "$ENV" == "dev" ]]; then
+if [[ "$CS314MODE" == "dev" ]]; then
 	echo "Building and starting the server in DEVELOPMENT mode."
   ./build_server.sh
   check_error $?

@@ -153,7 +153,7 @@ The easiest way to run the server and make sure everything works is to use the
 run script:
 
 ```bash
-export ENV=prod 
+export CS314MODE=prod 
 ./run.sh
 ```
 
@@ -169,7 +169,7 @@ If you want to run the JAR on a port other than `8088`, then specify an
 environment variable when you invoke the script:
 
 ```bash
-export ENV=prod
+export CS314MODE=prod
 export PORT=31400 
 ./run.sh
 ```
@@ -184,7 +184,7 @@ without repackaging it. Additionally, every time you change a file and save it,
 the browser that you're viewing the project in will automatically refresh. Note
 that this server runs as a process that is completely separate from your JAR.
 
-If you don't set the environment variable `ENV`, then the run script will default to development mode. To run the server in development mode, invoke the run script as is:
+If you don't set the environment variable `CS314MODE`, then the run script will default to development mode. To run the server in development mode, invoke the run script as is:
 
 ```bash
 ./run.sh

@@ -8,7 +8,7 @@ check_error() {
   fi
 }
 
-export ENV=prod
+export CS314MODE=prod
 ./build_client.sh
 check_error $?
 ./build_server.sh
