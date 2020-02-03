@@ -42,7 +42,8 @@ Epics planned for this release.
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* | *none* | 
+| *1-31-20* | *21,37,42,41,43,44* | *18,36,19,20* | *none* |
+
 
 
 
