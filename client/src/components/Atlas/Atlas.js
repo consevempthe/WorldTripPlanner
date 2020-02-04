@@ -26,9 +26,13 @@ export default class Atlas extends Component {
 
     this.addMarker = this.addMarker.bind(this);
 
+    this.markClientLocation = this.markClientLocation.bind(this);
+    this.processGeolocation = this.processGeolocation.bind(this);
+
     this.state = {
-      markerPosition: null,
+      markerPosition: null
     };
+    this.getClientLocation();
   }
 
   render() {
@@ -64,6 +68,10 @@ export default class Atlas extends Component {
     this.setState({markerPosition: mapClickInfo.latlng});
   }
 
+  markClientLocation() {
+    this.setState({markerPosition: this.getClientLocation()});
+  }
+
   getMarkerPosition() {
     let markerPosition = '';
     if (this.state.markerPosition) {
@@ -84,6 +92,17 @@ export default class Atlas extends Component {
             <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
           </Marker>
       );
+    }
+  }
+
+  processGeolocation(geolocation) {
+    const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
+    this.setState({markerPosition: position});
+  }
+
+  getClientLocation() {
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.processGeolocation);
     }
   }
 }
