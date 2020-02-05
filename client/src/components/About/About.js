@@ -63,7 +63,7 @@ export default class About extends Component {
                 </Col>
                 <Col>
                     <h6><strong>Moise Lacrete</strong></h6>
-                    <img src={"resources/moise.JPG"} alt={"unfortunately, Moise's photo could not be displayed. Replace programmers and try again."}/>
+                    <img src={"aboutPhotos/moise.JPG"} alt={"unfortunately, Moise's photo could not be displayed. Replace programmers and try again."}/>
                     <p><strong>I am a Computer Science major at Colorado State University. I grew up on the east coast, from a small town on Long Island, New york. I'm an advocate for fitness and enjoy spending what little free time I have outdoors enjoying Colorado's beautiful sunny weather. Skill toys are another passion of mine so I usually have something to play with in my backpack.</strong></p>
                 </Col>
           </Row>
