@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Col, Container, Row} from 'reactstrap';
+import {Button} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -42,6 +43,7 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
+                <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
               </Col>
             </Row>
           </Container>
