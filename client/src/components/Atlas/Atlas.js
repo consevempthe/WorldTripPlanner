@@ -51,7 +51,7 @@ export default class Atlas extends Component {
 
   renderLeafletMap() {
     return (
-        <Map center={MAP_CENTER_DEFAULT}
+        <Map center={this.state.markerPosition}
              zoom={MAP_ZOOM_DEFAULT}
              minZoom={MAP_ZOOM_MIN}
              maxZoom={MAP_ZOOM_MAX}
