@@ -47,7 +47,7 @@ export default class About extends Component {
               <Col>
                   <h6><strong>Ethan Liem</strong></h6>
                   <img src={'src/components/About/resources/Empty.jpg'} alt={'src/components/About/resources/Empty.jpg'}/>
-                  <p><strong>Bio Here</strong></p>
+                  <p><strong>I am a second Bachelor's Computer Science major at CSU. My other degrees are in Journalism & Media Communications and Liberal Arts, which I also got at CSU (I just really like giving Tony Frank). I work at the climbing wall on campus and I enjoy Magic: The Gathering.</strong></p>
               </Col>
           </Row>
           <Row>
