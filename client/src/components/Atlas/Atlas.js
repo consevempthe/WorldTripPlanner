@@ -31,9 +31,8 @@ export default class Atlas extends Component {
     this.processGeolocation = this.processGeolocation.bind(this);
 
     this.state = {
-      markerPosition: null
+      markerPosition: this.getClientLocation()
     };
-    this.getClientLocation();
   }
 
   render() {
