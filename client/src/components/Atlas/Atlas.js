@@ -13,6 +13,7 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_STYLE_LENGTH = 500;
 const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
+const MAP_ZOOM_DEFAULT = 17;
 const MARKER_ICON = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
@@ -26,8 +27,11 @@ export default class Atlas extends Component {
 
     this.addMarker = this.addMarker.bind(this);
 
+    this.markClientLocation = this.markClientLocation.bind(this);
+    this.processGeolocation = this.processGeolocation.bind(this);
+
     this.state = {
-      markerPosition: null,
+      markerPosition: this.getClientLocation()
     };
   }
 
@@ -47,8 +51,8 @@ export default class Atlas extends Component {
 
   renderLeafletMap() {
     return (
-        <Map center={MAP_CENTER_DEFAULT}
-             zoom={MAP_ZOOM_MIN}
+        <Map center={this.state.markerPosition}
+             zoom={MAP_ZOOM_DEFAULT}
              minZoom={MAP_ZOOM_MIN}
              maxZoom={MAP_ZOOM_MAX}
              maxBounds={MAP_BOUNDS}
@@ -62,6 +66,10 @@ export default class Atlas extends Component {
 
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
+  }
+
+  markClientLocation() {
+    this.setState({markerPosition: this.getClientLocation()});
   }
 
   getMarkerPosition() {
@@ -84,6 +92,17 @@ export default class Atlas extends Component {
             <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
           </Marker>
       );
+    }
+  }
+
+  processGeolocation(geolocation) {
+    const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
+    this.setState({markerPosition: position});
+  }
+
+  getClientLocation() {
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.processGeolocation);
     }
   }
 }

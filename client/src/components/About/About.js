@@ -3,7 +3,6 @@ import {Container, Row, Col, Button} from 'reactstrap';
 import '../tcowebstyle.css';
 import {CLIENT_TEAM_NAME} from "../Constants";
 
-
 export default class About extends Component {
 
     render() {
