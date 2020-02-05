@@ -59,7 +59,7 @@ export default class About extends Component {
                 <Col>
                     <h6><strong>Brandon Vasquez</strong></h6>
                     <img src={'src/components/About/resources/Empty.jpg'} alt={'src/components/About/resources/Empty.jpg'}/>
-                    <p><strong>Bio Here</strong></p>
+                    <p><strong>I'm currently a student at Colorado State University studying Applied Computing Technology in Computer Science with a minor in Business Administration. I am Colorado born and raised and enjoy hiking, sports and spending time in the gym.</strong></p>
                 </Col>
                 <Col>
                     <h6><strong>Moise Lacrete</strong></h6>
