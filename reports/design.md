@@ -119,7 +119,7 @@ Example of the about page in landscape and mobile.
 * The page will have responsive web design and will look good in all screen sizes.
 ### Set team name
 ### Where is?
-![Where Is Diagram](images/Where Is?.png)
+![Where Is Diagram](images/where_is.png)
 Example of the popup menu the Where Is? button will create.
 * The Where Is? button will be right next to the Where Am I? button and will create a popup that allows the user to update their information.
 * The popup will close when they pick a location or close it and bring them back to the map, which will update to the geolocation they selected.
