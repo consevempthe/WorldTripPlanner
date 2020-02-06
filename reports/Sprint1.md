@@ -63,7 +63,7 @@ Epics planned for this release.
 #### What went well
 * Our team worked well with each other and have definitely fit into the Forming stage of group development. We have gotten to know each other a little bit better and have communicated well with each other.
 * The overall process of checking out branches and working on the project seperate from each other, each group memeber accomplished tasks, while learning about all the libraries and code we were given.
-* The "About" epic as whole went smoothly, as we were able to complete all of the tasks for this epic.
+* The "About" epic as a whole went smoothly, as we were able to complete all of the tasks for this epic.
 * We were able to reach our goal by implementing the "Where am I" feature.
 
 #### Problems encountered and resolutions
