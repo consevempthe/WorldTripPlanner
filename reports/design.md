@@ -108,7 +108,11 @@ Often there are several related classes but we've listed only one to simplify th
 # Sprint 1
 ### Where Am I?
 ### About Us
-
+![About Us Diagram](team/images/about_us.png)
+Example of the about page in landscape and mobile.
+*
+*
+*
 ### Set team name
 ### Where is?
 ### Server Support
