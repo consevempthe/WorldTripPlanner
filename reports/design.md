@@ -108,11 +108,10 @@ Often there are several related classes but we've listed only one to simplify th
 # Sprint 1
 ### Where Am I?
 ### About Us
-![About Us Diagram](team/images/about_us.png)
+![About Us Diagram](images/about_us.png)
 Example of the about page in landscape and mobile.
-*
-*
-*
+* Each profile will be a Card with an image of the person and a small bio. The bio will cover majors and interests.
+* The page will have responsive web design and will look good in all screen sizes.
 ### Set team name
 ### Where is?
 ### Server Support
