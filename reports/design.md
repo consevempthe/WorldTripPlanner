@@ -118,12 +118,17 @@ Example of the about page in landscape and mobile.
 * Each profile will be a Card with an image of the person and a small bio. The bio will cover majors and interests.
 * The page will have responsive web design and will look good in all screen sizes.
 ### Set team name
+* Change the name in the footer/header and update the team name const and test function to ensure that the site builds.
 ### Where is?
 ![Where Is Diagram](images/where_is.png)
 Example of the popup menu the Where Is? button will create.
 * The Where Is? button will be right next to the Where Am I? button and will create a popup that allows the user to update their information.
 * The popup will close when they pick a location or close it and bring them back to the map, which will update to the geolocation they selected.
 ### Server Support
+![Server Support Diagram](images/server_config.png)
+Example of the dropdown menu created for the server choices
+* Dropdown Menu is implemented to show the list of all servers
+* Footer is cleaned up to look better for user experience
 # Sprint 2
 # Sprint 3
 # Sprint 4 
