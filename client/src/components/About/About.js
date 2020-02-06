@@ -41,12 +41,12 @@ export default class About extends Component {
           <Row>
               <Col>
                   <h6><strong>Axel Wahlstrom</strong></h6>
-                  <img src={'src/images/about/Axel.jpg'} alt={'profile picture for Axel Wahlstrom'}/>
+                  <img src={'src/components/About/Resources/Axel.jpg'} alt={'profile picture for Axel Wahlstrom'}/>
                   <p><strong>My name is Axel Wahlstrom, I am a Junior Computer Science major at Colorado State University. I am also working on a minor in mathematics. In my free time I enjoy lifting weights and playing video games.</strong></p>
               </Col>
               <Col>
                   <h6><strong>Ethan Liem</strong></h6>
-                  <img src={'src/images/about/ethanAboutPhoto.jpg'} alt={"This photo has Ethan looking his best, don't expect much"}/>
+                  <img src={'src/components/About/Resources/ethanAboutPhoto.jpg'} alt={"This photo has Ethan looking his best, don't expect much"}/>
                   <p><strong>I am a second Bachelor's Computer Science major at CSU. My other degrees are in Journalism & Media Communications and Liberal Arts, which I also got at CSU (I just really like giving Tony Frank). I work at the climbing wall on campus and I enjoy Magic: The Gathering.</strong></p>
               </Col>
           </Row>
@@ -58,12 +58,12 @@ export default class About extends Component {
           <Row>
                 <Col>
                     <h6><strong>Brandon Vasquez</strong></h6>
-                    <img src={'src/images/about/brandon.jpeg'} alt={'profile picture for Brandon Vasquez'}/>
+                    <img src={'src/components/About/Resources/brandon.jpeg'} alt={'profile picture for Brandon Vasquez'}/>
                     <p><strong>I'm currently a student at Colorado State University studying Applied Computing Technology in Computer Science with a minor in Business Administration. I am Colorado born and raised and enjoy hiking, sports and spending time in the gym.</strong></p>
                 </Col>
                 <Col>
                     <h6><strong>Moise Lacrete</strong></h6>
-                    <img src={"src/images/about/moise.JPG"} alt={"unfortunately, Moise's photo could not be displayed. Replace programmers and try again."}/>
+                    <img src={"src/components/About/Resources/moise.JPG"} alt={"unfortunately, Moise's photo could not be displayed. Replace programmers and try again."}/>
                     <p><strong>I am a Computer Science major at Colorado State University. I grew up on the east coast, from a small town on Long Island, New york. I'm an advocate for fitness and enjoy spending what little free time I have outdoors enjoying Colorado's beautiful sunny weather. Skill toys are another passion of mine so I usually have something to play with in my backpack.</strong></p>
                 </Col>
           </Row>
