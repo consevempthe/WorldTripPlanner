@@ -61,17 +61,29 @@ Epics planned for this release.
 * **Server Support #38**: Server support was on the bottom of our backlog. We quickly realized into development of our "Where Am I?" Epic that we would not be able to get to this epic.
 
 #### What went well
-* 
-*
+* Our team worked well with each other and have definitely fit into the Forming stage of group development. We have gotten to know each other a little bit better and have communicated well with each other.
+* The overall process of checking out branches and working on the project seperate from each other, each group memeber accomplished tasks, while learning about all the libraries and code we were given.
+* The "About" epic as a whole went smoothly, as we were able to complete all of the tasks for this epic.
+* We were able to reach our goal by implementing the "Where am I" feature.
 
 #### Problems encountered and resolutions
-* 
-*
+* We couldn't figure out how to post a form with valid coordinates.
+* We couldn't figure out how to keep the marker centered at all times.
+* We couldn't figure out how to apply the "geolocation" API to our application, until we read some documentation about Leaflet.
+* We couldn't get our bio images to appear on the deployed site, turns out we were using absolute paths rather than relative paths
 
 ## Retrospective
 
 #### What went well
-
+* Overall our team dynamic worked out the best, since no one in the team was more experienced than the others we learned to work on equal footing and everyone carried their own weight.
+* For this being our first sprint to work collaboratively on a project, our team work skills never became a problem. As a team, we have communicated effectively and thoroughly to ensure that everyone is one the same page.
+* We managed to not break master.
 #### Potential improvements
-
+* Our group started actually working on the sprint probably half way into it and as such didn't complete all of the Epics that we thought we could. Starting earlier would either have let us finish all of our Epics or come out with an even more polished project.
+* We didn't use the design.md file to its fullest ability, in terms of talking our way through how we were going to implement our sprint. Creating a meeting early on to at least develop a framework for our sprint would be beneficial.
+* Out Map UI could use some improvements. Right now it is just super laggy when clicking on different locations.
 #### What we will change next time
+* We will start working on our sprint earlier, especially now that our team has a better understanding for the workflow necessary to complete this.
+* We will try to meet more formally to create times where we can talk about the design of the project, or just talk overall about Epics that we are working on.
+* Simplify tasks by breaking them apart into smaller segments.
+* Utilize TA office hours more, as the time we have spent talking with a TA has been helpful.
