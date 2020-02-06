@@ -106,6 +106,12 @@ Often there are several related classes but we've listed only one to simplify th
 
 
 # Sprint 1
+### Where Am I?
+### About Us
+
+### Set team name
+### Where is?
+### Server Support
 # Sprint 2
 # Sprint 3
 # Sprint 4 
