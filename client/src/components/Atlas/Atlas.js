@@ -33,7 +33,8 @@ export default class Atlas extends Component {
 
     this.state = {
       markerPosition: null,
-      mapCenter: [0,0]
+      mapCenter: [0,0],
+      hasGeo: false
     };
 
     this.getClientLocation();
@@ -47,12 +48,20 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
-                <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
+                {this.renderWhereAmIBtn()}
               </Col>
             </Row>
           </Container>
         </div>
     );
+  }
+
+  renderWhereAmIBtn(){
+    if(this.state.hasGeo){
+      return (
+          <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
+      )
+    }
   }
 
   renderLeafletMap() {
@@ -103,7 +112,7 @@ export default class Atlas extends Component {
 
   processGeolocation(geolocation) {
     const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-    this.setState({markerPosition: position});
+    this.setState({markerPosition: position, hasGeo: true});
   }
 
   getClientLocation() {
