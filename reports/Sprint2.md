@@ -48,7 +48,7 @@ Epics planned for this release.
     longitude in the format the user provided. We are going to need to convert the
     latitude/longitude to another format for the map software, but this shouldn't be displayed
     to the user.
-### Server Support*
+### Server Support
     The "Server Support" epic gives the user the option to view server capabilities. When the 
     team name is clicked in the footer we will need to use a collapsible or pop-up section to
     display a place for the server configuration. We also need to implement a close button that
