@@ -14,7 +14,7 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_STYLE_LENGTH = 500;
 const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
-const MAP_ZOOM_DEFAULT = 17;
+const MAP_ZOOM_DEFAULT = 16;
 const MARKER_ICON = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
@@ -32,8 +32,12 @@ export default class Atlas extends Component {
     this.processGeolocation = this.processGeolocation.bind(this);
 
     this.state = {
-      markerPosition: this.getClientLocation()
+      markerPosition: null,
+      mapCenter: [0,0]
     };
+
+    this.getClientLocation();
+
   }
 
   render() {
@@ -53,7 +57,7 @@ export default class Atlas extends Component {
 
   renderLeafletMap() {
     return (
-        <Map center={this.state.markerPosition}
+        <Map center={MAP_CENTER_DEFAULT}
              zoom={MAP_ZOOM_DEFAULT}
              minZoom={MAP_ZOOM_MIN}
              maxZoom={MAP_ZOOM_MAX}
