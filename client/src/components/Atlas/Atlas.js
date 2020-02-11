@@ -33,6 +33,7 @@ export default class Atlas extends Component {
 
     this.state = {
       markerPosition: null,
+      mapCenter: [0,0]
     };
 
     this.getClientLocation();
@@ -46,7 +47,7 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
-                <Button onClick={() => this.markClientLocation()} size={6} block>Where Am I?</Button>
+                <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
               </Col>
             </Row>
           </Container>
