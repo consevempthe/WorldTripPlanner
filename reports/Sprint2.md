@@ -54,7 +54,7 @@ Epics planned for this release.
     display a place for the server configuration. We also need to implement a close button that
     will return the user to the previous display.
 ### Support Protocol standard v2
-    Durring the "Support Protocol standard v2" epic we need to ensure that we support the
+    During the "Support Protocol standard v2" epic we need to ensure that we support the
     protocol standard and schemas provided to us.
 ### Distance
     The "Distance" epic adds a couple of different features to the project. The first
@@ -90,10 +90,10 @@ Epics planned for this release.
 
 ### Planned Metrics Summary
     Based off of our previous sprint we plan on utitilizing our resources more
-    efficiently. We will also plan on starting Sprint 2 stronger than we did in
-    Sprint 1. In Sprint 1, we waited to long to start implementing our ideas to
+    efficiently. We will also plan on starting Sprint 2 sooner than we did in
+    Sprint 1. In Sprint 1, we waited too long to start implementing our Epics to
     the application and this was a huge flaw for our planning process. In order
-    to improve our timeliness we have already started working on Sprint 2 and plan
+    to improve our timelines we have already started working on Sprint 2 and plan
     to have all of the Epics completed. 
 
 ## Scrums
