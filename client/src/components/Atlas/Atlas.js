@@ -67,22 +67,20 @@ export default class Atlas extends Component {
     return(
         <div>
           <br/>
-          <form>
-            <Row>
-              <Col>
-                <h4>Where Is?</h4>
-              </Col>
-            </Row>
-            <label>
-              Longitude:
-              <input className="form-control" name="longitude" value={this.state.longitude} onChange={e => this.setState({longitude: e.target.value})} />
-            </label>
-            <label>
-              Latitude:
-              <input className="form-control" name="latitude" value={this.state.latitude} onChange={e => this.setState({latitude: e.target.value})} />
-            </label>
-            <button className="btn btn-csu" onClick={() => this.onSubmit()} >Go!</button>
-          </form>
+          <Row>
+            <Col>
+              <h4>Where Is?</h4>
+            </Col>
+          </Row>
+          <label>
+            Longitude:
+            <input className="form-control" name="longitude" value={this.state.longitude} onChange={e => this.setState({longitude: e.target.value})} />
+          </label>
+          <label>
+            Latitude:
+            <input className="form-control" name="latitude" value={this.state.latitude} onChange={e => this.setState({latitude: e.target.value})} />
+          </label>
+          <button className="btn btn-success" onClick={() => this.onSubmit()} >Go!</button>
         </div>
     )
   }
