@@ -100,7 +100,7 @@ Epics planned for this release.
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* |  | 
+| *02/12/20* | *109, 113, 112, 110, 33* | *39, 34, 35, 40* |  | 
 
 
 ## Review
