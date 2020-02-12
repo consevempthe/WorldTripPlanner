@@ -130,6 +130,28 @@ Example of the dropdown menu created for the server choices
 * Dropdown Menu is implemented to show the list of all servers
 * Footer is cleaned up to look better for user experience
 # Sprint 2
+### Planning
+![Sprint 2 Plan](images/Sprint2_Planning.jpg)
+A quick snapshot of our Epic and task planning on sprint 2
+* Our team is determinted to complete Sprint 2 and finish the missing Sprint 1 Epics that we did not get to. We found that most our tasks should be relatively easy to implement. We do believe there are 3 tasks that will take more time: figuring out how to maintain a list of custom units,creating the distance button to enter points, and fitting the map to the two points
+* This planning phase will be something we hope to do for each sprint so that we can get design down and figure out the time for each task and epic.
+### Distance
+![Distance Diagram](images/Distance.png)
+Example of our distance diagram
+* Distance will be implemented so that either touch/click or entering a value in a popup/dropdown menu will show the distance when clicking the Distance Button
+* Dialog box has two boxes for points, points will be saved.
+* While not shown the distance will appear below the button.
+### Map
+![Map Diagram](images/Map.png)
+Example of the map diagram
+* A line will show off two points on the map
+* The map will scale with the two points so that they fit the map
+### Standard and Custom Units
+![Units Diagram for custom and standard](images/Units.png)
+Dialog box for distance allowing custom units and other standardized units
+* Support for Kilometers and Nautical Miles as well as reselecting the default Miles
+* Support for saving and adding additional custom units.
+* The popup menu will show what unit it is in.
 # Sprint 3
 # Sprint 4 
 # Sprint 5
