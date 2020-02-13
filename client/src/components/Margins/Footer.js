@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 
 import ServerSettings from "./ServerSettings";
+import ServerConfig from "./ServerConfig";
 
 import "./header-footer.css";
 
@@ -13,7 +14,7 @@ export default class Footer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {serverSettingsOpen: false};
+        this.state = {serverSettingsOpen: false, serverConfigOpen: false};
     }
 
     render() {
@@ -31,11 +32,12 @@ export default class Footer extends Component {
             <div className="vertical-center tco-text">
                 <Container>
                     <div className="centered">
-                        {linkStatusSymbol} Connected to {serverName}
+                        {linkStatusSymbol} Connected to <a className="tco-text" onClick={() => this.setState({serverConfigOpen: true})}>{serverName}</a>
                         <a className="tco-text" onClick={() => this.setState({serverSettingsOpen: true})}>
                             ({this.props.serverSettings.serverPort}).
                         </a>
                     {this.renderServerSettings()}
+                    {this.renderServerConfig(this.getServerNameFromConnectionStatus(), this.getRequestVersionFromConnectionStatus(), this.getRequestTypeFromConnectionStatus())}
                     </div>
                 </Container>
             </div>
@@ -44,6 +46,16 @@ export default class Footer extends Component {
 
     getSymbolFromConnectionStatus() {
         return this.connectedToValidServer() ? UNICODE_LINK_SYMBOL : UNICODE_WARNING_SIGN;
+    }
+
+    getRequestVersionFromConnectionStatus()
+    {
+        return this.connectedToValidServer() ? this.props.serverSettings.serverConfig.requestVersion : UNKNOWN_SERVER_NAME;
+    }
+
+    getRequestTypeFromConnectionStatus()
+    {
+        return this.connectedToValidServer() ? this.props.serverSettings.serverConfig.requestType : UNKNOWN_SERVER_NAME;
     }
 
     getServerNameFromConnectionStatus() {
@@ -65,4 +77,18 @@ export default class Footer extends Component {
             />
         );
     }
+
+    renderServerConfig(server_name, request_version, request_type)
+    {
+        return(
+            <ServerConfig
+                isOpen={this.state.serverConfigOpen}
+                toggleOpen={(isOpen = !this.state.serverConfigOpen) => this.setState({serverConfigOpen: isOpen})}
+                serverName={server_name}
+                requestVersion={request_version}
+                requestType={request_type}
+            />
+        );
+    }
+
 }
