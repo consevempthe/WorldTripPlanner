@@ -8,7 +8,6 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
-const MAP_CENTER_DEFAULT = [0, 0];
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
 const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_STYLE_LENGTH = 500;
@@ -33,7 +32,6 @@ export default class Atlas extends Component {
 
     this.state = {
       markerPosition: null,
-      mapCenter: [0,0],
       hasGeo: false,
       latitude: '',
       longitude: ''
@@ -54,7 +52,7 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
-                {this.renderWhereAmIBtn()}
+                {this.renderWhereAmIButton()}
                 {this.renderWhereIs()}
               </Col>
             </Row>
@@ -85,7 +83,8 @@ export default class Atlas extends Component {
     )
   }
 
-  renderWhereAmIBtn(){
+
+  renderWhereAmIButton(){
     if(this.state.hasGeo){
       return (
           <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
@@ -95,7 +94,7 @@ export default class Atlas extends Component {
 
   renderLeafletMap() {
     return (
-        <Map center={MAP_CENTER_DEFAULT}
+        <Map center={this.state.markerPosition}
              zoom={MAP_ZOOM_DEFAULT}
              minZoom={MAP_ZOOM_MIN}
              maxZoom={MAP_ZOOM_MAX}
