@@ -34,11 +34,17 @@ export default class Atlas extends Component {
     this.state = {
       markerPosition: null,
       mapCenter: [0,0],
-      hasGeo: false
+      hasGeo: false,
+      latitude: '',
+      longitude: ''
     };
 
     this.getClientLocation();
 
+  }
+
+  onSubmit(){
+    //Need to implement adding new marker on the map in this method.
   }
 
   render() {
@@ -49,11 +55,34 @@ export default class Atlas extends Component {
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
                 {this.renderWhereAmIBtn()}
+                {this.renderWhereIs()}
               </Col>
             </Row>
           </Container>
         </div>
     );
+  }
+
+  renderWhereIs(){
+    return(
+        <div>
+          <br/>
+          <Row>
+            <Col>
+              <h4>Where Is?</h4>
+            </Col>
+          </Row>
+          <label>
+            Longitude:
+            <input className="form-control" name="longitude" value={this.state.longitude} onChange={e => this.setState({longitude: e.target.value})} />
+          </label>
+          <label>
+            Latitude:
+            <input className="form-control" name="latitude" value={this.state.latitude} onChange={e => this.setState({latitude: e.target.value})} />
+          </label>
+          <button className="btn btn-success" onClick={() => this.onSubmit()} >Go!</button>
+        </div>
+    )
   }
 
   renderWhereAmIBtn(){
