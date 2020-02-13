@@ -20,6 +20,7 @@ export default class ServerSettings extends Component {
     }
 
     render() {
+
         let currentServerName = this.getCurrentServerName();
         return (
             <div>
