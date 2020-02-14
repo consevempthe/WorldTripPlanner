@@ -66,7 +66,6 @@ export default class Atlas extends Component {
     );
   }
 
-
   renderWhereAmIButton(){
     if(this.state.locationServiceOn){
       return (
@@ -98,6 +97,7 @@ export default class Atlas extends Component {
         </Form>
     )
   }
+      
   renderLeafletMap() {
     return (
         <Map center={this.state.markerPosition}
