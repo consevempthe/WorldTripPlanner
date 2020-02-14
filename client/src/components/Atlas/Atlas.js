@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Col, Container, Row} from 'reactstrap';
+import { Form, FormGroup, Input, FormFeedback, FormText, InputGroupAddon, InputGroup } from 'reactstrap';
 import {Button} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
@@ -19,6 +20,8 @@ const MARKER_ICON = L.icon({
   shadowUrl: iconShadow,
   iconAnchor: [12, 40]  // for proper placement
 });
+const Coordinates = require('coordinate-parser');
+
 
 export default class Atlas extends Component {
 
@@ -26,13 +29,15 @@ export default class Atlas extends Component {
     super(props);
 
     this.addMarker = this.addMarker.bind(this);
-
     this.markClientLocation = this.markClientLocation.bind(this);
     this.processGeolocation = this.processGeolocation.bind(this);
 
     this.state = {
       markerPosition: null,
-      hasGeo: false,
+      LocationServiceOn: false,
+      validate: {
+        coordinatesState: '',
+      },
       latitude: '',
       longitude: ''
     };
@@ -50,7 +55,7 @@ export default class Atlas extends Component {
         <div>
           <Container>
             <Row>
-              <Col sm={12} md={{size: 6, offset: 3}}>
+              <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                 {this.renderLeafletMap()}
                 {this.renderWhereAmIButton()}
                 {this.renderWhereIs()}
@@ -61,37 +66,38 @@ export default class Atlas extends Component {
     );
   }
 
-  renderWhereIs(){
-    return(
-        <div>
-          <br/>
-          <Row>
-            <Col>
-              <h4>Where Is?</h4>
-            </Col>
-          </Row>
-          <label>
-            Longitude:
-            <input className="form-control" name="longitude" value={this.state.longitude} onChange={e => this.setState({longitude: e.target.value})} />
-          </label>
-          <label>
-            Latitude:
-            <input className="form-control" name="latitude" value={this.state.latitude} onChange={e => this.setState({latitude: e.target.value})} />
-          </label>
-          <button className="btn btn-success" onClick={() => this.onSubmit()} >Go!</button>
-        </div>
-    )
-  }
-
-
   renderWhereAmIButton(){
-    if(this.state.hasGeo){
+    if(this.state.locationServiceOn){
       return (
           <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
       )
     }
   }
 
+
+  renderWhereIs(){
+    return(
+        <Form className={"mt-1"}>
+          <FormGroup>
+            <InputGroup>
+              <Input
+                  placeholder={"Example: '40.58 -105.09'"}
+                  valid={ this.state.validate.coordinatesState === 'success'}
+                  invalid={ this.state.validate.coordinatesState === 'failure'}
+                  onChange={ (e) => {
+                    this.validateCoordinates(e);
+                  }}
+              />
+              <InputGroupAddon addonType={"append"}><Button>Submit</Button></InputGroupAddon>
+              <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
+              <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
+            </InputGroup>
+            <FormText>Input latitude and longitude coordinates.</FormText>
+          </FormGroup>
+        </Form>
+    )
+  }
+      
   renderLeafletMap() {
     return (
         <Map center={this.state.markerPosition}
@@ -107,13 +113,17 @@ export default class Atlas extends Component {
     )
   }
 
+
+
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
   }
 
+
   markClientLocation() {
     this.setState({markerPosition: this.getClientLocation()});
   }
+
 
   getMarkerPosition() {
     let markerPosition = '';
@@ -122,6 +132,7 @@ export default class Atlas extends Component {
     }
     return markerPosition;
   }
+
 
   getMarker(bodyJSX, position) {
     const initMarker = ref => {
@@ -138,14 +149,44 @@ export default class Atlas extends Component {
     }
   }
 
+
   processGeolocation(geolocation) {
     const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-    this.setState({markerPosition: position, hasGeo: true});
+    this.setState({markerPosition: position, locationServiceOn: true});
   }
+
 
   getClientLocation() {
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.processGeolocation);
     }
   }
+
+  /* Taken from https://www.npmjs.com/package/coordinate-parser
+   * Flexible algorithm to parse strings containing various latitude/longitude formats.
+   */
+  isValidPosition(position) {
+    let isValid;
+    try {
+      isValid = true;
+      new Coordinates(position);
+      return isValid;
+    } catch (error) {
+      isValid = false;
+      return isValid;
+    }
+  }
+
+  validateCoordinates(e) {
+    const { validate } = this.state;
+    const coordinates = e.target.value;
+
+    if(this.isValidPosition(coordinates)) {
+      validate.coordinatesState = 'success';
+    } else {
+      validate.coordinatesState = 'failure';
+    }
+    this.setState({ validate });
+  }
+
 }
