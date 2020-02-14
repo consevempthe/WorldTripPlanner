@@ -38,16 +38,16 @@ export default class Atlas extends Component {
       validate: {
         coordinatesState: '',
       },
-      latitude: '',
-      longitude: ''
+      latitudeLongitude: ''
     };
 
     this.getClientLocation();
 
   }
 
-  onSubmit(){
-    //Need to implement adding new marker on the map in this method.
+  submitWhereIs(){
+    const position = new Coordinates(this.state.latitudeLongitude);
+    this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
   }
 
   render() {
@@ -88,7 +88,7 @@ export default class Atlas extends Component {
                     this.validateCoordinates(e);
                   }}
               />
-              <InputGroupAddon addonType={"append"}><Button>Submit</Button></InputGroupAddon>
+              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.submitWhereIs() } >Submit</Button></InputGroupAddon>
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
               <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
             </InputGroup>
@@ -183,6 +183,7 @@ export default class Atlas extends Component {
 
     if(this.isValidPosition(coordinates)) {
       validate.coordinatesState = 'success';
+      this.setState({latitudeLongitude: coordinates});
     } else {
       validate.coordinatesState = 'failure';
     }
