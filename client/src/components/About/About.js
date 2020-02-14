@@ -39,44 +39,26 @@ export default class About extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col sm={6}>
-                        <Card>
-                            <CardImg top width="100%" src={Axel} alt={"Profile picture for Axel Wahlstrom"} />
-                            <CardBody>
-                                <CardTitle className={"text-center lead"}>Axel Wahlstrom</CardTitle>
-                                <CardText>I am a Junior Computer Science major, who is also working on a minor in mathematics at CSU. In my free time, I enjoy lifting weights and playing video games.</CardText>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col sm={6}>
-                        <Card>
-                            <CardImg top width="100%" src={Brandon} alt={"Profile picture for Brandon Vasquez"} />
-                            <CardBody>
-                                <CardTitle className={"text-center lead"}>Brandon Vasquez</CardTitle>
-                                <CardText>I am currently a student at CSU majoring in Applied Computing Technology with a minor in Business Administration. I am Colorado born and raised and enjoy hiking, sports and spending time in the gym.</CardText>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col sm={6}>
-                        <Card>
-                            <CardImg top width="100%" src={Ethan} alt={"This photo has Ethan looking his best, don't expect much"} />
-                            <CardBody>
-                                <CardTitle className={"text-center lead"}>Ethan Liem</CardTitle>
-                                <CardText>I am a second Bachelor's Computer Science major at CSU. My other degrees are in Journalism and Liberal Arts, which I also got at CSU (I just really like giving Tony Frank). I work at the climbing wall on campus and I enjoy Magic: The Gathering.</CardText>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Col sm={6}>
-                        <Card>
-                            <CardImg top width="100%" src={Moise} alt={"Profile picture for Brandon Vasquez"} />
-                            <CardBody>
-                                <CardTitle className={"text-center lead"}>Moise Lacrete</CardTitle>
-                                <CardText>I am a Computer Science major at CSU. I grew up on the east coast, from a small town on Long Island, New York. I'm an advocate for fitness and enjoy spending what little free time I have outdoors enjoying Colorado's beautiful sunny weather. Skill toys are another passion of mine so I usually have something to play with in my backpack.</CardText>
-                            </CardBody>
-                        </Card>
-                    </Col>
+                    {this.renderBio("Profile picture for Axel Wahlstrom", "Axel Wahlstrom", "I am a Junior Computer Science major, who is also working on a minor in mathematics at CSU. In my free time, I enjoy lifting weights and playing video games.", Axel)}
+                    {this.renderBio("Profile picture for Brandon Vasquez", "Brandon Vasquez", "I am currently a student at CSU majoring in Applied Computing Technology with a minor in Business Administration. I am Colorado born and raised and enjoy hiking, sports and spending time in the gym.", Brandon)}
+                    {this.renderBio("This photo has Ethan looking his best, don't expect much", "Ethan Liem", "I am a second Bachelor's Computer Science major at CSU. My other degrees are in Journalism and Liberal Arts, which I also got at CSU (I just really like giving Tony Frank). I work at the climbing wall on campus and I enjoy Magic: The Gathering.", Ethan)}
+                    {this.renderBio("Profile picture for Moise Lacrete", "Moise Lacrete", "I am a Computer Science major at CSU. I grew up on the east coast, from a small town on Long Island, New York. I'm an advocate for fitness and enjoy spending what little free time I have outdoors enjoying Colorado's beautiful sunny weather. Skill toys are another passion of mine so I usually have something to play with in my backpack.", Moise)}
                 </Row>
         </Container>
       )
+    }
+
+    renderBio(altTag, fullName, bio, imageSRC){
+        return(
+            <Col sm={6}>
+                <Card>
+                    <CardImg top width="100%" src={imageSRC} alt={altTag} />
+                    <CardBody>
+                        <CardTitle className={"text-center lead"}>{fullName}</CardTitle>
+                        <CardText>{bio}</CardText>
+                    </CardBody>
+                </Card>
+            </Col>
+        );
     }
 }
