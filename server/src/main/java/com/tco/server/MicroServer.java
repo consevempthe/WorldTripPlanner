@@ -14,7 +14,7 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 
-class MicroServer {
+class  MicroServer {
 
   private final String CONFIG_REQUEST_BODY = "{\"requestType\" : \"config\", \"requestVersion\" : 1}";
   private final Logger log = LoggerFactory.getLogger(MicroServer.class);
@@ -55,12 +55,19 @@ class MicroServer {
 
   private void processRestfulAPIrequests() {
     Spark.get("/api/config", this::processConfigRequest);
+
     // Configure other restful API requests here
+    Spark.post("/api/config", this::processPostConfigRequest);
   }
 
   private String processConfigRequest(Request request, Response response) {
     logRequest(request);
     return processHttpRequest(RequestConfig.class, CONFIG_REQUEST_BODY, response);
+  }
+
+  private String processPostConfigRequest(Request request, Response response) {
+    logRequest(request);
+    return processHttpRequest(RequestConfig.class, request.body(), response);
   }
 
   private String processHttpRequest(Type type, String requestBody, Response response) {
