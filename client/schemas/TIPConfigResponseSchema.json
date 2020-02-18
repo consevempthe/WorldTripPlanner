@@ -19,8 +19,16 @@
       "description":"identify the server instance",
       "type":"string",
       "minLength":3
+    },
+    "supportedRequests": {
+      "description": "a list of supported request types",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["config", "distance"]
+      }
     }
   },
-  "required":["requestVersion","requestType","serverName"],
+  "required":["requestVersion","requestType","serverName","supportedRequests"],
   "additionalProperties": false
 }
