@@ -6,7 +6,7 @@ public class RequestDistance extends RequestHeader {
     Map<String, String> place1;
     Map<String, String> place2;
     Double earthRadius;
-    Integer distance;
+    Long distance;
 
     @Override
     public void buildResponse() {
