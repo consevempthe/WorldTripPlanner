@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class RequestConfig extends RequestHeader {
   private String serverName;
-
+  protected List<String> supportedRequests = Arrays.asList("config", "distance");
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
 
 

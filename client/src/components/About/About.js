@@ -13,26 +13,8 @@ export default class About extends Component {
     render() {
         return (
             <Container id="about">
-                <Row>
-                    <Col>
-                        <h2 className="font-weight-bold" >
-                            {CLIENT_TEAM_NAME}
-                        </h2>
-                    </Col>
-                    <Col id="closeAbout" xs='auto' >
-                        <Button className='btn-csu w-100' onClick={this.props.closePage} xs={1}>
-                            Close
-                        </Button>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h5><strong>Our Values:</strong></h5>
-                        <p><em><strong>
-                            “Hugh-Lit Pack-Herd earns Dave Matthew's respect and loyalty by consistently providing the most average quality and value. We achieve sufficient-enough grades to finance growth, create value for our class mates and achieve our corporate objectives.”
-                        </strong> -The Hugh-Lit Pack-Herd team (2020)</em></p>
-                    </Col>
-                </Row>
+                {this.renderTeamName()}
+                {this.renderTeamMotto()}
                 <Row>
                     <Col>
                         <h5><strong>Meet the team:</strong></h5>
@@ -44,8 +26,38 @@ export default class About extends Component {
                     {this.renderBio("This photo has Ethan looking his best, don't expect much", "Ethan Liem", "I am a second Bachelor's Computer Science major at CSU. My other degrees are in Journalism and Liberal Arts, which I also got at CSU (I just really like giving Tony Frank). I work at the climbing wall on campus and I enjoy Magic: The Gathering.", Ethan)}
                     {this.renderBio("Profile picture for Moise Lacrete", "Moise Lacrete", "I am a Computer Science major at CSU. I grew up on the east coast, from a small town on Long Island, New York. I'm an advocate for fitness and enjoy spending what little free time I have outdoors enjoying Colorado's beautiful sunny weather. Skill toys are another passion of mine so I usually have something to play with in my backpack.", Moise)}
                 </Row>
-        </Container>
-      )
+            </Container>
+        )
+    }
+
+    renderTeamName() {
+        return(
+            <Row>
+                <Col>
+                    <h2 className="font-weight-bold" >
+                        {CLIENT_TEAM_NAME}
+                    </h2>
+                </Col>
+                <Col id="closeAbout" xs='auto' >
+                    <Button className='btn-csu w-100' onClick={this.props.closePage} xs={1}>
+                        Close
+                    </Button>
+                </Col>
+            </Row>
+        )
+    }
+
+    renderTeamMotto() {
+        return(
+            <Row>
+                <Col>
+                    <h5><strong>Our Values:</strong></h5>
+                    <p><em><strong>
+                        “Hugh-Lit Pack-Herd earns Dave Matthew's respect and loyalty by consistently providing the most average quality and value. We achieve sufficient-enough grades to finance growth, create value for our class mates and achieve our corporate objectives.”
+                    </strong> -The Hugh-Lit Pack-Herd team (2020)</em></p>
+                </Col>
+            </Row>
+        )
     }
 
     renderBio(altTag, fullName, bio, imageSRC){
