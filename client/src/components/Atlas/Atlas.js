@@ -3,7 +3,7 @@ import {Col, Container, Row} from 'reactstrap';
 import { Form, FormGroup, Input, FormFeedback, FormText, InputGroupAddon, InputGroup } from 'reactstrap';
 import {Button} from 'reactstrap';
 
-import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
+import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
@@ -115,8 +115,19 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
           {this.renderOtherMarkers(this.state.otherMarkerPositions)}
+          {this.renderLine()}
         </Map>
     )
+  }
+
+  renderLine() {
+    if (this.state.otherMarkerPositions[0]) {
+      return (
+          <Polyline
+              positions={[this.state.markerPosition, this.state.otherMarkerPositions[0]]}
+          />
+      );
+    }
   }
 
   renderOtherMarkers(otherMarkers)
@@ -153,7 +164,7 @@ export default class Atlas extends Component {
   getMarker(bodyJSX, position) {
     if (position) {
         return (
-            <Marker autoPan={false} position={position} icon={MARKER_ICON}>
+            <Marker position={position} icon={MARKER_ICON}>
               <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
             </Marker>
         );
