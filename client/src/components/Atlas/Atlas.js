@@ -107,23 +107,13 @@ export default class Atlas extends Component {
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
               <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
             </InputGroup>
-            {this.render2ndDistance()}
+            <InputGroup>
+              {this.renderInput("point2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, "point2Valid")}
+              <FormFeedback valid>Nice. Go find that distance!!</FormFeedback>
+              <FormFeedback invalid>Nope this one isn't valid.</FormFeedback>
+            </InputGroup>
           </FormGroup>
         </Form>
-    )
-  }
-
-  render2ndDistance() {
-    return(
-      <Form>
-        <FormGroup>
-          <InputGroup>
-            {this.renderInput("point2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, "point2Valid")}
-            <FormFeedback valid>Nice. Go find that distance!!</FormFeedback>
-            <FormFeedback invalid>Nope this one isn't valid.</FormFeedback>
-          </InputGroup>
-        </FormGroup>
-      </Form>
     )
   }
 
@@ -145,11 +135,11 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
           {this.renderOtherMarkers(this.state.otherMarkerPositions)}
-          {this.renderLine()}
+            {this.renderLine()}
         </Map>
     )
   }
-  
+
       renderLine() {
         if (this.state.otherMarkerPositions[0]) {
             return (
@@ -223,14 +213,11 @@ export default class Atlas extends Component {
      * Flexible algorithm to parse strings containing various latitude/longitude formats.
      */
     isValidPosition(position) {
-        let isValid;
         try {
-            isValid = true;
             new Coordinates(position);
-            return isValid;
+            return true;
         } catch (error) {
-            isValid = false;
-            return isValid;
+            return false;
         }
     }
 
@@ -243,6 +230,7 @@ export default class Atlas extends Component {
     } else {
       validate[point] = 'failure';
     }
+    this.setState({ validate });
   }
 
 }
