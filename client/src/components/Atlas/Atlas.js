@@ -243,5 +243,6 @@ export default class Atlas extends Component {
     } else {
       validate[point] = 'failure';
     }
+  }
 
 }
