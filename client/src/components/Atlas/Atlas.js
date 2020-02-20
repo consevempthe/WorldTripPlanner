@@ -53,6 +53,7 @@ export default class Atlas extends Component {
   submitWhereIs(){
     const position = new Coordinates(this.state.latitudeLongitude);
     this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
+    this.clearOtherMarkers();
   }
 
   render() {
@@ -130,6 +131,10 @@ export default class Atlas extends Component {
     }
   }
 
+  clearOtherMarkers() {
+    this.setState({otherMarkerPositions: []});
+  }
+
   renderOtherMarkers(otherMarkers)
   {
     if(otherMarkers.length !== 0)
@@ -145,12 +150,13 @@ export default class Atlas extends Component {
 
   addMarker(mapClickInfo)
   {
-    this.setState({otherMarkerPositions: []});
+    this.clearOtherMarkers();
     this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
   }
 
 
   markClientLocation() {
+    this.clearOtherMarkers();
     this.setState({markerPosition: this.getClientLocation()});
   }
 
