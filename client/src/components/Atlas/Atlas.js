@@ -39,7 +39,7 @@ export default class Atlas extends Component {
         coordinatesState: '',
       },
       point1: '',
-      point2: ''
+      point2: '',
 
       // 1st marker
       markerPosition: null,
