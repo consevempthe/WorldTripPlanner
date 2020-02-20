@@ -26,121 +26,131 @@ const Coordinates = require('coordinate-parser');
 
 export default class Atlas extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.addMarker = this.addMarker.bind(this);
-        this.markClientLocation = this.markClientLocation.bind(this);
-        this.processGeolocation = this.processGeolocation.bind(this);
+    this.addMarker = this.addMarker.bind(this);
+    this.markClientLocation = this.markClientLocation.bind(this);
+    this.processGeolocation = this.processGeolocation.bind(this);
 
-        this.state = {
-            LocationServiceOn: false,
-            validate: {
-                coordinatesState: '',
-            },
-            point1: '',
-            point2: '',
+    this.state = {
+      LocationServiceOn: false,
+      validate: {
+        point1Valid: '',
+        point2Valid: '',
+      },
+      point1: '',
+      point2: '',
 
-            // 1st marker
-            markerPosition: null,
-            // other markers
-            otherMarkerPositions: []
-        };
+      // 1st marker
+      markerPosition: null,
+      // other markers
+      otherMarkerPositions: []
+    };
 
-        this.getClientLocation();
+    this.getClientLocation();
+  }
 
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
+  }
+
+
+  render() {
+    return (
+        <div>
+          <Container>
+            <Row>
+              <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
+                {this.renderLeafletMap()}
+                {this.renderWhereAmIButton()}
+                {this.renderPointForm()}
+                {this.renderCalculateDistance()}
+              </Col>
+            </Row>
+          </Container>
+        </div>
+    );
+  }
+
+  renderWhereAmIButton() {
+    if(this.state.locationServiceOn){
+      return (
+          <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
+      )
     }
+  }
 
-    handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
-    }
+  renderInput(name, placeholder, validator, pointValid) {
+    return(
+        <Input
+            name={name}
+            placeholder={placeholder}
+            valid={validator === 'success'}
+            invalid={validator === 'failure'}
+            onChange={ (e) => {
+              this.validateCoordinates(e, pointValid);
+              this.handleChange(e);
+            }}
+        />
+    )
+  }
 
+  renderPointForm() {
+    return(
+        <Form className={"mt-1"}>
+          <FormGroup>
+            <FormText>Input latitude and longitude coordinates.</FormText>
+            <InputGroup>
+              {this.renderInput("point1", "Example: '40.58, -105.09'", this.state.validate.point1Valid, "point1Valid")}
+              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.setPoint(this.state.point1) } >Submit</Button></InputGroupAddon>
+              <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
+              <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
+            </InputGroup>
+            {this.render2ndDistance()}
+          </FormGroup>
+        </Form>
+    )
+  }
 
-    render() {
-        return (
-            <div>
-                <Container>
-                    <Row>
-                        <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
-                            {this.renderLeafletMap()}
-                            {this.renderWhereAmIButton()}
-                            {this.renderPointForm()}
-                            {this.renderCalculateDistance()}
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        );
-    }
+  render2ndDistance() {
+    return(
+      <Form>
+        <FormGroup>
+          <InputGroup>
+            {this.renderInput("point2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, "point2Valid")}
+            <FormFeedback valid>Nice. Go find that distance!!</FormFeedback>
+            <FormFeedback invalid>Nope this one isn't valid.</FormFeedback>
+          </InputGroup>
+        </FormGroup>
+      </Form>
+    )
+  }
 
-    renderWhereAmIButton() {
-        if (this.state.locationServiceOn) {
-            return (
-                <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
-            )
-        }
-    }
-
-
-    renderPointForm() {
-        return (
-            <Form className={"mt-1"}>
-                <FormGroup>
-                    <FormText>Input latitude and longitude coordinates.</FormText>
-                    <InputGroup>
-                        <Input
-                            name={'point1'}
-                            placeholder={"Example: '40.58 -105.09'"}
-                            valid={this.state.validate.coordinatesState === 'success'}
-                            invalid={this.state.validate.coordinatesState === 'failure'}
-                            onChange={(e) => {
-                                this.validateCoordinates(e);
-                                this.handleChange(e);
-                            }}
-                        />
-                        <InputGroupAddon addonType={"append"}><Button
-                            onClick={() => this.getPoint()}>Submit</Button></InputGroupAddon>
-                        <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
-                        <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
-                    </InputGroup>
-                    <InputGroup>
-                        <Input
-                            name={'point2'}
-                            placeholder={"Enter 2nd coordinate to find distance"}
-                            onChange={(e) => {
-                                this.handleChange(e);
-                            }}
-                        />
-                    </InputGroup>
-                </FormGroup>
-            </Form>
-        )
-    }
-
-    renderCalculateDistance() {
-        return (
-            <Button onClick={() => this.getDistance()} size={"lg"} block>Calculate Distance</Button>
-        )
-    }
-
-    renderLeafletMap() {
-        return (
-            <Map center={this.state.markerPosition}
-                 zoom={MAP_ZOOM_DEFAULT}
-                 minZoom={MAP_ZOOM_MIN}
-                 maxZoom={MAP_ZOOM_MAX}
-                 maxBounds={MAP_BOUNDS}
-                 onClick={this.addMarker}
-                 style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
-                <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-                {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
-                {this.renderOtherMarkers(this.state.otherMarkerPositions)}
-                {this.renderLine()}
-            </Map>
-        )
-    }
-
-    renderLine() {
+  renderCalculateDistance() {
+    return (
+        <Button onClick={() => this.getDistance()} size={"lg"} block>Calculate Distance</Button>
+    )
+  }
+      
+  renderLeafletMap() {
+    return (
+        <Map center={this.state.markerPosition}
+             zoom={MAP_ZOOM_DEFAULT}
+             minZoom={MAP_ZOOM_MIN}
+             maxZoom={MAP_ZOOM_MAX}
+             maxBounds={MAP_BOUNDS}
+             onClick={this.addMarker}
+             style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
+          <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
+          {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
+          {this.renderOtherMarkers(this.state.otherMarkerPositions)}
+          {this.renderLine()}
+        </Map>
+    )
+  }
+  
+      renderLine() {
         if (this.state.otherMarkerPositions[0]) {
             return (
                 <Polyline
@@ -150,37 +160,34 @@ export default class Atlas extends Component {
         }
     }
 
-    clearOtherMarkers() {
-        this.setState({otherMarkerPositions: []});
+  renderOtherMarkers(otherMarkers) {
+    if(otherMarkers.length !== 0)
+    {
+      let markers = [];
+      for(let i = 0; i < otherMarkers.length; i++)
+      {
+        markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]))
+      }
+      return markers;
     }
+  }
 
-    renderOtherMarkers(otherMarkers) {
-        if (otherMarkers.length !== 0) {
-            let markers = [];
-            for (let i = 0; i < otherMarkers.length; i++) {
-                markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]))
-            }
-            return markers;
-        }
-    }
-
-    addMarker(mapClickInfo) {
-        this.setState({otherMarkerPositions: []});
-        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
-    }
+  addMarker(mapClickInfo) {
+    this.setState({otherMarkerPositions: []});
+    this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
+  }
 
 
-    markClientLocation() {
-        this.setState({markerPosition: this.getClientLocation()});
-        this.clearOtherMarkers();
-    }
+  markClientLocation() {
+    this.setState({markerPosition: this.getClientLocation()});
+  }
 
-    getMarkerPosition(position) {
-        let markerPosition = '';
-        if (position)
-            markerPosition = position.lat.toFixed(2) + ', ' + position.lng.toFixed(2);
-        return markerPosition
-    }
+  getMarkerPosition(position) {
+    let markerPosition = '';
+    if (position)
+      markerPosition = position.lat.toFixed(2) + ', ' + position.lng.toFixed(2);
+    return markerPosition
+  }
 
     getMarker(bodyJSX, position) {
         if (position) {
@@ -197,16 +204,15 @@ export default class Atlas extends Component {
         this.setState({markerPosition: position, locationServiceOn: true});
     }
 
-
     getClientLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(this.processGeolocation);
         }
     }
 
-    getPoint() {
-        const position = new Coordinates(this.state.point1);
-        this.setState({markerPosition: {lat: position.getLatitude(), lng: position.getLongitude()}});
+    setPoint(point){
+      const position = new Coordinates(point);
+      this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
     }
 
     getDistance() {
@@ -228,16 +234,15 @@ export default class Atlas extends Component {
         }
     }
 
-    validateCoordinates(e) {
-        const {validate} = this.state;
-        const coordinates = e.target.value;
+  validateCoordinates(e, point) {
+    const { validate } = this.state;
+    const coordinates = e.target.value;
 
-        if (this.isValidPosition(coordinates)) {
-            validate.coordinatesState = 'success';
-        } else {
-            validate.coordinatesState = 'failure';
-        }
-        this.setState({validate});
+    if(this.isValidPosition(coordinates)) {
+      validate[point] = 'success';
+    } else {
+      validate[point] = 'failure';
     }
+  }
 
 }
