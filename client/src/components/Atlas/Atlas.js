@@ -81,7 +81,7 @@ export default class Atlas extends Component {
     }
   }
 
-  renderInput(name, placeholder, validator, number) {
+  renderInput(name, placeholder, validator, pointValid) {
     return(
         <Input
             name={name}
@@ -89,7 +89,7 @@ export default class Atlas extends Component {
             valid={validator === 'success'}
             invalid={validator === 'failure'}
             onChange={ (e) => {
-              this.validateCoordinates(e, number);
+              this.validateCoordinates(e, pointValid);
               this.handleChange(e);
             }}
         />
@@ -102,7 +102,7 @@ export default class Atlas extends Component {
           <FormGroup>
             <FormText>Input latitude and longitude coordinates.</FormText>
             <InputGroup>
-              {this.renderInput("point1", "Example: '40.58, -105.09'", this.state.validate.point1Valid, 1)}
+              {this.renderInput("point1", "Example: '40.58, -105.09'", this.state.validate.point1Valid, "point1Valid")}
               <InputGroupAddon addonType={"append"}><Button onClick={ () => this.setPoint(this.state.point1) } >Submit</Button></InputGroupAddon>
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
               <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
@@ -118,7 +118,7 @@ export default class Atlas extends Component {
       <Form>
         <FormGroup>
           <InputGroup>
-            {this.renderInput("point2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, 2)}
+            {this.renderInput("point2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, "point2Valid")}
             <FormFeedback valid>Nice. Go find that distance!!</FormFeedback>
             <FormFeedback invalid>Nope this one isn't valid.</FormFeedback>
           </InputGroup>
@@ -229,15 +229,9 @@ export default class Atlas extends Component {
     const coordinates = e.target.value;
 
     if(this.isValidPosition(coordinates)) {
-      if(point === 1)
-        validate.point1Valid = 'success';
-      if(point === 2)
-        validate.point2Valid = 'success';
+      validate[point] = 'success';
     } else {
-      if(point === 1)
-        validate.point1Valid = 'failure';
-      if(point === 2)
-        validate.point2Valid = 'failure';
+      validate[point] = 'failure';
     }
     this.setState({ validate });
   }
