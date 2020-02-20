@@ -81,6 +81,20 @@ export default class Atlas extends Component {
     }
   }
 
+  renderInput(name, placeholder, validator, number) {
+    return(
+        <Input
+            name={name}
+            placeholder={placeholder}
+            valid={validator === 'success'}
+            invalid={validator === 'failure'}
+            onChange={ (e) => {
+              this.validateCoordinates(e, number);
+              this.handleChange(e);
+            }}
+        />
+    )
+  }
 
   renderPointForm() {
     return(
@@ -88,16 +102,7 @@ export default class Atlas extends Component {
           <FormGroup>
             <FormText>Input latitude and longitude coordinates.</FormText>
             <InputGroup>
-              <Input
-                  name={'point1'}
-                  placeholder={"Example: '40.58 -105.09'"}
-                  valid={ this.state.validate.point1Valid === 'success'}
-                  invalid={ this.state.validate.point1Valid === 'failure'}
-                  onChange={ (e) => {
-                    this.validateCoordinates(e,1);
-                    this.handleChange(e);
-                  }}
-              />
+              {this.renderInput("point1", "Example: '40.58, -105.09'", this.state.validate.point1Valid, 1)}
               <InputGroupAddon addonType={"append"}><Button onClick={ () => this.setPoint(this.state.point1) } >Submit</Button></InputGroupAddon>
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
               <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
@@ -113,16 +118,7 @@ export default class Atlas extends Component {
       <Form>
         <FormGroup>
           <InputGroup>
-            <Input
-                name={"point2"}
-                placeholder={"Enter a 2nd point to compute distance"}
-                valid={ this.state.validate.point2Valid === 'success'}
-                invalid={ this.state.validate.point2Valid === 'failure'}
-                onChange={ (e) => {
-                  this.validateCoordinates(e,2);
-                  this.handleChange(e);
-                }}
-            />
+            {this.renderInput("point2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, 2)}
             <FormFeedback valid>Nice. Go find that distance!!</FormFeedback>
             <FormFeedback invalid>Nope this one isn't valid.</FormFeedback>
           </InputGroup>
