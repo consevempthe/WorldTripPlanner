@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Col, Container, Row} from 'reactstrap';
-import { Form, FormGroup, Input, FormFeedback, FormText, InputGroupAddon, InputGroup } from 'reactstrap';
+import {Form, FormGroup, Input, FormFeedback, FormText, InputGroupAddon, InputGroup} from 'reactstrap';
 import {Button} from 'reactstrap';
 
-import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
+import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
@@ -17,9 +17,9 @@ const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
 const MAP_ZOOM_DEFAULT = 16;
 const MARKER_ICON = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconAnchor: [12, 40]  // for proper placement
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconAnchor: [12, 40]  // for proper placement
 });
 const Coordinates = require('coordinate-parser');
 
@@ -145,9 +145,20 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
           {this.renderOtherMarkers(this.state.otherMarkerPositions)}
+          {this.renderLine()}
         </Map>
     )
   }
+  
+      renderLine() {
+        if (this.state.otherMarkerPositions[0]) {
+            return (
+                <Polyline
+                    positions={[this.state.markerPosition, this.state.otherMarkerPositions[0]]}
+                />
+            );
+        }
+    }
 
   renderOtherMarkers(otherMarkers) {
     if(otherMarkers.length !== 0)
@@ -178,51 +189,50 @@ export default class Atlas extends Component {
     return markerPosition
   }
 
-  getMarker(bodyJSX, position) {
-    if (position) {
-        return (
-            <Marker autoPan={false} position={position} icon={MARKER_ICON}>
-              <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
-            </Marker>
-        );
+    getMarker(bodyJSX, position) {
+        if (position) {
+            return (
+                <Marker autoPan={false} position={position} icon={MARKER_ICON}>
+                    <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
+                </Marker>
+            );
+        }
     }
-  }
 
-  processGeolocation(geolocation) {
-    const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-    this.setState({markerPosition: position, locationServiceOn: true});
-  }
-
-
-  getClientLocation() {
-    if(navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.processGeolocation);
+    processGeolocation(geolocation) {
+        const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
+        this.setState({markerPosition: position, locationServiceOn: true});
     }
-  }
 
-  setPoint(point){
-    const position = new Coordinates(point);
-    this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
-  }
-
-  getDistance() {
-
-  }
-
-  /* Taken from https://www.npmjs.com/package/coordinate-parser
-   * Flexible algorithm to parse strings containing various latitude/longitude formats.
-   */
-  isValidPosition(position) {
-    let isValid;
-    try {
-      isValid = true;
-      new Coordinates(position);
-      return isValid;
-    } catch (error) {
-      isValid = false;
-      return isValid;
+    getClientLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(this.processGeolocation);
+        }
     }
-  }
+
+    setPoint(point){
+      const position = new Coordinates(point);
+      this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
+    }
+
+    getDistance() {
+
+    }
+
+    /* Taken from https://www.npmjs.com/package/coordinate-parser
+     * Flexible algorithm to parse strings containing various latitude/longitude formats.
+     */
+    isValidPosition(position) {
+        let isValid;
+        try {
+            isValid = true;
+            new Coordinates(position);
+            return isValid;
+        } catch (error) {
+            isValid = false;
+            return isValid;
+        }
+    }
 
   validateCoordinates(e, point) {
     const { validate } = this.state;
@@ -233,7 +243,5 @@ export default class Atlas extends Component {
     } else {
       validate[point] = 'failure';
     }
-    this.setState({ validate });
-  }
 
 }
