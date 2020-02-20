@@ -36,7 +36,8 @@ export default class Atlas extends Component {
     this.state = {
       LocationServiceOn: false,
       validate: {
-        coordinatesState: '',
+        point1Valid: '',
+        point2Valid: '',
       },
       point1: '',
       point2: '',
@@ -48,7 +49,6 @@ export default class Atlas extends Component {
     };
 
     this.getClientLocation();
-
   }
 
   handleChange(event) {
@@ -91,28 +91,43 @@ export default class Atlas extends Component {
               <Input
                   name={'point1'}
                   placeholder={"Example: '40.58 -105.09'"}
-                  valid={ this.state.validate.coordinatesState === 'success'}
-                  invalid={ this.state.validate.coordinatesState === 'failure'}
+                  valid={ this.state.validate.point1Valid === 'success'}
+                  invalid={ this.state.validate.point1Valid === 'failure'}
                   onChange={ (e) => {
-                    this.validateCoordinates(e);
+                    this.validateCoordinates(e,1);
                     this.handleChange(e);
                   }}
               />
-              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.getPoint() } >Submit</Button></InputGroupAddon>
+              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.setPoint(this.state.point1) } >Submit</Button></InputGroupAddon>
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
               <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
             </InputGroup>
-            <InputGroup>
-              <Input
-                  name={'point2'}
-                  placeholder={"Enter 2nd coordinate to find distance"}
-                  onChange={(e) => {
-                    this.handleChange(e);
-                  }}
-              />
-            </InputGroup>
+            {this.render2ndDistance()}
           </FormGroup>
         </Form>
+    )
+  }
+
+  render2ndDistance() {
+    return(
+      <Form>
+        <FormGroup>
+          <InputGroup>
+            <Input
+                name={"point2"}
+                placeholder={"Enter a 2nd point to compute distance"}
+                valid={ this.state.validate.point2Valid === 'success'}
+                invalid={ this.state.validate.point2Valid === 'failure'}
+                onChange={ (e) => {
+                  this.validateCoordinates(e,2);
+                  this.handleChange(e);
+                }}
+            />
+            <FormFeedback valid>Nice. Go find that distance!!</FormFeedback>
+            <FormFeedback invalid>Nope this one isn't valid.</FormFeedback>
+          </InputGroup>
+        </FormGroup>
+      </Form>
     )
   }
 
@@ -189,8 +204,8 @@ export default class Atlas extends Component {
     }
   }
 
-  getPoint(){
-    const position = new Coordinates(this.state.point1);
+  setPoint(point){
+    const position = new Coordinates(point);
     this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
   }
 
@@ -213,14 +228,20 @@ export default class Atlas extends Component {
     }
   }
 
-  validateCoordinates(e) {
+  validateCoordinates(e, point) {
     const { validate } = this.state;
     const coordinates = e.target.value;
 
     if(this.isValidPosition(coordinates)) {
-      validate.coordinatesState = 'success';
+      if(point === 1)
+        validate.point1Valid = 'success';
+      else
+        validate.point2Valid = 'success';
     } else {
-      validate.coordinatesState = 'failure';
+      if(point === 1)
+        validate.point1Valid = 'failure';
+      else
+        validate.point2Valid = 'failure';
     }
     this.setState({ validate });
   }
