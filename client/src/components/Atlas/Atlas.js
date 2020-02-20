@@ -7,6 +7,7 @@ import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
+// import {marker} from "leaflet/dist/leaflet-src.esm";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
@@ -33,12 +34,16 @@ export default class Atlas extends Component {
     this.processGeolocation = this.processGeolocation.bind(this);
 
     this.state = {
-      markerPosition: null,
       LocationServiceOn: false,
       validate: {
         coordinatesState: '',
       },
-      latitudeLongitude: ''
+      latitudeLongitude: '',
+
+      // 1st marker
+      markerPosition: null,
+      // other markers
+      otherMarkerPositions: []
     };
 
     this.getClientLocation();
@@ -108,15 +113,29 @@ export default class Atlas extends Component {
              onClick={this.addMarker}
              style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-          {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
+          {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
+          {this.renderOtherMarkers(this.state.otherMarkerPositions)}
         </Map>
     )
   }
 
+  renderOtherMarkers(otherMarkers)
+  {
+    if(otherMarkers.length !== 0)
+    {
+      let markers = [];
+      for(let i = 0; i < otherMarkers.length; i++)
+      {
+        markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]))
+      }
+      return markers;
+    }
+  }
 
-
-  addMarker(mapClickInfo) {
-    this.setState({markerPosition: mapClickInfo.latlng});
+  addMarker(mapClickInfo)
+  {
+    this.setState({otherMarkerPositions: []});
+    this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
   }
 
 
@@ -124,31 +143,22 @@ export default class Atlas extends Component {
     this.setState({markerPosition: this.getClientLocation()});
   }
 
-
-  getMarkerPosition() {
+  getMarkerPosition(position) {
     let markerPosition = '';
-    if (this.state.markerPosition) {
-      markerPosition = this.state.markerPosition.lat.toFixed(2) + ', ' + this.state.markerPosition.lng.toFixed(2);
-    }
-    return markerPosition;
+    if (position)
+      markerPosition = position.lat.toFixed(2) + ', ' + position.lng.toFixed(2);
+    return markerPosition
   }
-
 
   getMarker(bodyJSX, position) {
-    const initMarker = ref => {
-      if (ref) {
-        ref.leafletElement.openPopup()
-      }
-    };
     if (position) {
-      return (
-          <Marker ref={initMarker} position={position} icon={MARKER_ICON}>
-            <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
-          </Marker>
-      );
+        return (
+            <Marker autoPan={false} position={position} icon={MARKER_ICON}>
+              <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
+            </Marker>
+        );
     }
   }
-
 
   processGeolocation(geolocation) {
     const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
