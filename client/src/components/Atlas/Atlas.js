@@ -38,17 +38,18 @@ export default class Atlas extends Component {
       validate: {
         coordinatesState: '',
       },
-      latitudeLongitude: ''
+      point1: '',
+      point2: ''
     };
 
     this.getClientLocation();
 
   }
 
-  submitWhereIs(){
-    const position = new Coordinates(this.state.latitudeLongitude);
-    this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
   }
+
 
   render() {
     return (
@@ -58,7 +59,8 @@ export default class Atlas extends Component {
               <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                 {this.renderLeafletMap()}
                 {this.renderWhereAmIButton()}
-                {this.renderWhereIs()}
+                {this.renderPointForm()}
+                {this.renderCalculateDistance()}
               </Col>
             </Row>
           </Container>
@@ -75,26 +77,43 @@ export default class Atlas extends Component {
   }
 
 
-  renderWhereIs(){
+  renderPointForm(){
     return(
         <Form className={"mt-1"}>
           <FormGroup>
+            <FormText>Input latitude and longitude coordinates.</FormText>
             <InputGroup>
               <Input
+                  name={'point1'}
                   placeholder={"Example: '40.58 -105.09'"}
                   valid={ this.state.validate.coordinatesState === 'success'}
                   invalid={ this.state.validate.coordinatesState === 'failure'}
                   onChange={ (e) => {
                     this.validateCoordinates(e);
+                    this.handleChange(e);
                   }}
               />
-              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.submitWhereIs() } >Submit</Button></InputGroupAddon>
+              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.getPoint() } >Submit</Button></InputGroupAddon>
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
               <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
             </InputGroup>
-            <FormText>Input latitude and longitude coordinates.</FormText>
+            <InputGroup>
+              <Input
+                  name={'point2'}
+                  placeholder={"Enter 2nd coordinate to find distance"}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+              />
+            </InputGroup>
           </FormGroup>
         </Form>
+    )
+  }
+
+  renderCalculateDistance() {
+    return (
+        <Button onClick={() => this.getDistance()} size={"lg"} block>Calculate Distance</Button>
     )
   }
       
@@ -112,7 +131,6 @@ export default class Atlas extends Component {
         </Map>
     )
   }
-
 
 
   addMarker(mapClickInfo) {
@@ -162,6 +180,15 @@ export default class Atlas extends Component {
     }
   }
 
+  getPoint(){
+    const position = new Coordinates(this.state.point1);
+    this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
+  }
+
+  getDistance() {
+
+  }
+
   /* Taken from https://www.npmjs.com/package/coordinate-parser
    * Flexible algorithm to parse strings containing various latitude/longitude formats.
    */
@@ -183,7 +210,6 @@ export default class Atlas extends Component {
 
     if(this.isValidPosition(coordinates)) {
       validate.coordinatesState = 'success';
-      this.setState({latitudeLongitude: coordinates});
     } else {
       validate.coordinatesState = 'failure';
     }
