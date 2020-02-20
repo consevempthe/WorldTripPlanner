@@ -231,12 +231,12 @@ export default class Atlas extends Component {
     if(this.isValidPosition(coordinates)) {
       if(point === 1)
         validate.point1Valid = 'success';
-      else
+      if(point === 2)
         validate.point2Valid = 'success';
     } else {
       if(point === 1)
         validate.point1Valid = 'failure';
-      else
+      if(point === 2)
         validate.point2Valid = 'failure';
     }
     this.setState({ validate });
