@@ -3,7 +3,7 @@ import {Col, Container, Row} from 'reactstrap';
 import { Form, FormGroup, Input, FormFeedback, FormText, InputGroupAddon, InputGroup } from 'reactstrap';
 import {Button} from 'reactstrap';
 
-import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
+import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
@@ -38,7 +38,8 @@ export default class Atlas extends Component {
       validate: {
         coordinatesState: '',
       },
-      latitudeLongitude: '',
+      point1: '',
+      point2: '',
 
       // 1st marker
       markerPosition: null,
@@ -50,11 +51,10 @@ export default class Atlas extends Component {
 
   }
 
-  submitWhereIs(){
-    const position = new Coordinates(this.state.latitudeLongitude);
-    this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
-    this.clearOtherMarkers();
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
   }
+
 
   render() {
     return (
@@ -64,7 +64,8 @@ export default class Atlas extends Component {
               <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                 {this.renderLeafletMap()}
                 {this.renderWhereAmIButton()}
-                {this.renderWhereIs()}
+                {this.renderPointForm()}
+                {this.renderCalculateDistance()}
               </Col>
             </Row>
           </Container>
@@ -72,7 +73,7 @@ export default class Atlas extends Component {
     );
   }
 
-  renderWhereAmIButton(){
+  renderWhereAmIButton() {
     if(this.state.locationServiceOn){
       return (
           <Button onClick={() => this.markClientLocation()} size={"lg"} block>Where Am I?</Button>
@@ -81,26 +82,43 @@ export default class Atlas extends Component {
   }
 
 
-  renderWhereIs(){
+  renderPointForm() {
     return(
         <Form className={"mt-1"}>
           <FormGroup>
+            <FormText>Input latitude and longitude coordinates.</FormText>
             <InputGroup>
               <Input
+                  name={'point1'}
                   placeholder={"Example: '40.58 -105.09'"}
                   valid={ this.state.validate.coordinatesState === 'success'}
                   invalid={ this.state.validate.coordinatesState === 'failure'}
                   onChange={ (e) => {
                     this.validateCoordinates(e);
+                    this.handleChange(e);
                   }}
               />
-              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.submitWhereIs() } >Submit</Button></InputGroupAddon>
+              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.getPoint() } >Submit</Button></InputGroupAddon>
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
               <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
             </InputGroup>
-            <FormText>Input latitude and longitude coordinates.</FormText>
+            <InputGroup>
+              <Input
+                  name={'point2'}
+                  placeholder={"Enter 2nd coordinate to find distance"}
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+              />
+            </InputGroup>
           </FormGroup>
         </Form>
+    )
+  }
+
+  renderCalculateDistance() {
+    return (
+        <Button onClick={() => this.getDistance()} size={"lg"} block>Calculate Distance</Button>
     )
   }
       
@@ -116,27 +134,11 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
           {this.renderOtherMarkers(this.state.otherMarkerPositions)}
-          {this.renderLine()}
         </Map>
     )
   }
 
-  renderLine() {
-    if (this.state.otherMarkerPositions[0]) {
-      return (
-          <Polyline
-              positions={[this.state.markerPosition, this.state.otherMarkerPositions[0]]}
-          />
-      );
-    }
-  }
-
-  clearOtherMarkers() {
-    this.setState({otherMarkerPositions: []});
-  }
-
-  renderOtherMarkers(otherMarkers)
-  {
+  renderOtherMarkers(otherMarkers) {
     if(otherMarkers.length !== 0)
     {
       let markers = [];
@@ -148,15 +150,13 @@ export default class Atlas extends Component {
     }
   }
 
-  addMarker(mapClickInfo)
-  {
-    this.clearOtherMarkers();
+  addMarker(mapClickInfo) {
+    this.setState({otherMarkerPositions: []});
     this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
   }
 
 
   markClientLocation() {
-    this.clearOtherMarkers();
     this.setState({markerPosition: this.getClientLocation()});
   }
 
@@ -170,7 +170,7 @@ export default class Atlas extends Component {
   getMarker(bodyJSX, position) {
     if (position) {
         return (
-            <Marker position={position} icon={MARKER_ICON}>
+            <Marker autoPan={false} position={position} icon={MARKER_ICON}>
               <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
             </Marker>
         );
@@ -187,6 +187,15 @@ export default class Atlas extends Component {
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.processGeolocation);
     }
+  }
+
+  getPoint(){
+    const position = new Coordinates(this.state.point1);
+    this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
+  }
+
+  getDistance() {
+
   }
 
   /* Taken from https://www.npmjs.com/package/coordinate-parser
@@ -210,7 +219,6 @@ export default class Atlas extends Component {
 
     if(this.isValidPosition(coordinates)) {
       validate.coordinatesState = 'success';
-      this.setState({latitudeLongitude: coordinates});
     } else {
       validate.coordinatesState = 'failure';
     }
