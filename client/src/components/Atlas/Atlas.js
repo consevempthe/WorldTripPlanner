@@ -150,6 +150,11 @@ export default class Atlas extends Component {
         }
     }
 
+    clearOtherMarkers() {
+        this.setState({otherMarkerPositions: []});
+    }
+
+
   renderOtherMarkers(otherMarkers) {
     if(otherMarkers.length !== 0)
     {
@@ -170,6 +175,7 @@ export default class Atlas extends Component {
 
   markClientLocation() {
     this.setState({markerPosition: this.getClientLocation()});
+    this.clearOtherMarkers();
   }
 
   getMarkerPosition(position) {
@@ -203,6 +209,7 @@ export default class Atlas extends Component {
     setPoint(point){
       const position = new Coordinates(point);
       this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
+      this.clearOtherMarkers();
     }
 
     getDistance() {
