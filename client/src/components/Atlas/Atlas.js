@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Col, Container, Row} from 'reactstrap';
 import {Form, FormGroup, Input, FormFeedback, FormText, InputGroupAddon, InputGroup} from 'reactstrap';
 import {Button} from 'reactstrap';
@@ -34,6 +35,8 @@ export default class Atlas extends Component {
     this.processGeolocation = this.processGeolocation.bind(this);
 
     this.state = {
+        isOpen: false,
+        toggleOpen: false,
       LocationServiceOn: false,
       validate: {
         point1Valid: '',
@@ -118,9 +121,17 @@ export default class Atlas extends Component {
   }
 
   renderCalculateDistance() {
-    return (
-        <Button onClick={() => this.getDistance()} size={"lg"} block>Calculate Distance</Button>
-    )
+      return(
+          <ButtonDropdown isOpen={this.state.isOpen} toggle={() => this.state.toggleOpen} className="float-right" size={"lg"}>
+              <Button id="caret" class="float-right">Calculate Distance</Button>
+              <DropdownToggle onClick={() => this.toggleDropdown()} caret/>
+              <DropdownMenu>
+                  <DropdownItem value="3456">Miles</DropdownItem>
+                  <DropdownItem>Another Action</DropdownItem>
+                  <DropdownItem>Another Action</DropdownItem>
+              </DropdownMenu>
+          </ButtonDropdown>
+      )
   }
       
   renderLeafletMap() {
@@ -238,6 +249,17 @@ export default class Atlas extends Component {
       validate[point] = 'failure';
     }
     this.setState({ validate });
+  }
+
+  toggleDropdown()
+  {
+      if(this.state.isOpen)
+      {
+          this.setState({isOpen: false, toggleOpen: false});
+      }
+      else{
+          this.setState({isOpen: true, toggleOpen: true});
+      }
   }
 
 }
