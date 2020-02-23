@@ -3,6 +3,7 @@ package com.tco.server;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,12 @@ public class TestRequestDistance {
         city.put("longitude", longitude);
         city.put("latitude", latitude);
         return city;
+    }
+
+    private Double formatDistance(Double oldDistance)
+    {
+        Double newDistance = Double.parseDouble(new DecimalFormat("##.####").format(oldDistance));
+        return newDistance;
     }
 
     @Before
@@ -64,7 +71,8 @@ public class TestRequestDistance {
     {
         //Testing in miles
         Double calculatedDistance = this.fortCollins2Chicago.getDistance();
-        assertEquals(908.8310418497002, calculatedDistance,0);
+        Double distance = this.formatDistance(this.fortCollins2Chicago.getDistance());
+        assertEquals(908.831, distance,0);
     }
 
     @Test
@@ -72,29 +80,30 @@ public class TestRequestDistance {
     {
         //Testing in nautical miles
         Double calculatedDistance = this.fortCollins2Cheyenne.getDistance();
-        assertEquals(35.54955355600168, calculatedDistance, 0);
+        Double distance = this.formatDistance(this.fortCollins2Cheyenne.getDistance());
+        assertEquals(35.5496, distance, 0);
     }
 
     @Test
     public void testDistanceAustralia2Singapore()
     {
         //Testing in kilometers
-        Double calculatedDistance = this.australia2Singapore.getDistance();
-        assertEquals(4376.559559126458, calculatedDistance, 0);
+        Double distance = this.formatDistance(this.australia2Singapore.getDistance());
+        assertEquals(4376.5596, distance, 0);
     }
 
     @Test
     public void testDistancelosAngeles2DaytonaBeach()
     {
         //Testing in kilometers
-        Double calculatedDistance = this.losAngeles2DaytonaBeach.getDistance();
-        assertEquals(3545.1994529863227, calculatedDistance, 0);
+        Double distance = this.formatDistance(this.losAngeles2DaytonaBeach.getDistance());
+        assertEquals(3545.1995, distance, 0);
     }
 
     @Test
     public void testDistanceFortCollins2FortCollins()
     {
-        Double result = this.fortCollins2FortCollins.getDistance();
-        assertEquals(0,result,0);
+        Double distance = this.formatDistance(this.fortCollins2FortCollins.getDistance());
+        assertEquals(0.0000 , distance,0);
     }
 }
