@@ -35,6 +35,7 @@ export default class Atlas extends Component {
     this.processGeolocation = this.processGeolocation.bind(this);
 
     this.state = {
+        earthRadius: 0.0,
         isOpen: false,
         toggleOpen: false,
       LocationServiceOn: false,
@@ -123,12 +124,12 @@ export default class Atlas extends Component {
   renderCalculateDistance() {
       return(
           <ButtonDropdown isOpen={this.state.isOpen} toggle={() => this.state.toggleOpen} className="float-right" size={"lg"}>
-              <Button id="caret" class="float-right">Calculate Distance</Button>
+              <Button id="caret" class="float-right" onClick={() => this.getDistance()}>Calculate Distance</Button>
               <DropdownToggle onClick={() => this.toggleDropdown()} caret/>
               <DropdownMenu>
-                  <DropdownItem value="3456">Miles</DropdownItem>
-                  <DropdownItem>Another Action</DropdownItem>
-                  <DropdownItem>Another Action</DropdownItem>
+                  <DropdownItem onClick={() => this.setState({earthRadius: 3959.0, isOpen: false, toggleOpen: false})} value="3959">Miles</DropdownItem>
+                  <DropdownItem onClick={() => this.setState({earthRadius: 6371.0, isOpen: false, toggleOpen: false})} value="">Kilometers</DropdownItem>
+                  <DropdownItem onClick={() => this.setState({earthRadius: 3440.0, isOpen: false, toggleOpen: false})} value="3440">Nautical Miles</DropdownItem>
               </DropdownMenu>
           </ButtonDropdown>
       )
