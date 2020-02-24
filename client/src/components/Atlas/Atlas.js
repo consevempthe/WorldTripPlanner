@@ -165,32 +165,29 @@ export default class Atlas extends Component {
         }
     }
 
+    renderAlertBox(unit)
+    {
+        return(
+            <div className="alert alert-success col-md-5 form-inline">
+                <i>Earth radius: {this.state.earthRadius} {unit}</i>
+            </div>
+        );
+    }
+
     renderSelectedEarthRadius(){
       if(this.state.earthRadius > 0)
       {
           if(this.state.earthRadius == 3959.0)
           {
-              return(
-                  <div class="alert alert-success col-md-5 form-inline">
-                      <i>Earth radius: {this.state.earthRadius}mi.</i>
-                  </div>
-              )
+              this.renderAlertBox("mi.");
           }
           else if(this.state.earthRadius == 6371.0)
           {
-              return(
-                  <div class="alert alert-success col-md-5 form-inline">
-                      <i>Earth radius: {this.state.earthRadius}km.</i>
-                  </div>
-              )
+              this.renderAlertBox("km.");
           }
           else if(this.state.earthRadius == 3440.0)
           {
-              return(
-                  <div class="alert alert-success col-md-5 form-inline">
-                      <i>Earth radius: {this.state.earthRadius}nm.</i>
-                  </div>
-              )
+              this.renderAlertBox("nm.");
           }
       }
     }
@@ -300,5 +297,4 @@ export default class Atlas extends Component {
   {
       this.setState({earthRadius: earthRadius, isOpen: isOpen, toggleOpen: toggleOpen});
   }
-
 }
