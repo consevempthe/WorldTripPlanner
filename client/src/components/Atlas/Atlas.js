@@ -123,15 +123,18 @@ export default class Atlas extends Component {
 
   renderCalculateDistance() {
       return(
-          <ButtonDropdown isOpen={this.state.isOpen} toggle={() => this.state.toggleOpen} className="float-right" size={"lg"}>
-              <Button id="caret" class="float-right" onClick={() => this.getDistance()}>Calculate Distance</Button>
-              <DropdownToggle onClick={() => this.toggleDropdown()} caret/>
-              <DropdownMenu>
-                  <DropdownItem onClick={() => this.setState({earthRadius: 3959.0, isOpen: false, toggleOpen: false})} value="3959">Miles</DropdownItem>
-                  <DropdownItem onClick={() => this.setState({earthRadius: 6371.0, isOpen: false, toggleOpen: false})} value="">Kilometers</DropdownItem>
-                  <DropdownItem onClick={() => this.setState({earthRadius: 3440.0, isOpen: false, toggleOpen: false})} value="3440">Nautical Miles</DropdownItem>
-              </DropdownMenu>
-          </ButtonDropdown>
+          <div>
+              <ButtonDropdown isOpen={this.state.isOpen} toggle={() => this.state.toggleOpen} className="float-right" size={"lg"}>
+                  <Button id="caret" onClick={() => this.getDistance()}>Calculate Distance</Button>
+                  <DropdownToggle onClick={() => this.toggleDropdown()} caret/>
+                  <DropdownMenu>
+                      <DropdownItem onClick={() => this.setEarthRadius(3959.0, false, false)} >Miles</DropdownItem>
+                      <DropdownItem onClick={() => this.setEarthRadius(6371.0, false, false)} >Kilometers</DropdownItem>
+                      <DropdownItem onClick={() => this.setEarthRadius(3440.0, false, false)} >Nautical Miles</DropdownItem>
+                  </DropdownMenu>
+              </ButtonDropdown>
+              {this.renderSelectedEarthRadius()}
+          </div>
       )
   }
       
@@ -160,6 +163,36 @@ export default class Atlas extends Component {
                 />
             );
         }
+    }
+
+    renderSelectedEarthRadius(){
+      if(this.state.earthRadius > 0)
+      {
+          if(this.state.earthRadius == 3959.0)
+          {
+              return(
+                  <div class="alert alert-success col-md-5 form-inline">
+                      <i>Earth radius: {this.state.earthRadius}mi.</i>
+                  </div>
+              )
+          }
+          else if(this.state.earthRadius == 6371.0)
+          {
+              return(
+                  <div class="alert alert-success col-md-5 form-inline">
+                      <i>Earth radius: {this.state.earthRadius}km.</i>
+                  </div>
+              )
+          }
+          else if(this.state.earthRadius == 3440.0)
+          {
+              return(
+                  <div class="alert alert-success col-md-5 form-inline">
+                      <i>Earth radius: {this.state.earthRadius}nm.</i>
+                  </div>
+              )
+          }
+      }
     }
 
     clearOtherMarkers() {
@@ -261,6 +294,11 @@ export default class Atlas extends Component {
       else{
           this.setState({isOpen: true, toggleOpen: true});
       }
+  }
+
+  setEarthRadius(earthRadius, isOpen, toggleOpen)
+  {
+      this.setState({earthRadius: earthRadius, isOpen: isOpen, toggleOpen: toggleOpen});
   }
 
 }
