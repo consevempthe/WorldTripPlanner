@@ -169,7 +169,7 @@ export default class Atlas extends Component {
     {
         return(
             <div className="alert alert-success col-md-5 form-inline">
-                <i>Earth radius: {this.state.earthRadius} {unit}</i>
+                <i>Earth radius: {this.state.earthRadius}{unit}</i>
             </div>
         );
     }
@@ -179,15 +179,21 @@ export default class Atlas extends Component {
       {
           if(this.state.earthRadius == 3959.0)
           {
-              this.renderAlertBox("mi.");
+              return(
+                  this.renderAlertBox("mi.")
+              );
           }
           else if(this.state.earthRadius == 6371.0)
           {
-              this.renderAlertBox("km.");
+              return(
+                  this.renderAlertBox("km.")
+              );
           }
           else if(this.state.earthRadius == 3440.0)
           {
-              this.renderAlertBox("nm.");
+              return(
+                 this.renderAlertBox("nm.")
+              );
           }
       }
     }
