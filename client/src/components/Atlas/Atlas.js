@@ -39,7 +39,6 @@ export default class Atlas extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-        earthRadius: 0.0,
         isOpen: false,
         toggleOpen: false,
       LocationServiceOn: false,
@@ -189,33 +188,37 @@ export default class Atlas extends Component {
     {
         return(
             <div className="alert alert-success col-md-5 form-inline">
-                <i>Earth radius: {this.state.earthRadius}{unit}</i>
+                <i>Distance: {this.state.distance.distance}{unit}</i>
             </div>
         );
     }
 
+    setEarthRadius(earthRadius, isOpen, toggleOpen)
+    {
+        const { distance } = this.state;
+        distance["earthRadius"] = earthRadius;
+        this.setState({ distance, isOpen: isOpen, toggleOpen: toggleOpen});
+
+    }
+
     renderSelectedEarthRadius(){
-      if(this.state.earthRadius > 0)
-      {
-          if(this.state.earthRadius == 3959.0)
-          {
-              return(
-                  this.renderAlertBox("mi.")
-              );
-          }
-          else if(this.state.earthRadius == 6371.0)
-          {
-              return(
-                  this.renderAlertBox("km.")
-              );
-          }
-          else if(this.state.earthRadius == 3440.0)
-          {
-              return(
-                 this.renderAlertBox("nm.")
-              );
-          }
-      }
+        if(this.state.distance.distance !== 1) {
+
+            if (this.state.distance.earthRadius === 3959.0) {
+                return (
+                    this.renderAlertBox("mi.")
+                );
+            } else if (this.state.distance.earthRadius === 6371.0) {
+                return (
+                    this.renderAlertBox("km.")
+                );
+            } else if (this.state.distance.earthRadius === 3440.0) {
+                return (
+                    this.renderAlertBox("nm.")
+                );
+            }
+        }
+
     }
 
     clearOtherMarkers() {
@@ -339,8 +342,4 @@ export default class Atlas extends Component {
       }
   }
 
-  setEarthRadius(earthRadius, isOpen, toggleOpen)
-  {
-      this.setState({earthRadius: earthRadius, isOpen: isOpen, toggleOpen: toggleOpen});
-  }
 }
