@@ -32,28 +32,28 @@ public class GreatCircleDistance {
 
     public Double vincentyFormula()
     {
-        double place1LongitudeRadians = Math.toRadians(this.place1Longitude);
+        Double place1LongitudeRadians = Math.toRadians(this.place1Longitude);
         double place1LatitudeRadians = Math.toRadians(this.place1Latitude);
-        double place2LongitudeRadians = Math.toRadians(this.place2Longitude);
+        Double place2LongitudeRadians = Math.toRadians(this.place2Longitude);
         double place2LatitudeRadians = Math.toRadians(this.place2Latitude);
 
         double lambda = Math.abs(place1LongitudeRadians - place2LongitudeRadians);
-        double sinLambda = Math.sin(lambda);
-        double costheta2 = Math.cos(place2LatitudeRadians);
+        Double sinLambda = Math.sin(lambda);
+        Double costheta2 = Math.cos(place2LatitudeRadians);
 
-        double costheta1 = Math.cos(place1LatitudeRadians);
-        double sintheta2 = Math.sin(place2LatitudeRadians);
-        double sintheta1 = Math.sin(place1LatitudeRadians);
-        double coslamda = Math.cos(lambda);
+        Double costheta1 = Math.cos(place1LatitudeRadians);
+        Double sintheta2 = Math.sin(place2LatitudeRadians);
+        Double sintheta1 = Math.sin(place1LatitudeRadians);
+        Double coslamda = Math.cos(lambda);
 
-        double leftNumerator = Math.pow((costheta2 * sinLambda), 2);
-        double rightNumerator = Math.pow(((costheta1 * sintheta2) - (sintheta1 * costheta2 * coslamda)), 2);
-        double numerator = Math.sqrt(leftNumerator + rightNumerator);
+        Double leftNumerator = Math.pow((costheta2 * sinLambda), 2);
+        Double rightNumerator = Math.pow(((costheta1 * sintheta2) - (sintheta1 * costheta2 * coslamda)), 2);
+        Double numerator = Math.sqrt(leftNumerator + rightNumerator);
 
 
-        double leftDenominator = (sintheta1 * sintheta2);
-        double rightDenominator = (costheta1 * costheta2 * coslamda);
-        double denominator = leftDenominator + rightDenominator;
+        Double leftDenominator = (sintheta1 * sintheta2);
+        Double rightDenominator = (costheta1 * costheta2 * coslamda);
+        Double denominator = leftDenominator + rightDenominator;
 
         return Math.atan((numerator / denominator));
     }
