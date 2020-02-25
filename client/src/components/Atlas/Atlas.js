@@ -9,6 +9,9 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 // import {marker} from "leaflet/dist/leaflet-src.esm";
+import { getOriginalServerPort, sendServerRequestWithBody, isJsonResponseValid } from "../../utils/restfulAPI";
+import * as distanceSchema from "../../../schemas/TIPDistanceResponseSchema"
+import {HTTP_OK} from "../Constants";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
@@ -33,6 +36,7 @@ export default class Atlas extends Component {
     this.addMarker = this.addMarker.bind(this);
     this.markClientLocation = this.markClientLocation.bind(this);
     this.processGeolocation = this.processGeolocation.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
         earthRadius: 0.0,
@@ -43,8 +47,22 @@ export default class Atlas extends Component {
         point1Valid: '',
         point2Valid: '',
       },
-      point1: '',
-      point2: '',
+        point1: '',
+        point2: '',
+        distance: {
+            requestType: "distance",
+            requestVersion: 2,
+            place1: {
+                    latitude: '',
+                    longitude: ''
+            },
+            place2: {
+                    latitude: '',
+                    longitude: ''
+            },
+            earthRadius: 3959.0,
+            distance: 1
+        },
 
       // 1st marker
       markerPosition: null,
@@ -90,8 +108,8 @@ export default class Atlas extends Component {
         <Input
             name={name}
             placeholder={placeholder}
-            valid={validator === 'success'}
-            invalid={validator === 'failure'}
+            valid={validator === "success"}
+            invalid={validator === "failure"}
             onChange={ (e) => {
               this.validateCoordinates(e, pointValid);
               this.handleChange(e);
@@ -107,7 +125,9 @@ export default class Atlas extends Component {
             <FormText>Input latitude and longitude coordinates.</FormText>
             <InputGroup>
               {this.renderInput("point1", "Example: '40.58, -105.09'", this.state.validate.point1Valid, "point1Valid")}
-              <InputGroupAddon addonType={"append"}><Button onClick={ () => this.setPoint(this.state.point1) } >Submit</Button></InputGroupAddon>
+              <InputGroupAddon addonType={"append"}>
+                  <Button onClick={ () => this.setPoint(this.state.point1) } >Submit</Button>
+              </InputGroupAddon>
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
               <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
             </InputGroup>
@@ -150,7 +170,7 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
           {this.renderOtherMarkers(this.state.otherMarkerPositions)}
-            {this.renderLine()}
+          {this.renderLine()}
         </Map>
     )
   }
@@ -254,14 +274,34 @@ export default class Atlas extends Component {
         }
     }
 
-    setPoint(point){
+    setPoint(point) {
       const position = new Coordinates(point);
       this.setState({markerPosition:{lat: position.getLatitude(), lng: position.getLongitude()}});
       this.clearOtherMarkers();
     }
 
-    getDistance() {
+    getDistance() { //on success renders the distance
+        const { distance } = this.state;
+        const position1 = new Coordinates(this.state.point1);
+        const position2 = new Coordinates(this.state.point2);
 
+        distance.place1.latitude = position1.getLatitude().toString();
+        distance.place1.longitude = position1.getLongitude().toString();
+        distance.place2.latitude = position2.getLatitude().toString();
+        distance.place2.longitude = position2.getLongitude().toString();
+
+        sendServerRequestWithBody('distance', this.state.distance, getOriginalServerPort()).then(distance => {
+           this.processDistanceResponse(distance);
+        });
+
+    }
+
+    processDistanceResponse(distanceResponse) {
+        if(!isJsonResponseValid(distanceResponse.body, distanceSchema)) {
+            this.setState({distance: false})
+        } else if(distanceResponse.statusCode === HTTP_OK) {
+            this.setState({distance: JSON.parse(JSON.stringify(distanceResponse.body))});
+        }
     }
 
     /* Taken from https://www.npmjs.com/package/coordinate-parser
