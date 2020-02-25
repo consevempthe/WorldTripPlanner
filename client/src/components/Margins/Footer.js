@@ -37,7 +37,7 @@ export default class Footer extends Component {
                             ({this.props.serverSettings.serverPort}).
                         </a>
                     {this.renderServerSettings()}
-                    {this.renderServerConfig(this.props.serverSettings.serverConfig)}
+                    {this.renderServerConfig()}
                     </div>
                 </Container>
             </div>
