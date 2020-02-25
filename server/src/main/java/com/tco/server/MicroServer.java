@@ -3,6 +3,7 @@ package com.tco.server;
 import static spark.Spark.secure;
 
 import com.google.gson.Gson;
+import com.tco.misc.GreatCircleDistance;
 import com.tco.misc.JSONValidator;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -88,7 +89,7 @@ class  MicroServer {
       response.status(400);
       return requestBody;
     } catch (Exception e) {
-      log.error("Exception: {}", e);
+      log.error("Exception: {}", e.getMessage());
       response.status(500);
       return requestBody;
     }

@@ -32,36 +32,34 @@ public class GreatCircleDistance {
 
     public Double vincentyFormula()
     {
-        Double place1LongitudeRadians = Math.toRadians(this.place1Longitude);
-        Double place1LatitudeRadians = Math.toRadians(this.place1Latitude);
-        Double place2LongitudeRadians = Math.toRadians(this.place2Longitude);
-        Double place2LatitudeRadians = Math.toRadians(this.place2Latitude);
+        double place1LongitudeRadians = Math.toRadians(this.place1Longitude);
+        double place1LatitudeRadians = Math.toRadians(this.place1Latitude);
+        double place2LongitudeRadians = Math.toRadians(this.place2Longitude);
+        double place2LatitudeRadians = Math.toRadians(this.place2Latitude);
 
-        Double lambda = Math.abs(place1LongitudeRadians - place2LongitudeRadians);
-        Double sinLambda = Math.sin(lambda);
-        Double costheta2 = Math.cos(place2LatitudeRadians);
+        double lambda = Math.abs(place1LongitudeRadians - place2LongitudeRadians);
+        double sinLambda = Math.sin(lambda);
+        double costheta2 = Math.cos(place2LatitudeRadians);
 
-        Double costheta1 = Math.cos(place1LatitudeRadians);
-        Double sintheta2 = Math.sin(place2LatitudeRadians);
-        Double sintheta1 = Math.sin(place1LatitudeRadians);
-        Double coslamda = Math.cos(lambda);
+        double costheta1 = Math.cos(place1LatitudeRadians);
+        double sintheta2 = Math.sin(place2LatitudeRadians);
+        double sintheta1 = Math.sin(place1LatitudeRadians);
+        double coslamda = Math.cos(lambda);
 
-        Double leftNumerator = Math.pow((costheta2 * sinLambda), 2);
-        Double rightNumerator = Math.pow(((costheta1 * sintheta2) - (sintheta1 * costheta2 * coslamda)), 2);
-        Double numerator = Math.sqrt(leftNumerator + rightNumerator);
+        double leftNumerator = Math.pow((costheta2 * sinLambda), 2);
+        double rightNumerator = Math.pow(((costheta1 * sintheta2) - (sintheta1 * costheta2 * coslamda)), 2);
+        double numerator = Math.sqrt(leftNumerator + rightNumerator);
 
 
-        Double leftDenominator = (sintheta1 * sintheta2);
-        Double rightDenominator = (costheta1 * costheta2 * coslamda);
-        Double denominator = leftDenominator + rightDenominator;
+        double leftDenominator = (sintheta1 * sintheta2);
+        double rightDenominator = (costheta1 * costheta2 * coslamda);
+        double denominator = leftDenominator + rightDenominator;
 
-        Double vincentyFormula = Math.atan((numerator / denominator));
-
-        return vincentyFormula;
+        return Math.atan((numerator / denominator));
     }
 
     public Double calculateDistance()
     {
-        return this.vincentyFormula() * this.earthRadius;
+        return (this.vincentyFormula() * this.earthRadius);
     }
 }
