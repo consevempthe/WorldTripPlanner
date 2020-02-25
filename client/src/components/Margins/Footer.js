@@ -37,7 +37,7 @@ export default class Footer extends Component {
                             ({this.props.serverSettings.serverPort}).
                         </a>
                     {this.renderServerSettings()}
-                    {this.renderServerConfig(this.getServerNameFromConnectionStatus(), this.getRequestVersionFromConnectionStatus(), this.getRequestTypeFromConnectionStatus())}
+                    {this.renderServerConfig()}
                     </div>
                 </Container>
             </div>
@@ -60,7 +60,10 @@ export default class Footer extends Component {
 
     getServerNameFromConnectionStatus() {
         return this.connectedToValidServer() ? this.props.serverSettings.serverConfig.serverName : UNKNOWN_SERVER_NAME;
+    }
 
+    getSupportedRequestsFromConnectionStatus() {
+        return this.connectedToValidServer() ? this.props.serverSettings.serverConfig.supportedRequests : [UNKNOWN_SERVER_NAME];
     }
 
     connectedToValidServer() {
@@ -78,15 +81,16 @@ export default class Footer extends Component {
         );
     }
 
-    renderServerConfig(server_name, request_version, request_type)
+    renderServerConfig()
     {
         return(
             <ServerConfig
                 isOpen={this.state.serverConfigOpen}
                 toggleOpen={(isOpen = !this.state.serverConfigOpen) => this.setState({serverConfigOpen: isOpen})}
-                serverName={server_name}
-                requestVersion={request_version}
-                requestType={request_type}
+                serverName={this.getServerNameFromConnectionStatus()}
+                requestType={this.getRequestTypeFromConnectionStatus()}
+                requestVersion={this.getRequestVersionFromConnectionStatus()}
+                supportedRequests={this.getSupportedRequestsFromConnectionStatus()}
             />
         );
     }

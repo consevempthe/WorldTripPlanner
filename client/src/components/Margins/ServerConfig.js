@@ -30,9 +30,11 @@ export default class ServerConfig extends Component
 
     renderBody ()
     {
+
         const server_name = this.props.serverName;
         const request_version = this.props.requestVersion;
         const request_type = this.props.requestType;
+
         return(
             <ModalBody>
                 <table>
@@ -49,9 +51,34 @@ export default class ServerConfig extends Component
                             <td>requestType</td>
                             <td>{request_type}</td>
                         </tr>
+                        {this.renderSupportedRequests()}
                     </tbody>
                 </table>
             </ModalBody>
+        );
+    }
+
+    renderSupportedRequests() {
+        const supported_requests = this.props.supportedRequests;
+        let table = [];
+        for(let i = 0; i < supported_requests.length; i++) {
+            table.push(
+                <li>
+                    {supported_requests[i]}
+                </li>
+            );
+        }
+        return (
+            <tr>
+                <td>
+                    supportedRequests
+                </td>
+                <td>
+                    <ul>
+                        {table}
+                    </ul>
+                </td>
+            </tr>
         );
     }
 
