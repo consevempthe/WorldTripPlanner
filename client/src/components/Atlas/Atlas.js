@@ -60,7 +60,7 @@ export default class Atlas extends Component {
                     longitude: ''
             },
             earthRadius: 3959.0,
-            distance: 1
+            distance: 0
         },
 
       // 1st marker
@@ -202,7 +202,7 @@ export default class Atlas extends Component {
     }
 
     renderSelectedEarthRadius(){
-        if(this.state.distance.distance !== 1) {
+        if(this.state.distance.distance !== 0) {
 
             if (this.state.distance.earthRadius === 3959.0) {
                 return (
