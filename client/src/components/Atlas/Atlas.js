@@ -248,9 +248,14 @@ export default class Atlas extends Component {
         this.setState({markerPosition: position, locationServiceOn: true});
     }
 
+    processGeolocationError(err)
+    {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
     getClientLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(this.processGeolocation);
+            navigator.geolocation.getCurrentPosition(this.processGeolocation, this.processGeolocationError);
         }
     }
 
