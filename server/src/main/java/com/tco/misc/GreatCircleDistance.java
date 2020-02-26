@@ -55,7 +55,7 @@ public class GreatCircleDistance {
         Double rightDenominator = (costheta1 * costheta2 * coslamda);
         Double denominator = leftDenominator + rightDenominator;
 
-        return Math.atan((numerator / denominator));
+        return Math.atan2(numerator,denominator);
     }
 
     public Double calculateDistance()
