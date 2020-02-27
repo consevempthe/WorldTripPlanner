@@ -178,10 +178,10 @@ export default class Atlas extends Component {
     }
 
     renderLine() {
-        if (this.state.otherMarkerPositions[0]) {
+        if (this.state.otherMarkerPositions[this.state.otherMarkerPositions.length-1]) {
             return (
                 <Polyline
-                    positions={[this.state.markerPosition, this.state.otherMarkerPositions[0]]}
+                    positions={[this.state.markerPosition, this.state.otherMarkerPositions[this.state.otherMarkerPositions.length-1]]}
                 />
             );
         }
@@ -230,15 +230,17 @@ export default class Atlas extends Component {
     renderOtherMarkers(otherMarkers) {
         if (otherMarkers.length !== 0) {
             let markers = [];
-            for (let i = 0; i < otherMarkers.length; i++) {
+            //This will be use full for displaying more than two markers.
+            /*for (let i = 0; i < otherMarkers.length; i++) {
                 markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]))
-            }
+            }*/
+            markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[otherMarkers.length - 1]), otherMarkers[otherMarkers.length - 1]))
             return markers;
         }
     }
 
     addMarker(mapClickInfo) {
-        this.setState({otherMarkerPositions: []});
+        this.clearOtherMarkers();
         this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
         this.calculateDistance();
     }
@@ -320,7 +322,9 @@ export default class Atlas extends Component {
         sendServerRequestWithBody('distance', this.state.distance, getOriginalServerPort()).then(distance => {
             this.processDistanceResponse(distance);
         });
-
+        const point1 = {lat: position1.getLatitude(), lng: position1.getLongitude()}
+        const point2 = {lat: position2.getLatitude(), lng: position2.getLongitude()}
+        this.setState({markerPosition: point1, otherMarkerPositions: this.state.otherMarkerPositions.concat(point2)});
     }
 
     processDistanceResponse(distanceResponse) {
