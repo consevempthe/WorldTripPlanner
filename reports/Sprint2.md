@@ -84,9 +84,9 @@ Epics planned for this release.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *7* | *count* |
-| Tasks |  *29*   | *count* | 
-| Story Points |  *29*  | *sum* | 
+| Epics | *7* | *5* |
+| Tasks |  *29*   | *40* | 
+| Story Points |  *29*  | *40* | 
 
 ### Planned Metrics Summary
     Based off of our previous sprint we plan on utitilizing our resources more
