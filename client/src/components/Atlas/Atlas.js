@@ -296,16 +296,20 @@ export default class Atlas extends Component {
       this.clearOtherMarkers();
     }
 
-    getDistanceOnMapClick(point1, point2) { //on success renders the distance
-        const { distance } = this.state;
-        const position1 = new Coordinates(point1);
-        const position2 = new Coordinates(point2);
-
+    buildDistance(distance, position1, position2)
+    {
         distance.place1.latitude = position1.getLatitude().toString();
         distance.place1.longitude = position1.getLongitude().toString();
         distance.place2.latitude = position2.getLatitude().toString();
         distance.place2.longitude = position2.getLongitude().toString();
+        return distance;
+    }
 
+    getDistanceOnMapClick(point1, point2) { //on success renders the distance
+        const { distance } = this.state;
+        const position1 = new Coordinates(point1);
+        const position2 = new Coordinates(point2);
+        this.buildDistance(distance,position1,position2);
         sendServerRequestWithBody('distance', this.state.distance, getOriginalServerPort()).then(distance => {
             this.processDistanceResponse(distance);
         });
@@ -316,12 +320,7 @@ export default class Atlas extends Component {
         const { distance } = this.state;
         const position1 = new Coordinates(this.state.point1);
         const position2 = new Coordinates(this.state.point2);
-
-        distance.place1.latitude = position1.getLatitude().toString();
-        distance.place1.longitude = position1.getLongitude().toString();
-        distance.place2.latitude = position2.getLatitude().toString();
-        distance.place2.longitude = position2.getLongitude().toString();
-
+        this.buildDistance(distance, position1, position2);
         sendServerRequestWithBody('distance', this.state.distance, getOriginalServerPort()).then(distance => {
            this.processDistanceResponse(distance);
         });
