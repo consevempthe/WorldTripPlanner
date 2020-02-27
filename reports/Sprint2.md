@@ -1,4 +1,4 @@
-# Sprint # - *T03* - *Hugh-Lit Pack-Herd*
+# Sprint 2 - *T03* - *Hugh-Lit Pack-Herd*
 
 ## Goal
 
