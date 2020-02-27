@@ -241,6 +241,14 @@ export default class Atlas extends Component {
   addMarker(mapClickInfo) {
     this.setState({otherMarkerPositions: []});
     this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
+    this.calculateDistance();
+  }
+
+  calculateDistance()
+  {
+      const point1 = `${this.state.markerPosition.lat} , ${this.state.markerPosition.lng}`;
+      const point2 = `${this.state.otherMarkerPositions[0].lat} , ${this.state.otherMarkerPositions[0].lng}`;
+      this.getDistanceOnMapClick(point1, point2);
   }
 
 
