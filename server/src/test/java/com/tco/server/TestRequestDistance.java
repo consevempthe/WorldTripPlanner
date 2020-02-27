@@ -15,6 +15,7 @@ public class TestRequestDistance {
     private RequestDistance australia2Singapore;
     private RequestDistance losAngeles2DaytonaBeach;
     private RequestDistance fortCollins2FortCollins;
+    private RequestDistance fortCollins2ZeroZero;
 
     private Map<String,String> buildCity(Map<String,String> city, String longitude, String latitude)
     {
@@ -43,6 +44,7 @@ public class TestRequestDistance {
         Map<String,String> singapore = new HashMap<String,String>();
         Map<String,String> losAngeles = new HashMap<String,String>();
         Map<String,String> daytonaBeach = new HashMap<String,String>();
+        Map<String,String> zeroZero = new HashMap<String,String>();
 
         this.buildCity(fortCollins, "-105.08442", "40.5826");
         this.buildCity(chicago, "-87.65005", "41.85003");
@@ -51,12 +53,14 @@ public class TestRequestDistance {
         this.buildCity(singapore, "103.81984", "1.35208");
         this.buildCity(losAngeles, "-118.24368", "34.05223");
         this.buildCity(daytonaBeach, "-81.02283", "29.21081");
+        this.buildCity(zeroZero, "0", "0");
 
         fortCollins2Chicago = new RequestDistance(fortCollins, chicago, earthRadiusMiles);
         fortCollins2Cheyenne = new RequestDistance(fortCollins, cheyenne, earthRadiusNM);
         australia2Singapore = new RequestDistance(australia, singapore, earthRadiusKM);
         losAngeles2DaytonaBeach = new RequestDistance(losAngeles,daytonaBeach,earthRadiusKM);
         fortCollins2FortCollins = new RequestDistance(fortCollins,fortCollins,earthRadiusMiles);
+        fortCollins2ZeroZero = new RequestDistance(fortCollins, zeroZero, earthRadiusMiles);
     }
 
     @Test
@@ -105,5 +109,11 @@ public class TestRequestDistance {
     {
         Double distance = this.formatDistance(this.fortCollins2FortCollins.getDistance());
         assertEquals(0.0000 , distance,0);
+    }
+    @Test
+    public void testDistanceFortCollins2ZeroZero()
+    {
+        Double distance = this.formatDistance(this.fortCollins2ZeroZero.getDistance());
+        assertEquals(7006.448, distance, 0);
     }
 }
