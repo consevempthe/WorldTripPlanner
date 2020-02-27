@@ -128,12 +128,12 @@ export default class Atlas extends Component {
                   <Button onClick={ () => this.setPoint(this.state.point1) } >Submit</Button>
               </InputGroupAddon>
               <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
-              <FormFeedback invalid>Those aren't valid coordinates :(</FormFeedback>
+              <FormFeedback>Those aren't valid coordinates :(</FormFeedback>
             </InputGroup>
             <InputGroup>
               {this.renderInput("point2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, "point2Valid")}
               <FormFeedback valid>Nice. Go find that distance!!</FormFeedback>
-              <FormFeedback invalid>Nope this one isn't valid.</FormFeedback>
+              <FormFeedback>Nope this one isn't valid.</FormFeedback>
             </InputGroup>
           </FormGroup>
         </Form>
@@ -267,7 +267,7 @@ export default class Atlas extends Component {
     getMarker(bodyJSX, position) {
         if (position) {
             return (
-                <Marker autoPan={false} position={position} icon={MARKER_ICON}>
+                <Marker autoPan={false} position={position} icon={MARKER_ICON} key={position.lat}>
                     <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
                 </Marker>
             );

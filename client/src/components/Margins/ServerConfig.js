@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from "reactstrap";
 
 export default class ServerConfig extends Component
 {
@@ -34,10 +34,13 @@ export default class ServerConfig extends Component
         const server_name = this.props.serverName;
         const request_version = this.props.requestVersion;
         const request_type = this.props.requestType;
+        const supported_requests = this.props.supportedRequests;
+        const config = supported_requests[0];
+        const distance = supported_requests[1];
 
         return(
             <ModalBody>
-                <table>
+                <Table>
                     <tbody>
                         <tr>
                             <td>serverName</td>
@@ -51,34 +54,13 @@ export default class ServerConfig extends Component
                             <td>requestType</td>
                             <td>{request_type}</td>
                         </tr>
-                        {this.renderSupportedRequests()}
+                        <tr>
+                            <td>supportedRequests</td>
+                            <td>{config + ", " + distance}</td>
+                        </tr>
                     </tbody>
-                </table>
+                </Table>
             </ModalBody>
-        );
-    }
-
-    renderSupportedRequests() {
-        const supported_requests = this.props.supportedRequests;
-        let table = [];
-        for(let i = 0; i < supported_requests.length; i++) {
-            table.push(
-                <li>
-                    {supported_requests[i]}
-                </li>
-            );
-        }
-        return (
-            <tr>
-                <td>
-                    supportedRequests
-                </td>
-                <td>
-                    <ul>
-                        {table}
-                    </ul>
-                </td>
-            </tr>
         );
     }
 
