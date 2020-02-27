@@ -144,7 +144,7 @@ export default class Atlas extends Component {
       return(
           <div>
               <ButtonDropdown isOpen={this.state.isOpen} toggle={() => this.state.toggleOpen} className="float-right" size={"lg"}>
-                  <Button id="caret" onClick={() => this.getDistance()}>Calculate Distance</Button>
+                  <Button id="caret" onClick={() => this.getDistanceOnSubmit()}>Calculate Distance</Button>
                   <DropdownToggle onClick={() => this.toggleDropdown()} caret/>
                   <DropdownMenu>
                       <DropdownItem onClick={() => this.setEarthRadius(3959.0, false, false)} >Miles</DropdownItem>
@@ -241,6 +241,14 @@ export default class Atlas extends Component {
   addMarker(mapClickInfo) {
     this.setState({otherMarkerPositions: []});
     this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
+    this.calculateDistance();
+  }
+
+  calculateDistance()
+  {
+      const point1 = `${this.state.markerPosition.lat} , ${this.state.markerPosition.lng}`;
+      const point2 = `${this.state.otherMarkerPositions[0].lat} , ${this.state.otherMarkerPositions[0].lng}`;
+      this.getDistanceOnMapClick(point1, point2);
   }
 
 
@@ -288,7 +296,23 @@ export default class Atlas extends Component {
       this.clearOtherMarkers();
     }
 
-    getDistance() { //on success renders the distance
+    getDistanceOnMapClick(point1, point2) { //on success renders the distance
+        const { distance } = this.state;
+        const position1 = new Coordinates(point1);
+        const position2 = new Coordinates(point2);
+
+        distance.place1.latitude = position1.getLatitude().toString();
+        distance.place1.longitude = position1.getLongitude().toString();
+        distance.place2.latitude = position2.getLatitude().toString();
+        distance.place2.longitude = position2.getLongitude().toString();
+
+        sendServerRequestWithBody('distance', this.state.distance, getOriginalServerPort()).then(distance => {
+            this.processDistanceResponse(distance);
+        });
+
+    }
+
+    getDistanceOnSubmit() { //on success renders the distance
         const { distance } = this.state;
         const position1 = new Coordinates(this.state.point1);
         const position2 = new Coordinates(this.state.point2);
