@@ -136,9 +136,18 @@ productive we can be and eventually resulted in us not completing two epics.
 ## Retrospective
 
 ### What we changed this sprint
+* We spent more time in the lab this sprint. Doing this allowed us to work together as a team. We also spent less time not understanding what we are
+doing and more time on asking questions.
 
 ### What went well
+* We worked well as a team and there was improvement in our communication this sprint. We were able to meet more which helped us be more productive
+and stay on the same page.
 
 ### Potential improvements
+* We need to start on our epics in a more efficient manner during Sprint 3. Another component that needs work is our map UI, it needs touch ups 
+as it does not fit the map to show all points. We can also put more detail and thought into our individual tasks that we assign to epics. We ended with 
+almost double the amount of tasks and story points this Sprint.
 
 ### What we will change next time
+* We will start on the sprint earlier and be more thorough during our planning process. If we would have planned Sprint 2 a little better, we could
+have completed all of the epics.
