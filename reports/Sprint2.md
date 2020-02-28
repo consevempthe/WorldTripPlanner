@@ -1,4 +1,4 @@
-# Sprint # - *T03* - *Hugh-Lit Pack-Herd*
+# Sprint 2 - *T03* - *Hugh-Lit Pack-Herd*
 
 ## Goal
 
@@ -84,9 +84,9 @@ Epics planned for this release.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *7* | *count* |
-| Tasks |  *29*   | *count* | 
-| Story Points |  *29*  | *sum* | 
+| Epics | *7* | *5* |
+| Tasks |  *29*   | *40* | 
+| Story Points |  *29*  | *40* | 
 
 ### Planned Metrics Summary
     Based off of our previous sprint we plan on utitilizing our resources more
@@ -110,20 +110,44 @@ Epics planned for this release.
 ## Review
 
 ### Epics done  
-
-### Epics not done 
-
+* **Where Is?**: "Where Is" did not go bad for us this sprint. We were able to figure out how to use ReactJS forms which allowed us to successfully
+submit our input. Completing this epic helped us in the long run for solving the "Distance" epic.
+* **Server Support**: "Server Support"
+* **Support Protocol Standard v2**: Implementing this epic was not technically hard. Understanding what was actually being implemented was the 
+challenging part for this epic. None of us understood what "requests" and "responses" were until were started messing around with the code.
+* **Distance**: The "Distance" epic was the MOST challenging epic we had to solve this sprint. We spent more time than planned completing this epic.
+Calculating the distance between two points using Vincenty's formula was challenging, but not nearly as challenging as getting the client side of our
+application to communicate with the server. Understanding the "Support Protocol Standard v2" epic helped us under stand how HttpPOSTs work in ReactJS.
+* **Standard Units**: This epic was the easiest epic to implement this sprint. We implemented the "Distance" epic to take an Earth radius as a parameter,
+which helped us implement using different standard units towards the distance. Implementing a drop down to allow the user to choose a standard unit was
+a little difficult because there was poor documentation about ReactStrap DropDowns, but we figured it out.
+### Epics not done
+* **Custom Units**: Our team decided that it was a safe idea to throw the "Custom Units" epic in the icebox because there was enough work to make 
+the "Distance" epic run smoothly.
+* **Map**: Our team couldn't figure out how to implement this epic correctly, so we threw it in the icebox.
 ### What went well
+* Overall, we are satisfied with how our UI looks and how we implemented the "Distance" epic. The user is able to find distance between to points by
+clicking around on the map, or by submitting coordinates. Also, our user interface still looks good on mobile devices, which is what we are aiming for.
 
 ### Problems encountered and resolutions
-
+* Our number one problem this sprint was understanding the communication between the client and server side. This problem caused a roadblock in how
+productive we can be and eventually resulted in us not completing two epics.
 
 ## Retrospective
 
 ### What we changed this sprint
+* We spent more time in the lab this sprint. Doing this allowed us to work together as a team. We also spent less time not understanding what we are
+doing and more time on asking questions.
 
 ### What went well
+* We worked well as a team and there was improvement in our communication this sprint. We were able to meet more which helped us be more productive
+and stay on the same page.
 
 ### Potential improvements
+* We need to start on our epics in a more efficient manner during Sprint 3. Another component that needs work is our map UI, it needs touch ups 
+as it does not fit the map to show all points. We can also put more detail and thought into our individual tasks that we assign to epics. We ended with 
+almost double the amount of tasks and story points this Sprint.
 
 ### What we will change next time
+* We will start on the sprint earlier and be more thorough during our planning process. If we would have planned Sprint 2 a little better, we could
+have completed all of the epics.
