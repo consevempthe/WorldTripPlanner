@@ -110,13 +110,28 @@ Epics planned for this release.
 ## Review
 
 ### Epics done  
-
-### Epics not done 
-
+* **Where Is?**: "Where Is" did not go bad for us this sprint. We were able to figure out how to use ReactJS forms which allowed us to successfully
+submit our input. Completing this epic helped us in the long run for solving the "Distance" epic.
+* **Server Support**: "Server Support"
+* **Support Protocol Standard v2**: Implementing this epic was not technically hard. Understanding what was actually being implemented was the 
+challenging part for this epic. None of us understood what "requests" and "responses" were until were started messing around with the code.
+* **Distance**: The "Distance" epic was the MOST challenging epic we had to solve this sprint. We spent more time than planned completing this epic.
+Calculating the distance between two points using Vincenty's formula was challenging, but not nearly as challenging as getting the client side of our
+application to communicate with the server. Understanding the "Support Protocol Standard v2" epic helped us under stand how HttpPOSTs work in ReactJS.
+* **Standard Units**: This epic was the easiest epic to implement this sprint. We implemented the "Distance" epic to take an Earth radius as a parameter,
+which helped us implement using different standard units towards the distance. Implementing a drop down to allow the user to choose a standard unit was
+a little difficult because there was poor documentation about ReactStrap DropDowns, but we figured it out.
+### Epics not done
+* **Custom Units**: Our team decided that it was a safe idea to throw the "Custom Units" epic in the icebox because there was enough work to make 
+the "Distance" epic run smoothly.
+* **Map**: Our team couldn't figure out how to implement this epic correctly, so we threw it in the icebox.
 ### What went well
+* Overall, we are satisfied with how our UI looks and how we implemented the "Distance" epic. The user is able to find distance between to points by
+clicking around on the map, or by submitting coordinates. Also, our user interface still looks good on mobile devices, which is what we are aiming for.
 
 ### Problems encountered and resolutions
-
+* Our number one problem this sprint was understanding the communication between the client and server side. This problem caused a roadblock in how
+productive we can be and eventually resulted in us not completing two epics.
 
 ## Retrospective
 
