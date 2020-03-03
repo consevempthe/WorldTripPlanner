@@ -295,6 +295,11 @@ export default class Atlas extends Component {
         this.clearOtherMarkers();
     }
 
+    setMapBounds(point1, point2)
+    {
+        return L.latLngBounds(point1, point2);
+    }
+
     buildDistance(distance, position1, position2) {
         distance.place1.latitude = position1.getLatitude().toString();
         distance.place1.longitude = position1.getLongitude().toString();
