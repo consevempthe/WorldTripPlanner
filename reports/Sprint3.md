@@ -1,7 +1,7 @@
-# Sprint # - *your team number* - *your team name*
+# Sprint 3 - *t03* - *Hugh-Lit Pack-Herd*
 
 ## Goal: Build a trip!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Axel Wahlstrom*
 
 
 ## Definition of Done
@@ -39,12 +39,47 @@
 
 ## Planned Epics
 
+### Distance
+    A few tasks from the distance epic still remain from sprint #2. The goal of distance epic is to
+    use server-side computations to display the distance between 2+ points to the user. The only task
+    which remains on this epic is to ensure the server port is correct when requesting server-side
+    computations. A new Distance.js file will be created to help organize our code.
+   
+### Map
+    Map is another epic which was carried over from sprint #2. The current goal for map is simply to
+    give a better UI experience by centering the map on the line drawn by 2 given user points. The map
+    epic should also be able to center the map correctly with any amount of n-points when n >= 2.
+    
+### Protocol Ver. 3
+    Protocol Version 3 is an epic for sprint 3. This epic updates current server configurations, adding
+    a trip response/request.json object for communicating with the server as well as creating a Trip.js class
+    to help with code organization.
+    
+### More Destinations
+    More Destinations epic is a very large epic this sprint. The goal of this epic is to create a method
+    in order to store destinations in memory. It will also utilize our Distance.js file to display to users
+    the total distance between their destinations. A few UI changes will also occur this epic; the main goals
+    of the UI updates will be to allow users to enter a coordinate to add a point as well as an input box to allow
+    users to name the point they chose. We will also make small adjustments to the PolyLine element to sketch a line
+    between any number of points that the user may choose. We also potentially plan to implement a shortest route
+    algorithm to handle dateline miscalculations and will also make our application a more user-friendly environment.
+    
+### Show Itenerary
+    The Show Itenerary epic will add a new feature to the application which will alow users to create an itenerary for their
+    trip. The epic will update UI to allow users to view their current trip. The employment of cookies in this epic will
+    save the state of the user's itenerary for future use if the user decides to leave the page and come back later.
+    
+### Load
+    The goal of the Load epic is to allow the application to load any saved trips in a CSV/JSON format in order for
+    users to share trips with eachother or to have a portable copy of their trip. This epic will also update UI in order
+    for users to click a button and load a file from their file browser.
+
 
 ## Metrics
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
+| Epics | *6* | *count* |
 | Tasks |  *count*   | *count* | 
 | Story Points |  *sum*  | *sum* | 
 
