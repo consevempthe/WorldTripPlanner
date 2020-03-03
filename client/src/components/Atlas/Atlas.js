@@ -42,6 +42,7 @@ export default class Atlas extends Component {
             isOpen: false,
             toggleOpen: false,
             LocationServiceOn: false,
+            mapBounds: null,
             validate: {
                 point1Valid: '',
                 point2Valid: '',
@@ -163,6 +164,7 @@ export default class Atlas extends Component {
     renderLeafletMap() {
         return (
             <Map center={this.state.markerPosition}
+                 bounds={this.state.mapBounds}
                  zoom={MAP_ZOOM_DEFAULT}
                  minZoom={MAP_ZOOM_MIN}
                  maxZoom={MAP_ZOOM_MAX}
