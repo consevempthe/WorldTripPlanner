@@ -278,7 +278,7 @@ export default class Atlas extends Component {
 
     processGeolocation(geolocation) {
         const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-        this.setState({markerPosition: position, locationServiceOn: true});
+        this.setState({markerPosition: position, locationServiceOn: true, mapBounds: this.setMapBounds(position, position)});
     }
 
     processGeolocationError(err) {
