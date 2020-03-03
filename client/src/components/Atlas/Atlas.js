@@ -243,7 +243,7 @@ export default class Atlas extends Component {
 
     addMarker(mapClickInfo) {
         this.clearOtherMarkers();
-        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
+        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng), mapBounds: this.setMapBounds(this.state.markerPosition, mapClickInfo.latlng)});
         this.calculateDistance();
     }
 
@@ -331,7 +331,7 @@ export default class Atlas extends Component {
         });
         const point1 = {lat: position1.getLatitude(), lng: position1.getLongitude()}
         const point2 = {lat: position2.getLatitude(), lng: position2.getLongitude()}
-        this.setState({markerPosition: point1, otherMarkerPositions: this.state.otherMarkerPositions.concat(point2)});
+        this.setState({markerPosition: point1, otherMarkerPositions: this.state.otherMarkerPositions.concat(point2), mapBounds: this.setMapBounds(point1, point2)});
     }
 
     processDistanceResponse(distanceResponse) {
