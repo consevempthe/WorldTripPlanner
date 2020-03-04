@@ -33,11 +33,11 @@ public class GreatCircleDistance {
     public Double vincentyFormula()
     {
         Double place1LongitudeRadians = Math.toRadians(this.place1Longitude);
-        double place1LatitudeRadians = Math.toRadians(this.place1Latitude);
+        Double place1LatitudeRadians = Math.toRadians(this.place1Latitude);
         Double place2LongitudeRadians = Math.toRadians(this.place2Longitude);
-        double place2LatitudeRadians = Math.toRadians(this.place2Latitude);
+        Double place2LatitudeRadians = Math.toRadians(this.place2Latitude);
 
-        double lambda = Math.abs(place1LongitudeRadians - place2LongitudeRadians);
+        Double lambda = Math.abs(place1LongitudeRadians - place2LongitudeRadians);
         Double sinLambda = Math.sin(lambda);
         Double costheta2 = Math.cos(place2LatitudeRadians);
 

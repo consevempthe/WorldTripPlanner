@@ -43,7 +43,7 @@ export default class App extends Component {
                 {this.renderAbout()}
                 {this.renderHome()}
                 <Footer
-                    serverSettings={this.state.serverSettings}
+                    serverSettings={this.state.serverSettings.serverPort}
                     updateServerConfig={this.updateServerConfig}
                 />
             </div>
@@ -63,6 +63,7 @@ export default class App extends Component {
             <Collapse isOpen={!this.state.showAbout}>
                 <Atlas
                     modify={(state, value) => this.setState({[state]: value})}
+                    serverPort={this.state.serverSettings}
                 />
             </Collapse>
         );
