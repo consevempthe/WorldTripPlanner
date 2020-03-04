@@ -153,5 +153,26 @@ Dialog box for distance allowing custom units and other standardized units
 * Support for saving and adding additional custom units.
 * The popup menu will show what unit it is in.
 # Sprint 3
+## Initial Design Thinking for Sprint 3
+### Understanding our users
+We tried to understand what our users would consider on a surface level to understand their feelings.
+1. **What the user "says"**
+    * The user "says" they want to be able to plan a trip anywhere in the world.
+    * What this means is they want to make an itinerary, find the shortest distance for their trip and save that information.
+2. **What the user "thinks"**
+    * The user "thinks" about the locations they want to go to. They want visual indications of their places.
+3. **What the user "does"**
+    * The user will plan one location at a time and expect to be able to create their trip. 
+    * They want to save their trip and be able to load their own trips.
+4. **What the user "feels"**
+    * The user feels accomplishment in creating their trip.
+### Define the problem
+Our group brainstormed to understand what our users would want out of a trip planner application. These will help us further narrow our goals in sprint 3 to assure we meet these potential user desires.
+* As a user I want to create a trip so that I don't have to worry about the details and I can have fun going on an adventure.
+* As a user I want a great user experience from the apps that I use so that I don't have to fuss about learning to use my app.
+* As a user I want to be able to make and edit my trips so that I can feel in control of everything.
+
+From here our group will take what we learned from defining our problem and understanding our users to rethink the way we approach the design of our sprints. Below is what we came up with.
+    
 # Sprint 4 
 # Sprint 5
