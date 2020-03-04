@@ -42,6 +42,7 @@ export default class Atlas extends Component {
             isOpen: false,
             toggleOpen: false,
             LocationServiceOn: false,
+            mapBounds: null,
             validate: {
                 point1Valid: '',
                 point2Valid: '',
@@ -163,6 +164,7 @@ export default class Atlas extends Component {
     renderLeafletMap() {
         return (
             <Map center={this.state.markerPosition}
+                 bounds={this.state.mapBounds}
                  zoom={MAP_ZOOM_DEFAULT}
                  minZoom={MAP_ZOOM_MIN}
                  maxZoom={MAP_ZOOM_MAX}
@@ -241,7 +243,7 @@ export default class Atlas extends Component {
 
     addMarker(mapClickInfo) {
         this.clearOtherMarkers();
-        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng)});
+        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng), mapBounds: this.setMapBounds(this.state.markerPosition, mapClickInfo.latlng)});
         this.calculateDistance();
     }
 
@@ -276,7 +278,7 @@ export default class Atlas extends Component {
 
     processGeolocation(geolocation) {
         const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-        this.setState({markerPosition: position, locationServiceOn: true});
+        this.setState({markerPosition: position, locationServiceOn: true, mapBounds: this.setMapBounds(position, position)});
     }
 
     processGeolocationError(err) {
@@ -293,6 +295,11 @@ export default class Atlas extends Component {
         const position = new Coordinates(point);
         this.setState({markerPosition: {lat: position.getLatitude(), lng: position.getLongitude()}});
         this.clearOtherMarkers();
+    }
+
+    setMapBounds(point1, point2)
+    {
+        return L.latLngBounds(point1, point2);
     }
 
     buildDistance(distance, position1, position2) {
@@ -324,7 +331,7 @@ export default class Atlas extends Component {
         });
         const point1 = {lat: position1.getLatitude(), lng: position1.getLongitude()};
         const point2 = {lat: position2.getLatitude(), lng: position2.getLongitude()};
-        this.setState({markerPosition: point1, otherMarkerPositions: this.state.otherMarkerPositions.concat(point2)});
+        this.setState({markerPosition: point1, otherMarkerPositions: this.state.otherMarkerPositions.concat(point2), mapBounds: this.setMapBounds(point1, point2)});
     }
 
     processDistanceResponse(distanceResponse) {
