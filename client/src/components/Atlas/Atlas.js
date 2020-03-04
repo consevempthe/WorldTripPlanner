@@ -9,7 +9,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 // import {marker} from "leaflet/dist/leaflet-src.esm";
-import {getOriginalServerPort, sendServerRequestWithBody, isJsonResponseValid} from "../../utils/restfulAPI";
+import {sendServerRequestWithBody, isJsonResponseValid} from "../../utils/restfulAPI";
 import * as distanceSchema from "../../../schemas/TIPDistanceResponseSchema"
 import {HTTP_OK} from "../Constants";
 
@@ -234,7 +234,7 @@ export default class Atlas extends Component {
             /*for (let i = 0; i < otherMarkers.length; i++) {
                 markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]))
             }*/
-            markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[otherMarkers.length - 1]), otherMarkers[otherMarkers.length - 1]))
+            markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[otherMarkers.length - 1]), otherMarkers[otherMarkers.length - 1]));
             return markers;
         }
     }
@@ -308,7 +308,7 @@ export default class Atlas extends Component {
         const position1 = new Coordinates(point1);
         const position2 = new Coordinates(point2);
         this.buildDistance(distance, position1, position2);
-        sendServerRequestWithBody('distance', this.state.distance, getOriginalServerPort()).then(distance => {
+        sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then(distance => {
             this.processDistanceResponse(distance);
         });
 
@@ -319,11 +319,11 @@ export default class Atlas extends Component {
         const position1 = new Coordinates(this.state.point1);
         const position2 = new Coordinates(this.state.point2);
         this.buildDistance(distance, position1, position2);
-        sendServerRequestWithBody('distance', this.state.distance, getOriginalServerPort()).then(distance => {
+        sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then(distance => {
             this.processDistanceResponse(distance);
         });
-        const point1 = {lat: position1.getLatitude(), lng: position1.getLongitude()}
-        const point2 = {lat: position2.getLatitude(), lng: position2.getLongitude()}
+        const point1 = {lat: position1.getLatitude(), lng: position1.getLongitude()};
+        const point2 = {lat: position2.getLatitude(), lng: position2.getLongitude()};
         this.setState({markerPosition: point1, otherMarkerPositions: this.state.otherMarkerPositions.concat(point2)});
     }
 
