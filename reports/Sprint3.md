@@ -97,7 +97,7 @@
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* |  | 
+| *03-04-20* | *180, 187* | *205* |  | 
 
 
 ## Review
