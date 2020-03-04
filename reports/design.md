@@ -80,15 +80,17 @@ The component hierarchy for the base application depicted below shows the our to
 * Footer renders the current server connection in the bottom footer.
 * Atlas renders a map.
 * About renders information about the team.
+* Distance sends markers that are on map to server to calculate distance.
+* Itinerary renders a table that shows the corresponding information for the trip.
 
-![base component hierarchy](images/20200125_185503075_iOS.png)
+![base component hierarchy](images/Component-Hierarchy.png)
 
 We do not show the many ReactStrap components in this hierarchy, even though they will appear when you are debugging on the client.
 
 ### Class Diagram
 The class diagram for the base application depicted below shows the basic structure of the web server application.
 
-![class diagram](images/20200125_204721957_iOS.png )
+![class diagram](images/Class-Diagram.png)
 
 The classes in blue represent the classes specific to this application.  
 * WebApplication processes command line parameters and creates MicroServer.
@@ -96,6 +98,8 @@ The classes in blue represent the classes specific to this application.
 * JSONValidator verifies a request is properly formatted before attempting to process it using JSON Schemas.
 * RequestConfig is a specific request that allows the server to respond with its configuration to allow interoperability between clients and servers. 
 * RequestHeader defines the basic components of all requests.
+* RequestDistance is a request to calculate the distance between two points.
+* RequestTrip is a request to calculate the distance between more than two points.
 
 The classes in orange represent the external libraries used by the application.
 Often there are several related classes but we've listed only one to simplify the diagram.
