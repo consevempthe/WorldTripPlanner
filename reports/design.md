@@ -177,6 +177,11 @@ Our group brainstormed to understand what our users would want out of a trip pla
 * As a user I want to be able to make and edit my trips so that I can feel in control of everything.
 
 From here our group will take what we learned from defining our problem and understanding our users to rethink the way we approach the design of our sprints. Below is what we came up with.
+
+### User Interface Updates
+![Design Layout](images/Sprint3-UIdesign.png)
+
+We anticipate minor changes to this design but believe the simplicity of utilizing multiple tabs with our layout will keep screen space clean without compromising the usability of previously requested features such as the distance calculator.
     
 # Sprint 4 
 # Sprint 5
