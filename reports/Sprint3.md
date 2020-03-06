@@ -98,6 +98,7 @@
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | *03-04-20* | *180, 187* | *205* |  | 
+| *03-06-20* | *205* | *190, 186* |  |
 
 
 ## Review
