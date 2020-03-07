@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from "reactstrap";
+import {PROTOCOL_VERSION} from "../Constants";
 
 export default class ServerConfig extends Component
 {
@@ -32,7 +33,7 @@ export default class ServerConfig extends Component
     {
 
         const server_name = this.props.serverName;
-        const request_version = this.props.requestVersion;
+        const request_version = PROTOCOL_VERSION;
         const request_type = this.props.requestType;
         const supported_requests = this.props.supportedRequests;
         const config = supported_requests[0];

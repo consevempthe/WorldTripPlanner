@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import {Col, Container, Row} from 'reactstrap';
-import {Form, FormGroup, Input, FormFeedback, FormText, InputGroupAddon, InputGroup} from 'reactstrap';
+import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
 import {Button} from 'reactstrap';
-
 import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
+
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
-// import {marker} from "leaflet/dist/leaflet-src.esm";
 import {sendServerRequestWithBody, isJsonResponseValid} from "../../utils/restfulAPI";
 import * as distanceSchema from "../../../schemas/TIPDistanceResponseSchema"
 import {HTTP_OK} from "../Constants";
@@ -25,8 +24,8 @@ const MARKER_ICON = L.icon({
     shadowUrl: iconShadow,
     iconAnchor: [12, 40]  // for proper placement
 });
-const Coordinates = require('coordinate-parser');
 
+const Coordinates = require('coordinate-parser');
 
 export default class Atlas extends Component {
 
@@ -36,7 +35,7 @@ export default class Atlas extends Component {
         this.addMarker = this.addMarker.bind(this);
         this.markClientLocation = this.markClientLocation.bind(this);
         this.processGeolocation = this.processGeolocation.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.addPlace = this.addPlace.bind(this);
 
         this.state = {
             isOpen: false,
@@ -47,8 +46,6 @@ export default class Atlas extends Component {
                 point1Valid: '',
                 point2Valid: '',
             },
-            point1: '',
-            point2: '',
             distance: {
                 requestType: "distance",
                 requestVersion: 2,
@@ -73,10 +70,19 @@ export default class Atlas extends Component {
         this.getClientLocation();
     }
 
-    handleChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+    addPlace(name, coordinate) {
+        const {distance} = Object.assign(this.state);
+        distance[name].latitude = coordinate.getLatitude().toString();
+        distance[name].longitude = coordinate.getLongitude().toString();
+
+        this.setState({distance});
     }
 
+    setPlace(event, pointValid) {
+        const coordinate = this.validateCoordinates(event, pointValid);
+        if(this.state.validate[pointValid] === 'success')
+            this.addPlace(event.target.name, coordinate);
+    }
 
     render() {
         return (
@@ -111,8 +117,7 @@ export default class Atlas extends Component {
                 valid={validator === "success"}
                 invalid={validator === "failure"}
                 onChange={(e) => {
-                    this.validateCoordinates(e, pointValid);
-                    this.handleChange(e);
+                    this.setPlace(e, pointValid);
                 }}
             />
         )
@@ -124,15 +129,12 @@ export default class Atlas extends Component {
                 <FormGroup>
                     <FormText>Input latitude and longitude coordinates.</FormText>
                     <InputGroup>
-                        {this.renderInput("point1", "Example: '40.58, -105.09'", this.state.validate.point1Valid, "point1Valid")}
-                        <InputGroupAddon addonType={"append"}>
-                            <Button onClick={() => this.setPoint(this.state.point1)}>Submit</Button>
-                        </InputGroupAddon>
+                        {this.renderInput("place1", "Example: '40.58, -105.09'", this.state.validate.point1Valid, "point1Valid")}
                         <FormFeedback valid>Yeah those are valid coordinates!</FormFeedback>
                         <FormFeedback>Those aren't valid coordinates :(</FormFeedback>
                     </InputGroup>
                     <InputGroup>
-                        {this.renderInput("point2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, "point2Valid")}
+                        {this.renderInput("place2", "Enter a 2nd point to compute distance", this.state.validate.point2Valid, "point2Valid")}
                         <FormFeedback valid>Nice. Go find that distance!!</FormFeedback>
                         <FormFeedback>Nope this one isn't valid.</FormFeedback>
                     </InputGroup>
@@ -228,7 +230,6 @@ export default class Atlas extends Component {
         this.setState({otherMarkerPositions: []});
     }
 
-
     renderOtherMarkers(otherMarkers) {
         if (otherMarkers.length !== 0) {
             let markers = [];
@@ -244,15 +245,8 @@ export default class Atlas extends Component {
     addMarker(mapClickInfo) {
         this.clearOtherMarkers();
         this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng), mapBounds: this.setMapBounds(this.state.markerPosition, mapClickInfo.latlng)});
-        this.calculateDistance();
+        this.getDistanceOnMapClick();
     }
-
-    calculateDistance() {
-        const point1 = `${this.state.markerPosition.lat} , ${this.state.markerPosition.lng}`;
-        const point2 = `${this.state.otherMarkerPositions[0].lat} , ${this.state.otherMarkerPositions[0].lng}`;
-        this.getDistanceOnMapClick(point1, point2);
-    }
-
 
     markClientLocation() {
         this.setState({markerPosition: this.getClientLocation()});
@@ -291,52 +285,36 @@ export default class Atlas extends Component {
         }
     }
 
-    setPoint(point) {
-        const position = new Coordinates(point);
-        this.setState({markerPosition: {lat: position.getLatitude(), lng: position.getLongitude()}});
-        this.clearOtherMarkers();
-    }
-
     setMapBounds(point1, point2)
     {
         return L.latLngBounds(point1, point2);
     }
 
-    buildDistance(distance, position1, position2) {
-        distance.place1.latitude = position1.getLatitude().toString();
-        distance.place1.longitude = position1.getLongitude().toString();
-        distance.place2.latitude = position2.getLatitude().toString();
-        distance.place2.longitude = position2.getLongitude().toString();
-        return distance;
-    }
-
-    getDistanceOnMapClick(point1, point2) { //on success renders the distance
-        const {distance} = this.state;
-        const position1 = new Coordinates(point1);
-        const position2 = new Coordinates(point2);
-        this.buildDistance(distance, position1, position2);
-        sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then(distance => {
-            this.processDistanceResponse(distance);
-        });
+    getDistanceOnMapClick() { //on success renders the distance
+        const position1 = new Coordinates(`${this.state.markerPosition.lat} , ${this.state.markerPosition.lng}`);
+        const position2 = new Coordinates(`${this.state.otherMarkerPositions[0].lat} , ${this.state.otherMarkerPositions[0].lng}`);
+        this.addPlace('place1', position1);
+        this.addPlace('place2', position2);
+        this.getDistance();
 
     }
 
     getDistanceOnSubmit() { //on success renders the distance
-        const {distance} = this.state;
-        const position1 = new Coordinates(this.state.point1);
-        const position2 = new Coordinates(this.state.point2);
-        this.buildDistance(distance, position1, position2);
+        this.getDistance();
+        const point1 = {lat: parseFloat(this.state.distance.place1.latitude), lng: parseFloat(this.state.distance.place1.longitude)};
+        const point2 = {lat: parseFloat(this.state.distance.place2.latitude), lng: parseFloat(this.state.distance.place2.longitude)};
+        this.setState({markerPosition: point1, otherMarkerPositions: this.state.otherMarkerPositions.concat(point2), mapBounds: this.setMapBounds(point1, point2)});
+    }
+
+    getDistance() {
         sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then(distance => {
             this.processDistanceResponse(distance);
         });
-        const point1 = {lat: position1.getLatitude(), lng: position1.getLongitude()};
-        const point2 = {lat: position2.getLatitude(), lng: position2.getLongitude()};
-        this.setState({markerPosition: point1, otherMarkerPositions: this.state.otherMarkerPositions.concat(point2), mapBounds: this.setMapBounds(point1, point2)});
     }
 
     processDistanceResponse(distanceResponse) {
         if (!isJsonResponseValid(distanceResponse.body, distanceSchema)) {
-            this.setState({distance: false})
+
         } else if (distanceResponse.statusCode === HTTP_OK) {
             this.setState({distance: JSON.parse(JSON.stringify(distanceResponse.body))});
         }
@@ -360,10 +338,13 @@ export default class Atlas extends Component {
 
         if (this.isValidPosition(coordinates)) {
             validate[point] = 'success';
+            return new Coordinates(e.target.value);
         } else {
             validate[point] = 'failure';
         }
         this.setState({validate});
+
+        return "";
     }
 
     toggleDropdown() {
