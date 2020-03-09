@@ -1,6 +1,6 @@
 import './enzyme.config.js';
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {shallow} from 'enzyme'; // if need 'mount' add it here
 
 import Atlas from '../src/components/Atlas/Atlas';
 
@@ -15,19 +15,4 @@ function testInitialAppState() {
   expect(actualMarkerPosition).toEqual(expectedMarkerPosition);
 }
 
-function testIsValidPosition() {
-  let validPosition = "40.48, -105.8";
-  let invalidPosition = "foo bar";
-
-  const validate = mount(<Atlas />);
-  let validResult = validate.instance().isValidPosition(validPosition);
-
-  expect(validResult).toEqual(true);
-
-  let invalidResult = validate.instance().isValidPosition(invalidPosition);
-
-  expect(invalidResult).toEqual(false);
-}
-
 test("Testing Atlas's Initial State", testInitialAppState);
-test("Testing Atlas's IsValidPosition function", testIsValidPosition);
