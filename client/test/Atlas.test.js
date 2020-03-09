@@ -1,6 +1,6 @@
 import './enzyme.config.js'
 import React from 'react'
-import {shallow/*, mount*/} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 import Atlas from "../src/components/Atlas/Atlas";
 
