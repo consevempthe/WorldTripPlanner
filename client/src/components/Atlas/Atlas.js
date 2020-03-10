@@ -47,7 +47,6 @@ export default class Atlas extends Component {
         this.setState({markerPosition: coordinate1, otherMarkerPositions: this.state.otherMarkerPositions.concat(coordinate2), mapBounds: L.latLngBounds(coordinate1, coordinate2)});
     }
 
-
     render() {
         return (
             <div>
