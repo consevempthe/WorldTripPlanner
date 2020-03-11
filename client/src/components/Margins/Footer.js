@@ -81,8 +81,7 @@ export default class Footer extends Component {
         );
     }
 
-    renderServerConfig()
-    {
+    renderServerConfig() {
         return(
             <ServerConfig
                 isOpen={this.state.serverConfigOpen}

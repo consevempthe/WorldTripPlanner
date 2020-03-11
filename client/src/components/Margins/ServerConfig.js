@@ -31,13 +31,7 @@ export default class ServerConfig extends Component
 
     renderBody ()
     {
-
-        const server_name = this.props.serverName;
-        const request_version = PROTOCOL_VERSION;
-        const request_type = this.props.requestType;
         const supported_requests = this.props.supportedRequests;
-        const config = supported_requests[0];
-        const distance = supported_requests[1];
 
         return(
             <ModalBody>
@@ -45,19 +39,19 @@ export default class ServerConfig extends Component
                     <tbody>
                         <tr>
                             <td>serverName</td>
-                            <td>{server_name}</td>
+                            <td>{this.props.serverName}</td>
                         </tr>
                         <tr>
                             <td>requestVersion</td>
-                            <td>{request_version}</td>
+                            <td>{PROTOCOL_VERSION}</td>
                         </tr>
                         <tr>
                             <td>requestType</td>
-                            <td>{request_type}</td>
+                            <td>{this.props.requestType}</td>
                         </tr>
                         <tr>
                             <td>supportedRequests</td>
-                            <td>{config + ", " + distance}</td>
+                            <td>{supported_requests[0] + ", " + supported_requests[1] + ", " + supported_requests[2]}</td>
                         </tr>
                     </tbody>
                 </Table>
