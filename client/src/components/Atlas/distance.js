@@ -52,7 +52,6 @@ export default class Distance extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             {this.renderForm()}
                             <div>
-                                {this.renderCalculateDistanceButton()}
                                 {this.renderDistance()}
                             </div>
                         </Col>
@@ -164,11 +163,6 @@ export default class Distance extends Component {
                         {this.renderInput("place1", "Enter lat and lng.", this.state.validate.oneValid, "oneValid")}
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
-                    </InputGroup>
-                    <InputGroup>
-                        {this.renderInput("place2", "Next coordinates go here.", this.state.validate.twoValid, "twoValid")}
-                        <FormFeedback valid>Find that distance!</FormFeedback>
-                        <FormFeedback>Nope this one is wrong.</FormFeedback>
                     </InputGroup>
                 </FormGroup>
             </Form>
