@@ -81,21 +81,38 @@ export default class Atlas extends Component {
     }
 
     renderLeafletMap() {
-        return (
-            <Map center={this.state.markerPosition}
-                 bounds={this.state.mapBounds}
-                 zoom={MAP_ZOOM_DEFAULT}
-                 minZoom={MAP_ZOOM_MIN}
-                 maxZoom={MAP_ZOOM_MAX}
-                 maxBounds={MAP_BOUNDS}
-                 onClick={this.addMarker}
-                 style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
-                <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-                {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
-                {this.renderOtherMarkers(this.state.otherMarkerPositions)}
-                {this.renderLine()}
-            </Map>
-        )
+        if(this.state.otherMarkerPositions.length == 0)
+        {
+            return (
+                <Map center={this.state.markerPosition}
+                     bounds={this.state.mapBounds}
+                     zoom={MAP_ZOOM_DEFAULT}
+                     minZoom={MAP_ZOOM_MIN}
+                     maxZoom={MAP_ZOOM_MAX}
+                     maxBounds={MAP_BOUNDS}
+                     onClick={this.addMarker}
+                     style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
+                    <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
+                    {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
+                </Map>
+            )
+        }
+        else{
+            return (
+                <Map center={this.state.markerPosition}
+                     bounds={this.state.mapBounds}
+                     zoom={MAP_ZOOM_DEFAULT}
+                     minZoom={MAP_ZOOM_MIN}
+                     maxZoom={MAP_ZOOM_MAX}
+                     maxBounds={MAP_BOUNDS}
+                     onClick={this.addMarker}
+                     style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
+                    <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
+                    {this.renderOtherMarkers(this.state.otherMarkerPositions)}
+                    {this.renderLine()}
+                </Map>
+            )
+        }
     }
 
     renderLine() {
