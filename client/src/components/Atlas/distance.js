@@ -162,7 +162,7 @@ export default class Distance extends Component {
                     <InputGroup>
                         {this.renderInput("place1", "Enter lat and lng.", this.state.validate.oneValid, "oneValid")}
                         <InputGroupAddon addonType={"append"}>
-                            <Button>+ Destination</Button>
+                            <Button onClick={() => this.props.addPoint(this.createMarker("place1"))}>+ Destination</Button>
                         </InputGroupAddon>
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>

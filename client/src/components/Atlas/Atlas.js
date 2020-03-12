@@ -27,6 +27,7 @@ export default class Atlas extends Component {
         super(props);
 
         this.addMarker = this.addMarker.bind(this);
+        this.addPointToArray = this.addPointToArray.bind(this);
         this.markClientLocation = this.markClientLocation.bind(this);
         this.processGeolocation = this.processGeolocation.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -61,6 +62,7 @@ export default class Atlas extends Component {
                 </Container>
                 <Distance
                     marker={this.handleChange}
+                    addPoint={this.addPointToArray}
                     serverPort={this.props.serverPort}
                     ref={distance => {
                         this.distance = distance;
@@ -100,7 +102,7 @@ export default class Atlas extends Component {
         if (this.state.otherMarkerPositions[this.state.otherMarkerPositions.length-1]) {
             return (
                 <Polyline
-                    positions={[this.state.markerPosition, this.state.otherMarkerPositions[this.state.otherMarkerPositions.length-1]]}
+                    positions={this.state.otherMarkerPositions}
                 />
             );
         }
@@ -114,18 +116,21 @@ export default class Atlas extends Component {
         if (otherMarkers.length !== 0) {
             let markers = [];
             //This will be use full for displaying more than two markers.
-            /*for (let i = 0; i < otherMarkers.length; i++) {
+            for (let i = 0; i < otherMarkers.length; i++) {
                 markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]))
-            }*/
-            markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[otherMarkers.length - 1]), otherMarkers[otherMarkers.length - 1]));
+            }
             return markers;
         }
     }
 
     addMarker(mapClickInfo) {
-        this.clearOtherMarkers();
         this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng), mapBounds: L.latLngBounds(this.state.markerPosition, mapClickInfo.latlng)});
         this.getDistanceOnMapClick();
+    }
+
+    addPointToArray(point)
+    {
+        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(point)});
     }
 
     markClientLocation() {
