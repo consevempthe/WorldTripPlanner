@@ -9,7 +9,7 @@ function testInitialAppState() {
 
     // test markerPosition
     let actualMarkerPos = atlas.state().otherMarkerPositions[0];
-    let expectedMarkerPos = null;
+    let expectedMarkerPos = undefined;
 
     expect(actualMarkerPos).toEqual(expectedMarkerPos);
 
