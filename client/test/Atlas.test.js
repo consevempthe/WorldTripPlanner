@@ -8,7 +8,7 @@ function testInitialAppState() {
     const atlas = shallow(<Atlas/>);
 
     // test markerPosition
-    let actualMarkerPos = atlas.state().markerPosition;
+    let actualMarkerPos = atlas.state().otherMarkerPositions[0];
     let expectedMarkerPos = null;
 
     expect(actualMarkerPos).toEqual(expectedMarkerPos);
