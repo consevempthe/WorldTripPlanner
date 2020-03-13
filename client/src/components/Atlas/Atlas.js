@@ -27,6 +27,7 @@ export default class Atlas extends Component {
         super(props);
 
         this.addMarker = this.addMarker.bind(this);
+        this.addPointToArray = this.addPointToArray.bind(this);
         this.markClientLocation = this.markClientLocation.bind(this);
         this.processGeolocation = this.processGeolocation.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -34,9 +35,7 @@ export default class Atlas extends Component {
         this.state = {
             LocationServiceOn: false,
             mapBounds: null,
-            // 1st marker
-            markerPosition: null,
-            // other markers
+            // all markers
             otherMarkerPositions: []
         };
 
@@ -60,6 +59,7 @@ export default class Atlas extends Component {
                 </Container>
                 <Distance
                     marker={this.handleChange}
+                    addPoint={this.addPointToArray}
                     serverPort={this.props.serverPort}
                     ref={distance => {
                         this.distance = distance;
@@ -79,8 +79,7 @@ export default class Atlas extends Component {
 
     renderLeafletMap() {
         return (
-            <Map center={this.state.markerPosition}
-                 bounds={this.state.mapBounds}
+            <Map bounds={this.state.mapBounds}
                  zoom={MAP_ZOOM_DEFAULT}
                  minZoom={MAP_ZOOM_MIN}
                  maxZoom={MAP_ZOOM_MAX}
@@ -88,7 +87,6 @@ export default class Atlas extends Component {
                  onClick={this.addMarker}
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-                {this.getMarker(this.getMarkerPosition(this.state.markerPosition), this.state.markerPosition)}
                 {this.renderOtherMarkers(this.state.otherMarkerPositions)}
                 {this.renderLine()}
             </Map>
@@ -99,7 +97,7 @@ export default class Atlas extends Component {
         if (this.state.otherMarkerPositions[this.state.otherMarkerPositions.length-1]) {
             return (
                 <Polyline
-                    positions={[this.state.markerPosition, this.state.otherMarkerPositions[this.state.otherMarkerPositions.length-1]]}
+                    positions={this.state.otherMarkerPositions}
                 />
             );
         }
@@ -113,22 +111,24 @@ export default class Atlas extends Component {
         if (otherMarkers.length !== 0) {
             let markers = [];
             //This will be use full for displaying more than two markers.
-            /*for (let i = 0; i < otherMarkers.length; i++) {
+            for (let i = 0; i < otherMarkers.length; i++) {
                 markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]))
-            }*/
-            markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[otherMarkers.length - 1]), otherMarkers[otherMarkers.length - 1]));
+            }
             return markers;
         }
     }
 
     addMarker(mapClickInfo) {
-        this.clearOtherMarkers();
-        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng), mapBounds: L.latLngBounds(this.state.markerPosition, mapClickInfo.latlng)});
-        this.getDistanceOnMapClick();
+        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(mapClickInfo.latlng), mapBounds: L.latLngBounds(this.state.otherMarkerPositions[0], mapClickInfo.latlng)});
+    }
+
+    addPointToArray(point)
+    {
+        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(point)});
     }
 
     markClientLocation() {
-        this.setState({markerPosition: this.getClientLocation()});
+        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(this.getClientLocation())});
         this.clearOtherMarkers();
     }
 
@@ -151,7 +151,7 @@ export default class Atlas extends Component {
 
     processGeolocation(geolocation) {
         const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-        this.setState({markerPosition: position, locationServiceOn: true, mapBounds: L.latLngBounds(position, position)});
+        this.setState({otherMarkerPositions: this.state.otherMarkerPositions.concat(position), locationServiceOn: true, mapBounds: L.latLngBounds(position, position)});
     }
 
     processGeolocationError(err) {
@@ -164,11 +164,12 @@ export default class Atlas extends Component {
         }
     }
 
-    getDistanceOnMapClick() { //on success renders the distance
+    //Needs Reimplementation
+    /*getDistanceOnMapClick() { //on success renders the distance
         const position1 = `${this.state.markerPosition.lat} , ${this.state.markerPosition.lng}`;
         const position2 = `${this.state.otherMarkerPositions[0].lat} , ${this.state.otherMarkerPositions[0].lng}`;
 
         this.distance.distanceOnClick(position1, position2);
 
-    }
+    }*/
 }

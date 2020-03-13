@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import {Col, Container, Row} from 'reactstrap';
-import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
+import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup, InputGroupAddon} from 'reactstrap';
 import {Button} from 'reactstrap';
 
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
@@ -52,7 +52,6 @@ export default class Distance extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             {this.renderForm()}
                             <div>
-                                {this.renderCalculateDistanceButton()}
                                 {this.renderDistance()}
                             </div>
                         </Col>
@@ -162,13 +161,11 @@ export default class Distance extends Component {
                     <FormText>Input coordinates to find the distance.</FormText>
                     <InputGroup>
                         {this.renderInput("place1", "Enter lat and lng.", this.state.validate.oneValid, "oneValid")}
+                        <InputGroupAddon addonType={"append"}>
+                            <Button onClick={() => this.props.addPoint(this.createMarker("place1"))}>+ Destination</Button>
+                        </InputGroupAddon>
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
-                    </InputGroup>
-                    <InputGroup>
-                        {this.renderInput("place2", "Next coordinates go here.", this.state.validate.twoValid, "twoValid")}
-                        <FormFeedback valid>Find that distance!</FormFeedback>
-                        <FormFeedback>Nope this one is wrong.</FormFeedback>
                     </InputGroup>
                 </FormGroup>
             </Form>
