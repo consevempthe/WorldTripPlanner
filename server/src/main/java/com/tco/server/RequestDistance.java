@@ -1,6 +1,7 @@
 package com.tco.server;
 
 import com.tco.misc.GreatCircleDistance;
+import com.tco.misc.Place;
 
 import java.util.Map;
 
@@ -15,6 +16,11 @@ public class RequestDistance extends RequestHeader {
         this.place1 = p1;
         this.place2 = p2;
         this.earthRadius = earthRadius;
+    }
+
+    public RequestDistance(Place place1, Place place2, Double earthRadius)
+    {
+
     }
 
     @Override
