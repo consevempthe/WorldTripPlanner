@@ -8,7 +8,7 @@ function testInitialAppState() {
     const atlas = shallow(<Atlas/>);
 
     // test markerPosition
-    let actualMarkerPos = atlas.state().otherMarkerPositions[0];
+    let actualMarkerPos = atlas.state().markerPositions[0];
     let expectedMarkerPos = undefined;
 
     expect(actualMarkerPos).toEqual(expectedMarkerPos);
@@ -26,7 +26,7 @@ function testInitialAppState() {
     expect(actualMapBounds).toEqual(expectedMapBounds);
 
     // test otherMarkerPositions & its length
-    let actualOtherMarkerPositions = atlas.state().otherMarkerPositions;
+    let actualOtherMarkerPositions = atlas.state().markerPositions;
     let length = actualOtherMarkerPositions.length;
     let expectedOtherMarkerPositions = [];
     let expectedLengthOtherMarkerPositions = 0;
