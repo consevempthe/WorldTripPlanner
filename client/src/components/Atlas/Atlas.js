@@ -32,6 +32,7 @@ export default class Atlas extends Component {
         this.markClientLocation = this.markClientLocation.bind(this);
         this.processGeolocation = this.processGeolocation.bind(this);
         this.changeOrigin = this.changeOrigin.bind(this);
+        this.renderLine = this.renderLine.bind(this);
 
         this.state = {
             LocationServiceOn: false,
@@ -108,9 +109,19 @@ export default class Atlas extends Component {
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 {this.renderOtherMarkers(this.state.markerPositions)}
-                <Polyline positions={this.state.markerPositions}/>
+                {this.renderLine()}
             </Map>
         )
+    }
+
+    renderLine() {
+        if(this.state.markerPositions.length > 1) {
+            return (
+                <Polyline
+                    positions={this.state.markerPositions}
+                />
+            );
+        }
     }
 
     clearMarkers() {
