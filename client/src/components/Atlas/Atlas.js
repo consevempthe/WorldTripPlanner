@@ -55,7 +55,6 @@ export default class Atlas extends Component {
         markerPositions.push(point);
         this.setState({ markerPositions });
         this.setMapBounds();
-        this.renderLine();
     }
 
     setMapBounds() {
@@ -109,19 +108,9 @@ export default class Atlas extends Component {
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 {this.renderOtherMarkers(this.state.markerPositions)}
-                {this.renderLine()}
+                <Polyline positions={this.state.markerPositions}/>
             </Map>
         )
-    }
-
-    renderLine() {
-        if (this.state.markerPositions.length > 1) {
-            return (
-                <Polyline
-                    positions={this.state.markerPositions}
-                />
-            );
-        }
     }
 
     clearMarkers() {
