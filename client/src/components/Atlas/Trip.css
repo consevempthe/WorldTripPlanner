@@ -1,0 +1,7 @@
+.tableBlockScroll {
+    display:block;
+    position: relative;
+    height: 300px;
+    width: 100%;
+    overflow: auto;
+}

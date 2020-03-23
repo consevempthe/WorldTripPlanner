@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import {DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import {Col, Container, Row} from 'reactstrap';
-import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup, InputGroupAddon} from 'reactstrap';
-import {Button} from 'reactstrap';
+import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup, InputGroupButtonDropdown} from 'reactstrap';
 
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
@@ -17,6 +16,7 @@ export default class Distance extends Component {
         super(props);
 
         this.addPlace = this.addPlace.bind(this);
+        this.toggleDropdown = this.toggleDropdown.bind(this);
 
         this.state = {
             distance: {
@@ -34,8 +34,8 @@ export default class Distance extends Component {
                 distance: 0
             },
 
-            isOpen: false,
-            toggleOpen: false,
+            isOpen: [false, false],
+            toggleOpen: [false, false],
 
             validate: {
                 oneValid: '',
@@ -89,45 +89,29 @@ export default class Distance extends Component {
         )
     }
 
-    renderCalculateDistanceButton() {
-        return (
-            <ButtonDropdown isOpen={this.state.isOpen} toggle={ () => this.state.toggleOpen} className={"float-right"} size={"lg"}>
-                <Button id={"caret"} onClick={ () => this.distanceOnSubmit()}>Calculate Distance</Button>
-                <DropdownToggle onClick={ () => this.toggleDropdown()} caret/>
-                    <DropdownMenu>
-                        <DropdownItem onClick={ () => this.setEarthRadius(3959.0)}>Miles</DropdownItem>
-                        <DropdownItem onClick={ () => this.setEarthRadius(6371.0)}>Kilometers</DropdownItem>
-                        <DropdownItem onClick={ () => this.setEarthRadius(3440.0)}>Nautical Miles</DropdownItem>
-                    </DropdownMenu>
-            </ButtonDropdown>
-        )
-    }
-
     setEarthRadius(unit) {
         const {distance} = Object.assign(this.state);
         distance["earthRadius"] = unit;
 
         this.setState({distance});
-        this.toggleDropdown();
+        this.toggleDropdown(0);
     }
 
-    toggleDropdown() {
-        if (this.state.isOpen) {
-            this.setState({isOpen: false, toggleOpen: false});
+    toggleDropdown(toggleIndex) {
+        const { isOpen } = Object.assign(this.state);
+        const { toggleOpen } = Object.assign(this.state);
+        if (this.state.isOpen[toggleIndex]) {
+            isOpen[toggleIndex] = false;
+            toggleOpen[toggleIndex] = false;
         } else {
-            this.setState({isOpen: true, toggleOpen: true});
+            isOpen[toggleIndex] = true;
+            toggleOpen[toggleIndex] = true;
         }
-    }
-
-    distanceOnSubmit() {
-        this.getDistance();
-        const markerPosition = this.createMarker("place1");
-        const otherMarker = this.createMarker("place2");
-        this.props.marker(markerPosition, otherMarker);
+        this.setState({isOpen, toggleOpen});
     }
 
     createMarker(place) {
-        const {distance} = Object.assign(this.state);
+        const { distance } = Object.assign(this.state);
         return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude)};
     }
 
@@ -154,16 +138,53 @@ export default class Distance extends Component {
         this.getDistance();
     }
 
+    renderRadiusButton() {
+        return (
+            <InputGroupButtonDropdown addonType={"prepend"} isOpen={this.state.isOpen[0]} toggle={ () => this.state.toggleOpen[0]}>
+                <DropdownToggle  onClick={ () => this.toggleDropdown(0)} caret>
+                    Radius
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem onClick={ () => this.setEarthRadius(3959.0)}>Miles</DropdownItem>
+                    <DropdownItem onClick={ () => this.setEarthRadius(6371.0)}>Kilometers</DropdownItem>
+                    <DropdownItem onClick={ () => this.setEarthRadius(3440.0)}>Nautical Miles</DropdownItem>
+                </DropdownMenu>
+
+            </InputGroupButtonDropdown>
+            )
+    }
+
+    renderAddLocation() {
+        return (
+            <InputGroupButtonDropdown addonType={"append"} isOpen={this.state.isOpen[1]} toggle={ () => this.state.toggleOpen[1]}>
+                <DropdownToggle onClick={ () => this.toggleDropdown(1)} disabled={this.state.validate.oneValid !== 'success'}>
+                    +
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem onClick={ () => {
+                        this.props.changeStart(this.createMarker("place1"));
+                        this.toggleDropdown(1)
+                    }}
+                    >Change start</DropdownItem>
+                    <DropdownItem onClick={ () => {
+                        this.props.addPoint(this.createMarker("place1"));
+                        this.toggleDropdown(1)
+                    }}
+                    >Add place</DropdownItem>
+                </DropdownMenu>
+            </InputGroupButtonDropdown>
+        )
+    }
+
     renderForm() {
         return (
             <Form className={"mt-1"}>
                 <FormGroup>
                     <FormText>Input coordinates to find the distance.</FormText>
                     <InputGroup>
+                        {this.renderRadiusButton()}
                         {this.renderInput("place1", "Enter lat and lng.", this.state.validate.oneValid, "oneValid")}
-                        <InputGroupAddon addonType={"append"}>
-                            <Button onClick={() => this.props.addPoint(this.createMarker("place1"))}>+ Destination</Button>
-                        </InputGroupAddon>
+                        {this.renderAddLocation()}
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
                     </InputGroup>
@@ -201,7 +222,7 @@ export default class Distance extends Component {
     }
 
     validateCoordinate(event, pointToValidate) {
-        const {validate} = Object.assign(this.state);
+        const { validate } = Object.assign(this.state);
         const coordinate = event.target.value;
 
         try {
@@ -212,7 +233,7 @@ export default class Distance extends Component {
             validate[pointToValidate] = 'failure';
             return false;
         } finally {
-            this.setState({validate});
+            this.setState({ validate });
         }
     }
 }

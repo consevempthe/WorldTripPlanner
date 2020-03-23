@@ -4,7 +4,19 @@ import {shallow, mount} from 'enzyme';
 
 const Coordinate = require('coordinate-parser');
 
-import Distance from '../src/components/Atlas/distance'
+import Distance from '../src/components/Atlas/distance';
+
+function testRender() {
+    const distance = mount(<Distance/>);
+
+    expect(distance.find('Input').length).toEqual(1);
+    expect(distance.find('InputGroupButtonDropdown').length).toEqual(2);
+    expect(distance.find('Form').length).toEqual(1);
+    expect(distance.find('DropdownItem').length).toEqual(5);
+    expect(distance.find('DropdownMenu').length).toEqual(2);
+}
+
+test("Testing the render", testRender);
 
 function testInitialAppState() {
 
@@ -32,10 +44,12 @@ function testInitialAppState() {
         twoValid: ''
     };
 
+    let expectedToggle = [false, false];
+
     let openInitial = app.state().isOpen;
     let toggleInitial = app.state().toggleOpen;
-    expect(openInitial).toEqual(false);
-    expect(toggleInitial).toEqual(false);
+    expect(openInitial).toEqual(expectedToggle);
+    expect(toggleInitial).toEqual(expectedToggle);
     expect(actualDistance).toEqual(expectedDistance);
     expect(actualValidate).toEqual(expectedValidate);
 }
@@ -44,19 +58,19 @@ test("Testing Distance's initial state", testInitialAppState);
 
 function testToggleDropdownFunction() {
     const app = mount(<Distance/>);
-    app.instance().toggleDropdown();
+    app.instance().toggleDropdown(0);
 
     let isOpenOneToggle = app.state().isOpen;
     let toggleOne = app.state().toggleOpen;
-    expect(isOpenOneToggle).toEqual(true);
-    expect(toggleOne).toEqual(true);
+    expect(isOpenOneToggle).toEqual([true, false]);
+    expect(toggleOne).toEqual([true, false]);
 
-    app.instance().toggleDropdown();
+    app.instance().toggleDropdown(0);
 
     let openTwo = app.state().isOpen;
     let toggleTwo = app.state().toggleOpen;
-    expect(openTwo).toEqual(false);
-    expect(toggleTwo).toEqual(false);
+    expect(openTwo).toEqual([false, false]);
+    expect(toggleTwo).toEqual([false, false]);
 
 }
 
@@ -88,7 +102,10 @@ function testAddPlace() {
     let actualLng = add.state().distance.place1.longitude;
     expect(actualLat).toEqual("34");
     expect(actualLng).toEqual("-105");
+
+    const test1 = add.instance().createMarker("place1");
+    let coordinate = {lat: 34, lng: -105};
+    expect(test1).toEqual(coordinate);
 }
 
-test("Testing add place function", testAddPlace);
-
+test("Testing add place function and create marker", testAddPlace);
