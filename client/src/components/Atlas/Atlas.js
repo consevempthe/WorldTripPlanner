@@ -37,8 +37,7 @@ export default class Atlas extends Component {
         this.state = {
             LocationServiceOn: false,
             mapBounds: null,
-            // all markers
-            markerPositions: []
+            markerPositions: [],
         };
 
         this.getClientLocation();

@@ -25,7 +25,7 @@ function testInitialAppState() {
     let actualDistance = app.state().distance;
     let expectedDistance = {
         requestType: "distance",
-        requestVersion: 3,
+        requestVersion: 3, // This needs to be changed anytime we change version.
         place1: {
             latitude: '',
             longitude: '',
@@ -39,42 +39,13 @@ function testInitialAppState() {
     };
 
     let actualValidate = app.state().validate;
-    let expectedValidate = {
-        oneValid: '',
-        twoValid: ''
-    };
+    let expectedValidate = '';
 
-    let expectedToggle = [false, false];
-
-    let openInitial = app.state().isOpen;
-    let toggleInitial = app.state().toggleOpen;
-    expect(openInitial).toEqual(expectedToggle);
-    expect(toggleInitial).toEqual(expectedToggle);
     expect(actualDistance).toEqual(expectedDistance);
     expect(actualValidate).toEqual(expectedValidate);
 }
 
 test("Testing Distance's initial state", testInitialAppState);
-
-function testToggleDropdownFunction() {
-    const app = mount(<Distance/>);
-    app.instance().toggleDropdown(0);
-
-    let isOpenOneToggle = app.state().isOpen;
-    let toggleOne = app.state().toggleOpen;
-    expect(isOpenOneToggle).toEqual([true, false]);
-    expect(toggleOne).toEqual([true, false]);
-
-    app.instance().toggleDropdown(0);
-
-    let openTwo = app.state().isOpen;
-    let toggleTwo = app.state().toggleOpen;
-    expect(openTwo).toEqual([false, false]);
-    expect(toggleTwo).toEqual([false, false]);
-
-}
-
-test("Testing Toggle Dropdown function", testToggleDropdownFunction);
 
 function testSetEarthRadius() {
     const distanceEarth = mount(<Distance/>);
@@ -106,6 +77,9 @@ function testAddPlace() {
     const test1 = add.instance().createMarker("place1");
     let coordinate = {lat: 34, lng: -105};
     expect(test1).toEqual(coordinate);
+
+    const test2 = new Coordinate("41.1400° N, 104.8202° W");
+    add.instance().addPlace("place2", test2);
 }
 
 test("Testing add place function and create marker", testAddPlace);
