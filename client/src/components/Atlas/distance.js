@@ -95,7 +95,7 @@ export default class Distance extends Component {
 
     createMarker(place) {
         const { distance } = Object.assign(this.state);
-        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: "test"};
+        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: this.state.name};
     }
 
     getDistance() {

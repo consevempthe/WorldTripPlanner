@@ -132,7 +132,6 @@ export default class Atlas extends Component {
             //This will be use full for displaying more than two markers.
             for (let i = 0; i < otherMarkers.length; i++) {
                 markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]));
-                console.log(otherMarkers[i].name);
             }
             return markers;
         }

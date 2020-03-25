@@ -32,7 +32,10 @@ export default class Trip extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             <h3 align={"right"}>My Trip</h3>
                             <Button onClick={ () => {
-                                this.createTrip();
+                               // this.createTrip();
+                                for (let i = 0; i < this.props.locations.length; i++) {
+                                    console.log(this.props.locations[i].name);
+                                }
                             }}>Create Trip</Button>
                         </Col>
                     </Row>
