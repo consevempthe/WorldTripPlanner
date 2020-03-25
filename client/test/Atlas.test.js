@@ -50,6 +50,8 @@ function renderTest() {
 function addMarkerTest() {
 
     const atlas = mount(<Atlas/>);
+
+    // placeholder dummy map click info for addMarker
     const dummyMapClickInfo = {latlng:{lat: 39.49, lng: -104.67}};
 
     atlas.instance().addMarker(dummyMapClickInfo);
