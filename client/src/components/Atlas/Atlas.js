@@ -37,8 +37,8 @@ export default class Atlas extends Component {
         this.state = {
             LocationServiceOn: false,
             mapBounds: null,
-            // all markers
-            markerPositions: []
+
+            markerPositions: [],
         };
 
         this.getClientLocation();
@@ -52,9 +52,7 @@ export default class Atlas extends Component {
     }
 
     addPointToArray(point) {
-        const { markerPositions } = Object.assign(this.state);
-        markerPositions.push(point);
-        this.setState({ markerPositions });
+        this.setState({markerPositions: this.state.markerPositions.concat(point)});
         this.setMapBounds();
     }
 
@@ -73,7 +71,6 @@ export default class Atlas extends Component {
                         </Col>
                     </Row>
                 </Container>
-
                 <Distance
                     changeStart={this.changeOrigin}
                     addPoint={this.addPointToArray}
@@ -83,7 +80,13 @@ export default class Atlas extends Component {
                     }}
                 />
 
-                <Trip/>
+                <Trip
+                    serverPort={this.props.serverPort}
+                    locations={this.state.markerPositions}
+                    ref={distance => {
+                        this.distance = distance;
+                    }}
+                />
             </div>
         );
     }
@@ -148,6 +151,7 @@ export default class Atlas extends Component {
     markClientLocation() {
         this.setState({markerPositions: this.state.markerPositions.concat(this.getClientLocation())});
         this.clearMarkers();
+        this.setMapBounds();
     }
 
     getMarkerPosition(position) {

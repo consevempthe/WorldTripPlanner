@@ -17,17 +17,15 @@ public class TestRequestDistance {
     private RequestDistance fortCollins2FortCollins;
     private RequestDistance fortCollins2ZeroZero;
 
-    private Map<String,String> buildCity(Map<String,String> city, String longitude, String latitude)
+    void buildCity(Map<String,String> city, String longitude, String latitude)
     {
         city.put("longitude", longitude);
         city.put("latitude", latitude);
-        return city;
     }
 
     private Double formatDistance(Double oldDistance)
     {
-        Double newDistance = Double.parseDouble(new DecimalFormat("##.####").format(oldDistance));
-        return newDistance;
+        return Double.parseDouble(new DecimalFormat("##.####").format(oldDistance));
     }
 
     @Before
@@ -37,14 +35,14 @@ public class TestRequestDistance {
         Double earthRadiusKM = 6371.0;
         Double earthRadiusNM =  3440.0;
 
-        Map<String,String> fortCollins = new HashMap<String,String>();
-        Map<String,String> chicago = new HashMap<String,String>();
-        Map<String,String> cheyenne = new HashMap<String,String>();
-        Map<String,String> australia = new HashMap<String,String>();
-        Map<String,String> singapore = new HashMap<String,String>();
-        Map<String,String> losAngeles = new HashMap<String,String>();
-        Map<String,String> daytonaBeach = new HashMap<String,String>();
-        Map<String,String> zeroZero = new HashMap<String,String>();
+        Map<String,String> fortCollins = new HashMap<>();
+        Map<String,String> chicago = new HashMap<>();
+        Map<String,String> cheyenne = new HashMap<>();
+        Map<String,String> australia = new HashMap<>();
+        Map<String,String> singapore = new HashMap<>();
+        Map<String,String> losAngeles = new HashMap<>();
+        Map<String,String> daytonaBeach = new HashMap<>();
+        Map<String,String> zeroZero = new HashMap<>();
 
         this.buildCity(fortCollins, "-105.08442", "40.5826");
         this.buildCity(chicago, "-87.65005", "41.85003");
@@ -74,7 +72,6 @@ public class TestRequestDistance {
     public void testGetDistanceFortCollins2Chicago()
     {
         //Testing in miles
-        Double calculatedDistance = this.fortCollins2Chicago.getDistance();
         Double distance = this.formatDistance(this.fortCollins2Chicago.getDistance());
         assertEquals(908.831, distance,0);
     }
@@ -83,7 +80,6 @@ public class TestRequestDistance {
     public void testDistanceFortCollinsToCheyenne()
     {
         //Testing in nautical miles
-        Double calculatedDistance = this.fortCollins2Cheyenne.getDistance();
         Double distance = this.formatDistance(this.fortCollins2Cheyenne.getDistance());
         assertEquals(35.5496, distance, 0);
     }

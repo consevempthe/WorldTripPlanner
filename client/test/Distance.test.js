@@ -10,7 +10,8 @@ function testRender() {
     const distance = mount(<Distance/>);
 
     expect(distance.find('Input').length).toEqual(1);
-    expect(distance.find('InputGroupButtonDropdown').length).toEqual(2);
+    expect(distance.find('UncontrolledDropdown').length).toEqual(2);
+    expect(distance.find('DropdownToggle').length).toEqual(2);
     expect(distance.find('Form').length).toEqual(1);
     expect(distance.find('DropdownItem').length).toEqual(5);
     expect(distance.find('DropdownMenu').length).toEqual(2);
@@ -25,7 +26,7 @@ function testInitialAppState() {
     let actualDistance = app.state().distance;
     let expectedDistance = {
         requestType: "distance",
-        requestVersion: 3,
+        requestVersion: 3, // This needs to be changed anytime we change version.
         place1: {
             latitude: '',
             longitude: '',
@@ -39,42 +40,13 @@ function testInitialAppState() {
     };
 
     let actualValidate = app.state().validate;
-    let expectedValidate = {
-        oneValid: '',
-        twoValid: ''
-    };
+    let expectedValidate = '';
 
-    let expectedToggle = [false, false];
-
-    let openInitial = app.state().isOpen;
-    let toggleInitial = app.state().toggleOpen;
-    expect(openInitial).toEqual(expectedToggle);
-    expect(toggleInitial).toEqual(expectedToggle);
     expect(actualDistance).toEqual(expectedDistance);
     expect(actualValidate).toEqual(expectedValidate);
 }
 
 test("Testing Distance's initial state", testInitialAppState);
-
-function testToggleDropdownFunction() {
-    const app = mount(<Distance/>);
-    app.instance().toggleDropdown(0);
-
-    let isOpenOneToggle = app.state().isOpen;
-    let toggleOne = app.state().toggleOpen;
-    expect(isOpenOneToggle).toEqual([true, false]);
-    expect(toggleOne).toEqual([true, false]);
-
-    app.instance().toggleDropdown(0);
-
-    let openTwo = app.state().isOpen;
-    let toggleTwo = app.state().toggleOpen;
-    expect(openTwo).toEqual([false, false]);
-    expect(toggleTwo).toEqual([false, false]);
-
-}
-
-test("Testing Toggle Dropdown function", testToggleDropdownFunction);
 
 function testSetEarthRadius() {
     const distanceEarth = mount(<Distance/>);
@@ -87,8 +59,7 @@ function testSetEarthRadius() {
 
     distanceEarth.instance().setEarthRadius(nautical);
     let expectedEarthRadiusNM = distanceEarth.state().distance.earthRadius;
-    expect(expectedEarthRadiusNM).toEqual(3440.0)
-
+    expect(expectedEarthRadiusNM).toEqual(3440.0);
 }
 
 test("Test setEarthRadius", testSetEarthRadius);
@@ -98,14 +69,59 @@ function testAddPlace() {
     const test = new Coordinate("34N 105W");
     add.instance().addPlace("place1", test);
 
-    let actualLat = add.state().distance.place1.latitude;
-    let actualLng = add.state().distance.place1.longitude;
-    expect(actualLat).toEqual("34");
-    expect(actualLng).toEqual("-105");
+    let expectedPlace1 = {latitude: "34.00", longitude: "-105.00"};
+    let actualPlace1 = add.state().distance.place1;
+    expect(actualPlace1).toEqual(expectedPlace1);
 
     const test1 = add.instance().createMarker("place1");
     let coordinate = {lat: 34, lng: -105};
     expect(test1).toEqual(coordinate);
+
+    const test2 = new Coordinate("41.1400° N, 104.8202° W");
+    add.instance().addPlace("place2", test2);
+    let expectedPlace2 = {latitude: "41.14", longitude: "-104.82"};
+    let actualPlace2 = add.state().distance.place2;
+    expect(actualPlace2).toEqual(expectedPlace2);
+
+    const test3 = add.instance().createMarker(("place2"));
+    let coordinate1 = {lat: 41.14, lng: -104.82};
+    expect(test3).toEqual(coordinate1);
 }
 
 test("Testing add place function and create marker", testAddPlace);
+
+function testValidate() {
+    let event = {target: {value: "34 -105"}};
+    const valid = mount(<Distance/>);
+
+    let bool = valid.instance().validateCoordinate(event);
+    expect(bool).toEqual(true);
+    let validate = valid.state().validate;
+    expect(validate).toEqual('success');
+
+    let badEvent = {target: {value: "foobar"}};
+    let bool1 = valid.instance().validateCoordinate(badEvent);
+    expect(bool1).toEqual(false);
+    let validateF = valid.state().validate;
+    expect(validateF).toEqual('failure');
+}
+
+test("Testing validate coordinates", testValidate);
+
+function testSetPlace() {
+    const setPlace = mount(<Distance/>);
+    let event = {target: {value: "34 -105", name: "place1"}};
+
+    setPlace.instance().setPlace(event);
+    let expectPlace1 = {latitude: "34.00", longitude: "-105.00"};
+    let actualPlace1 = setPlace.state().distance.place1;
+    expect(actualPlace1).toEqual(expectPlace1);
+
+    let event1 = {target: {value: "feel awful", name: "place2"}};
+    setPlace.instance().setPlace(event1);
+    let expectPlace2 = {latitude: '', longitude: ''};
+    let actualPlace2 = setPlace.state().distance.place2;
+    expect(actualPlace2).toEqual(expectPlace2);
+}
+
+test("Testing set place", testSetPlace);

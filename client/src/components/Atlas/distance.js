@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
-import {Col, Container, Row} from 'reactstrap';
-import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup, InputGroupButtonDropdown} from 'reactstrap';
+import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from 'reactstrap';
+import {Col, Container, Row, UncontrolledAlert} from 'reactstrap';
+import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
 
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
@@ -16,7 +16,6 @@ export default class Distance extends Component {
         super(props);
 
         this.addPlace = this.addPlace.bind(this);
-        this.toggleDropdown = this.toggleDropdown.bind(this);
 
         this.state = {
             distance: {
@@ -34,13 +33,7 @@ export default class Distance extends Component {
                 distance: 0
             },
 
-            isOpen: [false, false],
-            toggleOpen: [false, false],
-
-            validate: {
-                oneValid: '',
-                twoValid: ''
-            }
+            validate: ''
         }
     }
 
@@ -83,8 +76,8 @@ export default class Distance extends Component {
 
     renderUnits(unit) {
         return (
-            <div className={"alert alert-success col-md-5 form-inline"}>
-                <i>Distance: {this.state.distance.distance}{unit}</i>
+            <div>
+                <UncontrolledAlert>Distance: {this.state.distance.distance}{unit}</UncontrolledAlert>
             </div>
         )
     }
@@ -94,20 +87,6 @@ export default class Distance extends Component {
         distance["earthRadius"] = unit;
 
         this.setState({distance});
-        this.toggleDropdown(0);
-    }
-
-    toggleDropdown(toggleIndex) {
-        const { isOpen } = Object.assign(this.state);
-        const { toggleOpen } = Object.assign(this.state);
-        if (this.state.isOpen[toggleIndex]) {
-            isOpen[toggleIndex] = false;
-            toggleOpen[toggleIndex] = false;
-        } else {
-            isOpen[toggleIndex] = true;
-            toggleOpen[toggleIndex] = true;
-        }
-        this.setState({isOpen, toggleOpen});
     }
 
     createMarker(place) {
@@ -118,7 +97,7 @@ export default class Distance extends Component {
     getDistance() {
         sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then( distance => {
             this.processDistanceResponse(distance);
-        })
+        });
     }
 
     processDistanceResponse(distanceResponse) {
@@ -140,8 +119,8 @@ export default class Distance extends Component {
 
     renderRadiusButton() {
         return (
-            <InputGroupButtonDropdown addonType={"prepend"} isOpen={this.state.isOpen[0]} toggle={ () => this.state.toggleOpen[0]}>
-                <DropdownToggle  onClick={ () => this.toggleDropdown(0)} caret>
+            <UncontrolledDropdown addonType={"prepend"}>
+                <DropdownToggle caret>
                     Radius
                 </DropdownToggle>
                 <DropdownMenu>
@@ -149,30 +128,27 @@ export default class Distance extends Component {
                     <DropdownItem onClick={ () => this.setEarthRadius(6371.0)}>Kilometers</DropdownItem>
                     <DropdownItem onClick={ () => this.setEarthRadius(3440.0)}>Nautical Miles</DropdownItem>
                 </DropdownMenu>
-
-            </InputGroupButtonDropdown>
+            </UncontrolledDropdown>
             )
     }
 
     renderAddLocation() {
         return (
-            <InputGroupButtonDropdown addonType={"append"} isOpen={this.state.isOpen[1]} toggle={ () => this.state.toggleOpen[1]}>
-                <DropdownToggle onClick={ () => this.toggleDropdown(1)} disabled={this.state.validate.oneValid !== 'success'}>
+            <UncontrolledDropdown addonType={"append"}>
+                <DropdownToggle disabled={this.state.validate !== 'success'}>
                     +
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem onClick={ () => {
                         this.props.changeStart(this.createMarker("place1"));
-                        this.toggleDropdown(1)
                     }}
-                    >Change start</DropdownItem>
+                    >Change Start</DropdownItem>
                     <DropdownItem onClick={ () => {
                         this.props.addPoint(this.createMarker("place1"));
-                        this.toggleDropdown(1)
                     }}
-                    >Add place</DropdownItem>
+                    >Add Place</DropdownItem>
                 </DropdownMenu>
-            </InputGroupButtonDropdown>
+            </UncontrolledDropdown>
         )
     }
 
@@ -183,7 +159,7 @@ export default class Distance extends Component {
                     <FormText>Input coordinates to find the distance.</FormText>
                     <InputGroup>
                         {this.renderRadiusButton()}
-                        {this.renderInput("place1", "Enter lat and lng.", this.state.validate.oneValid, "oneValid")}
+                        {this.renderInput("place1", "Enter lat and lng.", this.state.validate)}
                         {this.renderAddLocation()}
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
@@ -193,7 +169,7 @@ export default class Distance extends Component {
         )
     }
 
-    renderInput(name, placeholder, validate, pointToValidate) {
+    renderInput(name, placeholder, validate) {
         return (
             <Input
                 name={name}
@@ -201,7 +177,7 @@ export default class Distance extends Component {
                 valid={validate === 'success'}
                 invalid={validate === 'failure'}
                 onChange={(event) => {
-                    this.setPlace(event, pointToValidate);
+                    this.setPlace(event);
                 }}
             />
         )
@@ -209,28 +185,28 @@ export default class Distance extends Component {
 
     addPlace(name, coordinate) {
         const {distance} = Object.assign(this.state);
-        distance[name].latitude = coordinate.getLatitude().toString();
-        distance[name].longitude = coordinate.getLongitude().toString();
+        distance[name].latitude = coordinate.getLatitude().toFixed(2).toString();
+        distance[name].longitude = coordinate.getLongitude().toFixed(2).toString();
 
         this.setState({distance});
     }
 
-    setPlace(event, pointToValidate) {
-        if(this.validateCoordinate(event, pointToValidate)) {
+    setPlace(event) {
+        if(this.validateCoordinate(event)) {
             this.addPlace(event.target.name, new Coordinate(event.target.value));
         }
     }
 
-    validateCoordinate(event, pointToValidate) {
-        const { validate } = Object.assign(this.state);
+    validateCoordinate(event) {
+        let { validate } = Object.assign(this.state);
         const coordinate = event.target.value;
 
         try {
             new Coordinate(coordinate);
-            validate[pointToValidate] = 'success';
+            validate = 'success';
             return true;
         } catch (error) {
-            validate[pointToValidate] = 'failure';
+            validate = 'failure';
             return false;
         } finally {
             this.setState({ validate });
