@@ -47,5 +47,20 @@ function renderTest() {
 
 }
 
+function addMarkerTest() {
+
+    const atlas = mount(<Atlas/>);
+    const dummyMapClickInfo = {latlng:{lat: 39.49, lng: -104.67}};
+
+    atlas.instance().addMarker(dummyMapClickInfo);
+
+    let predicate = atlas.state().markerPositions !== 0;
+
+    expect(predicate).toEqual(true);
+
+
+}
+
 test("Testing Atlas' Initial State:", testInitialAppState);
 test("Testing Atlas' Render:", renderTest);
+test("Testing Atlas' Add Marker:", addMarkerTest);
