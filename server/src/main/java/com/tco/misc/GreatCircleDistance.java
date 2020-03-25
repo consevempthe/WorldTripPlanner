@@ -1,6 +1,7 @@
 package com.tco.misc;
 
 import java.util.Map;
+import java.lang.Math;
 
 public class GreatCircleDistance {
     Double place1Longitude;
@@ -58,8 +59,9 @@ public class GreatCircleDistance {
         return Math.atan2(numerator,denominator);
     }
 
-    public Double calculateDistance()
+    public Long calculateDistance()
     {
-        return (this.vincentyFormula() * this.earthRadius);
+
+        return Math.round(this.vincentyFormula() * this.earthRadius);
     }
 }
