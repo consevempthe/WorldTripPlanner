@@ -139,7 +139,8 @@ export default class Atlas extends Component {
 
     addMarker(mapClickInfo) {
         this.setState({markerPositions: this.state.markerPositions.concat(mapClickInfo.latlng)}, this.setMapBounds);
-        this.state.markerPositions[this.state.markerPositions.length - 1].name = mapClickInfo.latlng.lat.toFixed(2).toString() + ", " + mapClickInfo.latlng.lng.toFixed(2).toString();
+        // currently name is added to map when user clicks using prompt(msg); a new method may need to be implemented
+        this.state.markerPositions[this.state.markerPositions.length - 1].name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
         this.getDistanceOnMapClick();
     }
 

@@ -36,7 +36,7 @@ export default class Distance extends Component {
             },
 
             name: '',
-            validName: 'failure',
+            validName: '',
             validate: ''
         }
     }
@@ -222,7 +222,6 @@ export default class Distance extends Component {
 
 
     setPlace(event) {
-        console.log(this.state.validName);
         if(this.validateCoordinate(event)) {
             this.addPlace(event.target.name, new Coordinate(event.target.value));
         }
