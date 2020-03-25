@@ -113,7 +113,7 @@ function testSetPlace() {
     let event = {target: {value: "34 -105", name: "place1"}};
 
     setPlace.instance().setPlace(event);
-    let expectPlace1 = {latitude: "34.00", longitude: "-105.00"};
+    let expectPlace1 = {latitude: "34.00", longitude: "-105.00", name:""};
     let actualPlace1 = setPlace.state().distance.place1;
     expect(actualPlace1).toEqual(expectPlace1);
 
