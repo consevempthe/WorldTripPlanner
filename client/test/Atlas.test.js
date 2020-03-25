@@ -1,6 +1,6 @@
 import './enzyme.config.js'
 import React from 'react'
-import {shallow/*, mount*/} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 
 import Atlas from "../src/components/Atlas/Atlas";
 
@@ -35,4 +35,17 @@ function testInitialAppState() {
     expect(length).toEqual(expectedLengthOtherMarkerPositions);
 }
 
-test("Testing Atlas's Initial State", testInitialAppState);
+function renderTest() {
+
+    const atlas = mount(<Atlas/>);
+
+    expect(atlas.find('Button').length).toEqual(2);
+    expect(atlas.find('Map').length).toEqual(1);
+    expect(atlas.find('Distance').length).toEqual(1);
+    expect(atlas.find('Trip').length).toEqual(1);
+
+
+}
+
+test("Testing Atlas' Initial State:", testInitialAppState);
+test("Testing Atlas' Render:", renderTest);
