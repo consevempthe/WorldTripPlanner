@@ -3,12 +3,13 @@ package com.tco.server;
 import com.tco.misc.GreatCircleDistance;
 import com.tco.misc.Place;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RequestDistance extends RequestHeader {
-    Map<String, String> place1;
-    Map<String, String> place2;
-    Double earthRadius;
+    final Map<String, String> place1;
+    final Map<String, String> place2;
+    final Double earthRadius;
     Long distance;
 
     public RequestDistance(Map<String,String> p1, Map<String,String> p2, Double earthRadius)
@@ -18,9 +19,19 @@ public class RequestDistance extends RequestHeader {
         this.earthRadius = earthRadius;
     }
 
-    public RequestDistance(Place place1, Place place2, Double earthRadius)
+    public RequestDistance(Place destination1, Place destination2, Double earthRadius)
     {
+        Map<String, String> p1 = new HashMap<>();
+        Map<String, String> p2 = new HashMap<>();
+        p1.put("latitude", destination1.latitude);
+        p1.put("longitude", destination1.longitude);
 
+        p2.put("latitude", destination2.latitude);
+        p2.put("longitude", destination2.longitude);
+
+        this.place1 = p1;
+        this.place2 = p2;
+        this.earthRadius = earthRadius;
     }
 
     @Override

@@ -10,7 +10,8 @@ function testRender() {
     const distance = mount(<Distance/>);
 
     expect(distance.find('Input').length).toEqual(1);
-    expect(distance.find('InputGroupButtonDropdown').length).toEqual(2);
+    expect(distance.find('UncontrolledDropdown').length).toEqual(2);
+    expect(distance.find('DropdownToggle').length).toEqual(2);
     expect(distance.find('Form').length).toEqual(1);
     expect(distance.find('DropdownItem').length).toEqual(5);
     expect(distance.find('DropdownMenu').length).toEqual(2);

@@ -3,7 +3,6 @@ package com.tco.server;
 import static spark.Spark.secure;
 
 import com.google.gson.Gson;
-import com.tco.misc.GreatCircleDistance;
 import com.tco.misc.JSONValidator;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -60,6 +59,7 @@ class  MicroServer {
     // Configure other restful API requests here
     Spark.post("/api/config", this::processPostConfigRequest);
     Spark.post( "/api/distance", this::processDistanceRequest);
+    Spark.post("/api/trip", this::processTripRequest);
   }
 
   private String processConfigRequest(Request request, Response response) {
@@ -70,6 +70,11 @@ class  MicroServer {
   private String processDistanceRequest(Request request, Response response){
    logRequest(request);
    return processHttpRequest(RequestDistance.class, request.body(), response);
+  }
+
+  private String processTripRequest(Request request, Response response){
+    logRequest(request);
+    return processHttpRequest(RequestTrip.class, request.body(), response);
   }
 
   private String processPostConfigRequest(Request request, Response response) {

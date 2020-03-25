@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from 'reactstrap';
-import {Col, Container, Row} from 'reactstrap';
+import {Col, Container, Row, UncontrolledAlert} from 'reactstrap';
 import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
 
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
@@ -76,8 +76,8 @@ export default class Distance extends Component {
 
     renderUnits(unit) {
         return (
-            <div className={"alert alert-success col-md-5 form-inline"}>
-                <i>Distance: {this.state.distance.distance}{unit}</i>
+            <div>
+                <UncontrolledAlert>Distance: {this.state.distance.distance}{unit}</UncontrolledAlert>
             </div>
         )
     }
@@ -97,7 +97,7 @@ export default class Distance extends Component {
     getDistance() {
         sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then( distance => {
             this.processDistanceResponse(distance);
-        })
+        });
     }
 
     processDistanceResponse(distanceResponse) {
@@ -142,11 +142,11 @@ export default class Distance extends Component {
                     <DropdownItem onClick={ () => {
                         this.props.changeStart(this.createMarker("place1"));
                     }}
-                    >Change start</DropdownItem>
+                    >Change Start</DropdownItem>
                     <DropdownItem onClick={ () => {
                         this.props.addPoint(this.createMarker("place1"));
                     }}
-                    >Add place</DropdownItem>
+                    >Add Place</DropdownItem>
                 </DropdownMenu>
             </UncontrolledDropdown>
         )
