@@ -1,5 +1,16 @@
 import React, {Component} from 'react';
-import {Table, Col, Row, Container, Button, UncontrolledAlert} from 'reactstrap';
+import {
+    Table,
+    Col,
+    Row,
+    Container,
+    Button,
+    UncontrolledAlert,
+    Form, FormGroup, FormText,
+    Input,
+    Modal,
+    ModalHeader, ModalFooter, ModalBody
+} from 'reactstrap';
 import "./Trip.css"
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
@@ -10,6 +21,8 @@ export default class Trip extends Component {
     constructor(props) {
         super(props);
 
+        this.showLoadFileModal = this.showLoadFileModal.bind(this);
+
         this.state = {
             trip: {
                 requestType: "trip",
@@ -18,7 +31,7 @@ export default class Trip extends Component {
                 places: [],
                 distances: []
             },
-
+            showLoadFileModal: false,
             cumulativeDistance: 0,
         };
     }
@@ -34,10 +47,13 @@ export default class Trip extends Component {
                             <Button onClick={ () => {
                                 this.createTrip();
                             }}>Create Trip</Button>
+                            {this.renderLoadTripButton()}
+                            {this.renderLoadFileModal()}
+                            {this.renderTable()}
                         </Col>
                     </Row>
                 </Container>
-                {this.renderTable()}
+
             </div>
 
         )
@@ -85,6 +101,46 @@ export default class Trip extends Component {
                 </div>
             )
         }
+    }
+
+    renderLoadTripButton()
+    {
+        return(
+            <Button type="button" onClick={this.showLoadFileModal}>Load Trip</Button>
+        );
+    }
+
+    renderLoadFileModal()
+    {
+        return(
+            <div>
+                <Modal isOpen={this.state.showLoadFileModal} toggle={() => this.hideLoadFileModal()}>
+                    <ModalHeader toggle={() => this.hideLoadFileModal()}>Load a Trip to Your Itinerary</ModalHeader>
+                    <ModalBody>
+                        <Form>
+                            <FormGroup>
+                                <Input type="file" name="itineraryFile" id="itineraryFile" />
+                                <FormText>Please upload your itinerary in a JSON file format.</FormText>
+                            </FormGroup>
+                        </Form>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button>Upload</Button>
+                        <Button onClick={() => this.hideLoadFileModal()}>Close</Button>
+                    </ModalFooter>
+                </Modal>
+            </div>
+        );
+    }
+
+    showLoadFileModal()
+    {
+        this.setState({showLoadFileModal: true});
+    }
+
+    hideLoadFileModal()
+    {
+        this.setState({showLoadFileModal: false});
     }
 
     getCumulativeDistance() {
