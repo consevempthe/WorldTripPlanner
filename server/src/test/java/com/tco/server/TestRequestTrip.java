@@ -24,17 +24,17 @@ public class TestRequestTrip {
         places[1] = new Place("boulder", "40.0", "-105.4");
         places[2] = new Place("fort collins", "40.6", "-105.1");
 
-        Integer[] distances = new Integer[3];
+        Long[] distances = new Long[3];
 
         test1 = new RequestTrip(test1Option, places, distances);
     }
 
     @Test
     public void testingTrip() {
-        Integer[] test1Dist = this.test1.getDistances();
+        Long[] test1Dist = this.test1.getDistances();
 
         assertEquals(3, test1Dist.length, 0);
-        assertEquals(29, test1Dist[0], 0);
+        assertEquals(30, test1Dist[0], 0);
         assertEquals(44, test1Dist[1], 0);
         assertEquals(62, test1Dist[2], 0);
 

@@ -8,9 +8,9 @@ public class RequestTrip extends RequestHeader {
     //key: Unit Title value: corresponding Earth radius
     final Map<String, String> options;
     final Place[] places;
-    Integer[] distances;
+    Long[] distances;
 
-    public RequestTrip(Map<String, String> o, Place[] p, Integer[] d) {
+    public RequestTrip(Map<String, String> o, Place[] p, Long[] d) {
         this.options = o;
         this.places = p;
         this.distances = d;
@@ -21,18 +21,18 @@ public class RequestTrip extends RequestHeader {
         this.distances = this.getDistances();
     }
 
-    public Integer[] getDistances()
+    public Long[] getDistances()
     {
-        Integer[] distances = new Integer[this.places.length];
+        Long[] distances = new Long[this.places.length];
         Double earthRadius = Double.parseDouble(options.get("earthRadius"));
 
         for (int i = 0; i < distances.length; i++) {
             if(i == distances.length - 1) {
                 RequestDistance distance = new RequestDistance(places[i], places[0], earthRadius);
-                distances[i] = distance.getDistance().intValue();
+                distances[i] = distance.getDistance();
             } else {
                 RequestDistance distance = new RequestDistance(places[i], places[i + 1], earthRadius);
-                distances[i] = distance.getDistance().intValue();
+                distances[i] = distance.getDistance();
             }
         }
 

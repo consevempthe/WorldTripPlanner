@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Table, Col, Row, Container, Button} from 'reactstrap';
+import {Table, Col, Row, Container, Button, UncontrolledAlert} from 'reactstrap';
 import "./Trip.css"
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
@@ -14,10 +14,12 @@ export default class Trip extends Component {
             trip: {
                 requestType: "trip",
                 requestVersion: PROTOCOL_VERSION,
-                options: {title: 'title', earthRadius: '6371.0'},
+                options: {title: 'title', earthRadius: '3959.0'},
                 places: [],
                 distances: []
-            }
+            },
+
+            cumulativeDistance: 0,
         };
     }
 
@@ -25,10 +27,13 @@ export default class Trip extends Component {
         return(
             <div>
                 <Container>
+                    {this.renderCumulativeDistance()}
                     <Row>
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             <h3 align={"right"}>My Trip</h3>
-                            <Button onClick={ () => this.testTrip()}>Testing</Button>
+                            <Button onClick={ () => {
+                                this.createTrip();
+                            }}>Create Trip</Button>
                         </Col>
                     </Row>
                 </Container>
@@ -72,8 +77,24 @@ export default class Trip extends Component {
         return body;
     }
 
-    testTrip() { // this is just a testing function to test your request not the button in render()
-        this.createTrip();
+    renderCumulativeDistance() {
+        if(this.state.cumulativeDistance !== 0) {
+            return (
+                <div>
+                    <UncontrolledAlert>Total Trip Distance: {this.state.cumulativeDistance}</UncontrolledAlert>
+                </div>
+            )
+        }
+    }
+
+    getCumulativeDistance() {
+        let { cumulativeDistance } = Object.assign(this.state);
+
+        for (let i = 0; i < this.state.trip.distances.length; i++) {
+            cumulativeDistance += this.state.trip.distances[i];
+        }
+
+        this.setState({cumulativeDistance});
     }
 
     createTrip() {
@@ -86,7 +107,7 @@ export default class Trip extends Component {
         if(!isJsonResponseValid(tripResponse.body, tripSchema)) {
 
         } else if (tripResponse.statusCode === HTTP_OK) {
-            this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))});
+            this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))}, this.getCumulativeDistance);
         }
     }
 }

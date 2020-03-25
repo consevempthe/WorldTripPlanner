@@ -37,7 +37,7 @@ public class RequestDistance extends RequestHeader {
     @Override
     public void buildResponse() {
         GreatCircleDistance greatCircleDistance = new GreatCircleDistance(place1, place2, earthRadius);
-        this.distance = greatCircleDistance.calculateDistance().longValue();
+        this.distance = greatCircleDistance.calculateDistance();
     }
 
     Double getEarthRadius()
@@ -45,7 +45,7 @@ public class RequestDistance extends RequestHeader {
         return this.earthRadius;
     }
 
-    Double getDistance()
+    Long getDistance()
     {
         GreatCircleDistance greatCircleDistance = new GreatCircleDistance(place1, place2, earthRadius);
         return greatCircleDistance.calculateDistance();
