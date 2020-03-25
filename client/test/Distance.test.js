@@ -9,7 +9,7 @@ import Distance from '../src/components/Atlas/distance';
 function testRender() {
     const distance = mount(<Distance/>);
 
-    expect(distance.find('Input').length).toEqual(1);
+    expect(distance.find('Input').length).toEqual(2);
     expect(distance.find('UncontrolledDropdown').length).toEqual(2);
     expect(distance.find('DropdownToggle').length).toEqual(2);
     expect(distance.find('Form').length).toEqual(1);

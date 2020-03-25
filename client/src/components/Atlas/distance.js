@@ -137,9 +137,10 @@ export default class Distance extends Component {
     }
 
     renderAddLocation() {
+        let predicate = this.state.validate !== 'success'|| this.state.validName !== 'success';
         return (
             <UncontrolledDropdown addonType={"append"}>
-                <DropdownToggle disabled={this.state.validate !== 'success'}>
+                <DropdownToggle disabled={predicate}>
                     +
                 </DropdownToggle>
                 <DropdownMenu>
@@ -167,9 +168,11 @@ export default class Distance extends Component {
                         {this.renderAddLocation()}
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
+                    </InputGroup>
+                    <InputGroup>
                         {this.renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
-                        <FormFeedback valid1>Nice! that's a valid name!</FormFeedback>
-                        <FormFeedback invalid1>Sorry, you must have a name.</FormFeedback>
+                        <FormFeedback valid>Nice! that's a valid name!</FormFeedback>
+                        <FormFeedback>Sorry, you must have a name for the point.</FormFeedback>
                     </InputGroup>
                 </FormGroup>
             </Form>
