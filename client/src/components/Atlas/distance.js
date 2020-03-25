@@ -197,6 +197,7 @@ export default class Distance extends Component {
         const {distance} = Object.assign(this.state);
         distance[name].latitude = coordinate.getLatitude().toFixed(2).toString();
         distance[name].longitude = coordinate.getLongitude().toFixed(2).toString();
+        distance[name].name = this.state.name;
 
         this.setState({distance});
     }
