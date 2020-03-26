@@ -9,7 +9,7 @@ import Distance from '../src/components/Atlas/distance';
 function testRender() {
     const distance = mount(<Distance/>);
 
-    expect(distance.find('Input').length).toEqual(1);
+    expect(distance.find('Input').length).toEqual(2);
     expect(distance.find('UncontrolledDropdown').length).toEqual(2);
     expect(distance.find('DropdownToggle').length).toEqual(2);
     expect(distance.find('Form').length).toEqual(1);
@@ -69,22 +69,22 @@ function testAddPlace() {
     const test = new Coordinate("34N 105W");
     add.instance().addPlace("place1", test);
 
-    let expectedPlace1 = {latitude: "34.00", longitude: "-105.00"};
+    let expectedPlace1 = {latitude: "34.00", longitude: "-105.00", name:""};
     let actualPlace1 = add.state().distance.place1;
     expect(actualPlace1).toEqual(expectedPlace1);
 
     const test1 = add.instance().createMarker("place1");
-    let coordinate = {lat: 34, lng: -105};
+    let coordinate = {lat: 34, lng: -105, name: ""};
     expect(test1).toEqual(coordinate);
 
     const test2 = new Coordinate("41.1400° N, 104.8202° W");
     add.instance().addPlace("place2", test2);
-    let expectedPlace2 = {latitude: "41.14", longitude: "-104.82"};
+    let expectedPlace2 = {latitude: "41.14", longitude: "-104.82", name:""};
     let actualPlace2 = add.state().distance.place2;
     expect(actualPlace2).toEqual(expectedPlace2);
 
     const test3 = add.instance().createMarker(("place2"));
-    let coordinate1 = {lat: 41.14, lng: -104.82};
+    let coordinate1 = {lat: 41.14, lng: -104.82, name:""};
     expect(test3).toEqual(coordinate1);
 }
 
@@ -113,7 +113,7 @@ function testSetPlace() {
     let event = {target: {value: "34 -105", name: "place1"}};
 
     setPlace.instance().setPlace(event);
-    let expectPlace1 = {latitude: "34.00", longitude: "-105.00"};
+    let expectPlace1 = {latitude: "34.00", longitude: "-105.00", name:""};
     let actualPlace1 = setPlace.state().distance.place1;
     expect(actualPlace1).toEqual(expectPlace1);
 

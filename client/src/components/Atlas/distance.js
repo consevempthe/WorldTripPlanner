@@ -16,6 +16,8 @@ export default class Distance extends Component {
         super(props);
 
         this.addPlace = this.addPlace.bind(this);
+        this.setPlace = this.setPlace.bind(this);
+        this.setName = this.setName.bind(this);
 
         this.state = {
             distance: {
@@ -33,6 +35,8 @@ export default class Distance extends Component {
                 distance: 0
             },
 
+            name: '',
+            validName: '',
             validate: ''
         }
     }
@@ -91,7 +95,7 @@ export default class Distance extends Component {
 
     createMarker(place) {
         const { distance } = Object.assign(this.state);
-        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude)};
+        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: this.state.name};
     }
 
     getDistance() {
@@ -133,9 +137,10 @@ export default class Distance extends Component {
     }
 
     renderAddLocation() {
+        let predicate = this.state.validate !== 'success'|| this.state.validName !== 'success';
         return (
             <UncontrolledDropdown addonType={"append"}>
-                <DropdownToggle disabled={this.state.validate !== 'success'}>
+                <DropdownToggle disabled={predicate}>
                     +
                 </DropdownToggle>
                 <DropdownMenu>
@@ -159,17 +164,22 @@ export default class Distance extends Component {
                     <FormText>Input coordinates to find the distance.</FormText>
                     <InputGroup>
                         {this.renderRadiusButton()}
-                        {this.renderInput("place1", "Enter lat and lng.", this.state.validate)}
+                        {this.renderInput("place1", "Enter lat and lng.", this.state.validate, this.setPlace)}
                         {this.renderAddLocation()}
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
+                    </InputGroup>
+                    <InputGroup>
+                        {this.renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
+                        <FormFeedback valid>Nice! that's a valid name!</FormFeedback>
+                        <FormFeedback>Sorry, you must have a name for the point.</FormFeedback>
                     </InputGroup>
                 </FormGroup>
             </Form>
         )
     }
 
-    renderInput(name, placeholder, validate) {
+    renderInput(name, placeholder, validate, changeFunction) {
         return (
             <Input
                 name={name}
@@ -177,7 +187,7 @@ export default class Distance extends Component {
                 valid={validate === 'success'}
                 invalid={validate === 'failure'}
                 onChange={(event) => {
-                    this.setPlace(event);
+                    changeFunction(event);
                 }}
             />
         )
@@ -187,9 +197,30 @@ export default class Distance extends Component {
         const {distance} = Object.assign(this.state);
         distance[name].latitude = coordinate.getLatitude().toFixed(2).toString();
         distance[name].longitude = coordinate.getLongitude().toFixed(2).toString();
+        distance[name].name = this.state.name;
 
         this.setState({distance});
     }
+
+    setName(event) {
+        if (this.validateName(event)) {
+            this.setState({name: event.target.value});
+        }
+    }
+
+    validateName(event) {
+        const val = event.target.value;
+
+        if(val.length !== 0){
+            this.setState({validName: 'success'});
+            return true;
+        }
+        else {
+            this.setState({validName: 'failure'});
+            return false;
+        }
+    }
+
 
     setPlace(event) {
         if(this.validateCoordinate(event)) {

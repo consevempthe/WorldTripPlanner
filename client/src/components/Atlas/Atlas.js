@@ -131,7 +131,7 @@ export default class Atlas extends Component {
             let markers = [];
             //This will be use full for displaying more than two markers.
             for (let i = 0; i < otherMarkers.length; i++) {
-                markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]))
+                markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]));
             }
             return markers;
         }
@@ -139,7 +139,8 @@ export default class Atlas extends Component {
 
     addMarker(mapClickInfo) {
         this.setState({markerPositions: this.state.markerPositions.concat(mapClickInfo.latlng)}, this.setMapBounds);
-        console.log(this.state.markerPositions.length);
+        // currently name is added to map when user clicks using prompt(msg); a new method may need to be implemented
+        this.state.markerPositions[this.state.markerPositions.length - 1].name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
         this.getDistanceOnMapClick();
     }
 
@@ -168,6 +169,7 @@ export default class Atlas extends Component {
     processGeolocation(geolocation) {
         const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
         this.setState({markerPositions: this.state.markerPositions.concat(position), locationServiceOn: true, mapBounds: L.latLngBounds(position, position)});
+        this.state.markerPositions[0].name = "Home";
     }
 
     processGeolocationError(err) {
