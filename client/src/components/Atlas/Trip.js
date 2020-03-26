@@ -100,9 +100,9 @@ export default class Trip extends Component {
                     <td style={{textAlign: 'right'}}>{runningTotalLeg.toString()}</td>
                 </tr>
             );
-
+            runningTotalLeg += this.state.trip.distances[i];
+            legLength = 0;
             legLength += this.state.trip.distances[i];
-            runningTotalLeg += legLength;
         }
 
         return body;
@@ -112,7 +112,7 @@ export default class Trip extends Component {
         if(this.state.cumulativeDistance !== 0) {
             return (
                 <div>
-                    <UncontrolledAlert>Total Trip Distance: {this.state.cumulativeDistance}</UncontrolledAlert>
+                    <UncontrolledAlert>Round Trip Distance: {this.state.cumulativeDistance}</UncontrolledAlert>
                 </div>
             )
         }
