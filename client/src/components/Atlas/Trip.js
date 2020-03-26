@@ -82,15 +82,16 @@ export default class Trip extends Component {
 
     renderTrip() {
         let body = [];
-        let c = 0;
-        for (let i=1; i<50; i++) {
-            const name = "long name for a city"+i.toString();
-            c += i;
+        let runningTotalLength = 0;
+        let legLength = 0;
+        for (let i=0; i<this.props.locations.length; i++) {
+            const name = this.props.locations[i].name;
+            runningTotalLength += 1;//this.trip.distances[i];
             body.push(
                 <tr key={name}>
                     <td>{name}</td>
-                    <td style={{textAlign:'right'}}>{i.toString()}</td>
-                    <td style={{textAlign:'right'}}>{c.toString()}</td>
+                    <td style={{textAlign:'right'}}>{legLength.toString()}</td>
+                    <td style={{textAlign:'right'}}>{runningTotalLength.toString()}</td>
                 </tr>
             )
         }
