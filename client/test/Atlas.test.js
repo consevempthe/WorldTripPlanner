@@ -48,7 +48,7 @@ function renderTest() {
 }
 
 function addMarkerTest() {
-
+    window.prompt = () => {};
     const atlas = mount(<Atlas/>);
 
     // placeholder dummy map click info for addMarker

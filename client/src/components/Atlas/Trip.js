@@ -84,17 +84,21 @@ export default class Trip extends Component {
         let body = [];
         let runningTotalLength = 0;
         let legLength = 0;
-        for (let i=0; i<this.props.locations.length; i++) {
-            const name = this.props.locations[i].name;
-            runningTotalLength += 1;//this.trip.distances[i];
-            body.push(
-                <tr key={name}>
-                    <td>{name}</td>
-                    <td style={{textAlign:'right'}}>{legLength.toString()}</td>
-                    <td style={{textAlign:'right'}}>{runningTotalLength.toString()}</td>
-                </tr>
-            )
+
+       if(this.props.locations){
+            for (let i = 0; i < this.props.locations.length; i++) {
+                const name = this.props.locations[i].name;
+                runningTotalLength += 1;//this.trip.distances[i];
+                body.push(
+                    <tr key={name + i.toString()}>
+                        <td>{name}</td>
+                        <td style={{textAlign: 'right'}}>{legLength.toString()}</td>
+                        <td style={{textAlign: 'right'}}>{runningTotalLength.toString()}</td>
+                    </tr>
+                )
+            }
         }
+
         return body;
     }
 
