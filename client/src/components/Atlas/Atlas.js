@@ -54,7 +54,7 @@ export default class Atlas extends Component {
     changeOrigin(point) {
         const { markerPositions } = Object.assign(this.state);
         markerPositions.splice(0, 1, point);
-        this.Trip.addPlace(point.name, point.lat, point.lng);
+        this.Trip.changeStartPlace(point.name, point.lat, point.lng);
         this.setState({markerPositions}, this.setMapBounds);
     }
 
@@ -186,8 +186,11 @@ export default class Atlas extends Component {
 
     processGeolocation(geolocation) {
         const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-        this.setState({markerPositions: this.state.markerPositions.concat(position), locationServiceOn: true, mapBounds: L.latLngBounds(position, position)});
+        this.setState({markerPositions: this.state.markerPositions.concat(position),
+            locationServiceOn: true, mapBounds: L.latLngBounds(position, position)
+        });
         this.state.markerPositions[0].name = "Home";
+        this.Trip.addPlace("Home", position.lat, position.lng);
     }
 
     processGeolocationError(err) {

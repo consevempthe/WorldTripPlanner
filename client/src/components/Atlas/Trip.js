@@ -23,6 +23,7 @@ export default class Trip extends Component {
 
         this.showLoadFileModal = this.showLoadFileModal.bind(this);
         this.addPlace = this.addPlace.bind(this);
+        this.changeStartPlace = this.changeStartPlace.bind(this);
 
         this.state = {
             trip: {
@@ -64,36 +65,46 @@ export default class Trip extends Component {
     }
 
     renderTable() {
-        return (
-            <Table size={"sm"} striped responsive className={"tableBlockScroll"}>
-                <thead>
+        if(this.state.trip.places.length > 1 && this.state.trip.distances) {
+            return (
+                <Table size={"sm"} striped responsive className={"tableBlockScroll"}>
+                    <thead>
                     <tr>
-                        <th> Place </th>
-                        <th style={{textAlign:'right'}}>Leg dist.</th>
-                        <th style={{textAlign:'right'}}>Cumulative dist.</th>
+                        <th> Place</th>
+                        <th style={{textAlign: 'right'}}>Leg dist.</th>
+                        <th style={{textAlign: 'right'}}>Cumulative dist.</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     {this.renderTrip()}
-                </tbody>
-            </Table>
-        )
+                    </tbody>
+                </Table>
+            )
+        }
     }
 
     renderTrip() {
         let body = [];
-        let c = 0;
-        for (let i=1; i<50; i++) {
-            const name = "long name for a city"+i.toString();
-            c += i;
+        let runningTotalLeg = 0;
+        let legLength = 0;
+
+        console.log(this.state.trip.distances);
+
+        for (let i = 0; i < this.state.trip.places.length; i++) {
+            const name = this.state.trip.places[i].name;
+
             body.push(
                 <tr key={name}>
                     <td>{name}</td>
-                    <td style={{textAlign:'right'}}>{i.toString()}</td>
-                    <td style={{textAlign:'right'}}>{c.toString()}</td>
+                    <td style={{textAlign: 'right'}}>{legLength.toString()}</td>
+                    <td style={{textAlign: 'right'}}>{runningTotalLeg.toString()}</td>
                 </tr>
-            )
+            );
+
+            legLength += this.state.trip.distances[i];
+            runningTotalLeg += legLength;
         }
+
         return body;
     }
 
@@ -189,6 +200,14 @@ export default class Trip extends Component {
         const place = {name: name, latitude: lat.toString(), longitude: lng.toString()};
         let {trip} = Object.assign(this.state);
         trip["places"].push(place);
+        this.setState({trip});
+    }
+
+    changeStartPlace(name, lat, lng) {
+        const place = {name: name, latitude: lat.toString(), longitude: lng.toString()};
+        let {trip} = Object.assign(this.state);
+
+        trip["places"][0] = place;
         this.setState({trip});
     }
 }
