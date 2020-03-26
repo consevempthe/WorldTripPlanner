@@ -91,7 +91,6 @@ export default class Atlas extends Component {
                 <Trip
                     serverPort={this.props.serverPort}
                     earthRadius={this.state.earthRadius}
-                    locations={this.state.markerPositions}
                     ref={Trip => {
                         this.Trip = Trip;
                     }}
