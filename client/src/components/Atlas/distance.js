@@ -90,12 +90,9 @@ export default class Distance extends Component {
         const {distance} = Object.assign(this.state);
         distance["earthRadius"] = unit;
 
-        this.setState({distance});
-    }
+        this.props.changeRadius(unit.toString());
 
-    createMarker(place) {
-        const { distance } = Object.assign(this.state);
-        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: this.state.name};
+        this.setState({distance});
     }
 
     getDistance() {
@@ -136,6 +133,11 @@ export default class Distance extends Component {
             )
     }
 
+    createMarker(place) {
+        const { distance } = Object.assign(this.state);
+        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: this.state.name};
+    }
+
     renderAddLocation() {
         let predicate = this.state.validate !== 'success'|| this.state.validName !== 'success';
         return (
@@ -161,18 +163,18 @@ export default class Distance extends Component {
         return (
             <Form className={"mt-1"}>
                 <FormGroup>
-                    <FormText>Input coordinates to find the distance.</FormText>
+                    <FormText>Input a name and coordinates to plan your trip.</FormText>
+                    <InputGroup>
+                        {this.renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
+                        <FormFeedback valid>Nice! that's a valid name!</FormFeedback>
+                        <FormFeedback>Sorry, you must have a name for the point.</FormFeedback>
+                    </InputGroup>
                     <InputGroup>
                         {this.renderRadiusButton()}
                         {this.renderInput("place1", "Enter lat and lng.", this.state.validate, this.setPlace)}
                         {this.renderAddLocation()}
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
-                    </InputGroup>
-                    <InputGroup>
-                        {this.renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
-                        <FormFeedback valid>Nice! that's a valid name!</FormFeedback>
-                        <FormFeedback>Sorry, you must have a name for the point.</FormFeedback>
                     </InputGroup>
                 </FormGroup>
             </Form>
@@ -220,7 +222,6 @@ export default class Distance extends Component {
             return false;
         }
     }
-
 
     setPlace(event) {
         if(this.validateCoordinate(event)) {

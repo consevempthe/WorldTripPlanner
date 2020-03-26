@@ -25,6 +25,9 @@ function testInitialAppState() {
 
     expect(actualMapBounds).toEqual(expectedMapBounds);
 
+    let actualEarthRadius = atlas.state().earthRadius;
+    expect(actualEarthRadius).toEqual('3959.0');
+
     // test otherMarkerPositions & its length
     let actualOtherMarkerPositions = atlas.state().markerPositions;
     let length = actualOtherMarkerPositions.length;
@@ -34,6 +37,8 @@ function testInitialAppState() {
     expect(actualOtherMarkerPositions).toEqual(expectedOtherMarkerPositions);
     expect(length).toEqual(expectedLengthOtherMarkerPositions);
 }
+
+test("Testing Atlas' Initial State:", testInitialAppState);
 
 function renderTest() {
 
@@ -47,9 +52,26 @@ function renderTest() {
 
 }
 
+test("Testing Atlas' Render:", renderTest);
+
+function testChangeRadius() {
+    const radius = mount(<Atlas/>);
+
+    radius.instance().changeEarthRadius('');
+    expect(radius.state().earthRadius).toEqual('3959.0');
+
+    radius.instance().changeEarthRadius('6000');
+    expect(radius.state().earthRadius).toEqual('6000');
+
+}
+
+test("Testing changing of earth radius", testChangeRadius);
+
 function addMarkerTest() {
     window.prompt = () => {};
     const atlas = mount(<Atlas/>);
+
+    window.prompt = () => {};
 
     // placeholder dummy map click info for addMarker
     const dummyMapClickInfo = {latlng:{lat: 39.49, lng: -104.67}};
@@ -60,9 +82,6 @@ function addMarkerTest() {
 
     expect(predicate).toEqual(true);
 
-
 }
 
-test("Testing Atlas' Initial State:", testInitialAppState);
-test("Testing Atlas' Render:", renderTest);
 test("Testing Atlas' Add Marker:", addMarkerTest);

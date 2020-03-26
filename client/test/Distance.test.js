@@ -6,6 +6,10 @@ const Coordinate = require('coordinate-parser');
 
 import Distance from '../src/components/Atlas/distance';
 
+const startProperties = {
+    changeRadius: () => ""
+};
+
 function testRender() {
     const distance = mount(<Distance/>);
 
@@ -49,7 +53,9 @@ function testInitialAppState() {
 test("Testing Distance's initial state", testInitialAppState);
 
 function testSetEarthRadius() {
-    const distanceEarth = mount(<Distance/>);
+    const distanceEarth = mount(<Distance
+        changeRadius={startProperties.changeRadius}
+    />);
     let kilometers = 6371.0;
     let nautical = 3440.0;
 

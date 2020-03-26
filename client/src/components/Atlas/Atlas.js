@@ -33,24 +33,33 @@ export default class Atlas extends Component {
         this.processGeolocation = this.processGeolocation.bind(this);
         this.changeOrigin = this.changeOrigin.bind(this);
         this.renderLine = this.renderLine.bind(this);
+        this.changeEarthRadius = this.changeEarthRadius.bind(this);
 
         this.state = {
             LocationServiceOn: false,
             mapBounds: null,
-
+            earthRadius: '3959.0',
             markerPositions: [],
         };
 
         this.getClientLocation();
     }
 
-    changeOrigin(coordinate) {
+    changeEarthRadius(radius) {
+        if(radius) {
+            this.setState({earthRadius: radius});
+        }
+    }
+
+    changeOrigin(point) {
         const { markerPositions } = Object.assign(this.state);
-        markerPositions.splice(0, 1, coordinate);
+        markerPositions.splice(0, 1, point);
+        this.Trip.changeStartPlace(point.name, point.lat, point.lng);
         this.setState({markerPositions}, this.setMapBounds);
     }
 
     addPointToArray(point) {
+        this.Trip.addPlace(point.name, point.lat, point.lng);
         this.setState({markerPositions: this.state.markerPositions.concat(point)}, this.setMapBounds);
     }
 
@@ -72,6 +81,7 @@ export default class Atlas extends Component {
                 <Distance
                     changeStart={this.changeOrigin}
                     addPoint={this.addPointToArray}
+                    changeRadius={this.changeEarthRadius}
                     serverPort={this.props.serverPort}
                     ref={distance => {
                         this.distance = distance;
@@ -80,7 +90,10 @@ export default class Atlas extends Component {
 
                 <Trip
                     serverPort={this.props.serverPort}
-                    locations={this.state.markerPositions}
+                    earthRadius={this.state.earthRadius}
+                    ref={Trip => {
+                        this.Trip = Trip;
+                    }}
                 />
             </div>
         );
@@ -142,6 +155,10 @@ export default class Atlas extends Component {
         // currently name is added to map when user clicks using prompt(msg); a new method may need to be implemented
         this.state.markerPositions[this.state.markerPositions.length - 1].name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
         this.getDistanceOnMapClick();
+
+        this.Trip.addPlace(this.state.markerPositions[this.state.markerPositions.length-1].name,
+            this.state.markerPositions[this.state.markerPositions.length-1].lat, this.state.markerPositions[this.state.markerPositions.length-1].lng
+            );
     }
 
     markClientLocation() {
@@ -168,8 +185,11 @@ export default class Atlas extends Component {
 
     processGeolocation(geolocation) {
         const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-        this.setState({markerPositions: this.state.markerPositions.concat(position), locationServiceOn: true, mapBounds: L.latLngBounds(position, position)});
+        this.setState({markerPositions: this.state.markerPositions.concat(position),
+            locationServiceOn: true, mapBounds: L.latLngBounds(position, position)
+        });
         this.state.markerPositions[0].name = "Home";
+        this.Trip.addPlace("Home", position.lat, position.lng);
     }
 
     processGeolocationError(err) {

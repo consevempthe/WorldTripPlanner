@@ -22,12 +22,14 @@ export default class Trip extends Component {
         super(props);
 
         this.showLoadFileModal = this.showLoadFileModal.bind(this);
+        this.addPlace = this.addPlace.bind(this);
+        this.changeStartPlace = this.changeStartPlace.bind(this);
 
         this.state = {
             trip: {
                 requestType: "trip",
                 requestVersion: PROTOCOL_VERSION,
-                options: {title: 'title', earthRadius: '3959.0'},
+                options: {title: '', earthRadius: '3959.0'},
                 places: [],
                 distances: []
             },
@@ -45,12 +47,11 @@ export default class Trip extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             <h3 align={"right"}>My Trip</h3>
                             <Button onClick={ () => {
-                               this.createTrip();
-                                // the for loop is for debug. showing the names of the places.
-                               //  for (let i = 0; i < this.props.locations.length; i++) {
-                               //      console.log(this.props.locations[i].name);
-                               //  }
+                                this.addTitle();
+                                this.changeRadius();
+                                this.createTrip();
                             }}>Create Trip</Button>
+
                             {this.renderLoadTripButton()}
                             {this.renderLoadFileModal()}
                             {this.renderTable()}
@@ -64,39 +65,44 @@ export default class Trip extends Component {
     }
 
     renderTable() {
-        return (
-            <Table size={"sm"} striped responsive className={"tableBlockScroll"}>
-                <thead>
+        if(this.state.trip.places.length > 1 && this.state.trip.distances) {
+            return (
+                <Table size={"sm"} striped responsive className={"tableBlockScroll"}>
+                    <thead>
                     <tr>
-                        <th> Place </th>
-                        <th style={{textAlign:'right'}}>Leg dist.</th>
-                        <th style={{textAlign:'right'}}>Cumulative dist.</th>
+                        <th> Place</th>
+                        <th style={{textAlign: 'right'}}>Leg dist.</th>
+                        <th style={{textAlign: 'right'}}>Cumulative dist.</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     {this.renderTrip()}
-                </tbody>
-            </Table>
-        )
+                    </tbody>
+                </Table>
+            )
+        }
     }
 
     renderTrip() {
         let body = [];
-        let runningTotalLength = 0;
+        let runningTotalLeg = 0;
         let legLength = 0;
 
-       if(this.props.locations){
-            for (let i = 0; i < this.props.locations.length; i++) {
-                const name = this.props.locations[i].name;
-                runningTotalLength += 1;//this.trip.distances[i];
-                body.push(
-                    <tr key={name + i.toString()}>
-                        <td>{name}</td>
-                        <td style={{textAlign: 'right'}}>{legLength.toString()}</td>
-                        <td style={{textAlign: 'right'}}>{runningTotalLength.toString()}</td>
-                    </tr>
-                )
-            }
+        console.log(this.state.trip.distances);
+
+        for (let i = 0; i < this.state.trip.places.length; i++) {
+            const name = this.state.trip.places[i].name;
+
+            body.push(
+                <tr key={name}>
+                    <td>{name}</td>
+                    <td style={{textAlign: 'right'}}>{legLength.toString()}</td>
+                    <td style={{textAlign: 'right'}}>{runningTotalLeg.toString()}</td>
+                </tr>
+            );
+            runningTotalLeg += this.state.trip.distances[i];
+            legLength = 0;
+            legLength += this.state.trip.distances[i];
         }
 
         return body;
@@ -106,7 +112,7 @@ export default class Trip extends Component {
         if(this.state.cumulativeDistance !== 0) {
             return (
                 <div>
-                    <UncontrolledAlert>Total Trip Distance: {this.state.cumulativeDistance}</UncontrolledAlert>
+                    <UncontrolledAlert>Round Trip Distance: {this.state.cumulativeDistance}</UncontrolledAlert>
                 </div>
             )
         }
@@ -162,10 +168,18 @@ export default class Trip extends Component {
         this.setState({cumulativeDistance});
     }
 
+    changeRadius() {
+        let {trip} = Object.assign(this.state);
+        trip["options"].earthRadius = this.props.earthRadius;
+        this.setState({trip});
+    }
+
     createTrip() {
-        sendServerRequestWithBody('trip', this.state.trip, this.props.serverPort).then(trip => {
-            this.processTripRequest(trip);
-        });
+        if(this.state.trip.options.title && this.state.trip.places) {
+            sendServerRequestWithBody('trip', this.state.trip, this.props.serverPort).then(trip => {
+                this.processTripRequest(trip);
+            });
+        }
     }
 
     processTripRequest(tripResponse) {
@@ -174,5 +188,26 @@ export default class Trip extends Component {
         } else if (tripResponse.statusCode === HTTP_OK) {
             this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))}, this.getCumulativeDistance);
         }
+    }
+
+    addTitle() {
+        const {trip} = Object.assign(this.state);
+        trip["options"].title = prompt("Add a Title for your trip");
+        this.setState({trip});
+    }
+
+    addPlace(name, lat, lng) {
+        const place = {name: name, latitude: lat.toString(), longitude: lng.toString()};
+        let {trip} = Object.assign(this.state);
+        trip["places"].push(place);
+        this.setState({trip});
+    }
+
+    changeStartPlace(name, lat, lng) {
+        const place = {name: name, latitude: lat.toString(), longitude: lng.toString()};
+        let {trip} = Object.assign(this.state);
+
+        trip["places"][0] = place;
+        this.setState({trip});
     }
 }
