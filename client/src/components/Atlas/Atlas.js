@@ -33,15 +33,20 @@ export default class Atlas extends Component {
         this.processGeolocation = this.processGeolocation.bind(this);
         this.changeOrigin = this.changeOrigin.bind(this);
         this.renderLine = this.renderLine.bind(this);
+        this.changeEarthRadius = this.changeEarthRadius.bind(this);
 
         this.state = {
             LocationServiceOn: false,
             mapBounds: null,
-
+            earthRadius: '3959.0',
             markerPositions: [],
         };
 
         this.getClientLocation();
+    }
+
+    changeEarthRadius(radius) {
+        this.setState({earthRadius: radius});
     }
 
     changeOrigin(coordinate) {
@@ -72,6 +77,7 @@ export default class Atlas extends Component {
                 <Distance
                     changeStart={this.changeOrigin}
                     addPoint={this.addPointToArray}
+                    changeRadius={this.changeEarthRadius}
                     serverPort={this.props.serverPort}
                     ref={distance => {
                         this.distance = distance;
@@ -80,6 +86,7 @@ export default class Atlas extends Component {
 
                 <Trip
                     serverPort={this.props.serverPort}
+                    earthRadius={this.state.earthRadius}
                     locations={this.state.markerPositions}
                 />
             </div>

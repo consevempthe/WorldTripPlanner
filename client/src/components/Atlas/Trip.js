@@ -27,7 +27,7 @@ export default class Trip extends Component {
             trip: {
                 requestType: "trip",
                 requestVersion: PROTOCOL_VERSION,
-                options: {title: 'title', earthRadius: '3959.0'},
+                options: {title: '', earthRadius: '3959.0'},
                 places: [],
                 distances: []
             },
@@ -45,11 +45,8 @@ export default class Trip extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             <h3 align={"right"}>My Trip</h3>
                             <Button onClick={ () => {
-                               this.createTrip();
-                                // the for loop is for debug. showing the names of the places.
-                               //  for (let i = 0; i < this.props.locations.length; i++) {
-                               //      console.log(this.props.locations[i].name);
-                               //  }
+                                this.changeRadius();
+                                this.createTrip();
                             }}>Create Trip</Button>
                             {this.renderLoadTripButton()}
                             {this.renderLoadFileModal()}
@@ -155,6 +152,12 @@ export default class Trip extends Component {
         }
 
         this.setState({cumulativeDistance});
+    }
+
+    changeRadius() {
+        let {trip} = Object.assign(this.state);
+        trip["options"].earthRadius = this.props.earthRadius;
+        this.setState({trip});
     }
 
     createTrip() {
