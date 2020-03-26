@@ -68,7 +68,7 @@ function testChangeRadius() {
 test("Testing changing of earth radius", testChangeRadius);
 
 function addMarkerTest() {
-
+    window.prompt = () => {};
     const atlas = mount(<Atlas/>);
 
     window.prompt = () => {};
