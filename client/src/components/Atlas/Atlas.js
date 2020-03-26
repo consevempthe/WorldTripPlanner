@@ -46,16 +46,20 @@ export default class Atlas extends Component {
     }
 
     changeEarthRadius(radius) {
-        this.setState({earthRadius: radius});
+        if(radius) {
+            this.setState({earthRadius: radius});
+        }
     }
 
-    changeOrigin(coordinate) {
+    changeOrigin(point) {
         const { markerPositions } = Object.assign(this.state);
-        markerPositions.splice(0, 1, coordinate);
+        markerPositions.splice(0, 1, point);
+        this.Trip.addPlace(point.name, point.lat, point.lng);
         this.setState({markerPositions}, this.setMapBounds);
     }
 
     addPointToArray(point) {
+        this.Trip.addPlace(point.name, point.lat, point.lng);
         this.setState({markerPositions: this.state.markerPositions.concat(point)}, this.setMapBounds);
     }
 
@@ -88,6 +92,9 @@ export default class Atlas extends Component {
                     serverPort={this.props.serverPort}
                     earthRadius={this.state.earthRadius}
                     locations={this.state.markerPositions}
+                    ref={Trip => {
+                        this.Trip = Trip;
+                    }}
                 />
             </div>
         );
@@ -149,6 +156,10 @@ export default class Atlas extends Component {
         // currently name is added to map when user clicks using prompt(msg); a new method may need to be implemented
         this.state.markerPositions[this.state.markerPositions.length - 1].name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
         this.getDistanceOnMapClick();
+
+        this.Trip.addPlace(this.state.markerPositions[this.state.markerPositions.length-1].name,
+            this.state.markerPositions[this.state.markerPositions.length-1].lat, this.state.markerPositions[this.state.markerPositions.length-1].lng
+            );
     }
 
     markClientLocation() {

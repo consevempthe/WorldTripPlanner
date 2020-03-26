@@ -95,11 +95,6 @@ export default class Distance extends Component {
         this.setState({distance});
     }
 
-    createMarker(place) {
-        const { distance } = Object.assign(this.state);
-        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: this.state.name};
-    }
-
     getDistance() {
         sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then( distance => {
             this.processDistanceResponse(distance);
@@ -136,6 +131,11 @@ export default class Distance extends Component {
                 </DropdownMenu>
             </UncontrolledDropdown>
             )
+    }
+
+    createMarker(place) {
+        const { distance } = Object.assign(this.state);
+        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: this.state.name};
     }
 
     renderAddLocation() {

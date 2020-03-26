@@ -22,6 +22,7 @@ export default class Trip extends Component {
         super(props);
 
         this.showLoadFileModal = this.showLoadFileModal.bind(this);
+        this.addPlace = this.addPlace.bind(this);
 
         this.state = {
             trip: {
@@ -45,9 +46,11 @@ export default class Trip extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             <h3 align={"right"}>My Trip</h3>
                             <Button onClick={ () => {
+                                this.addTitle();
                                 this.changeRadius();
                                 this.createTrip();
                             }}>Create Trip</Button>
+
                             {this.renderLoadTripButton()}
                             {this.renderLoadFileModal()}
                             {this.renderTable()}
@@ -161,9 +164,11 @@ export default class Trip extends Component {
     }
 
     createTrip() {
-        sendServerRequestWithBody('trip', this.state.trip, this.props.serverPort).then(trip => {
-            this.processTripRequest(trip);
-        });
+        if(this.state.trip.options.title && this.state.trip.places) {
+            sendServerRequestWithBody('trip', this.state.trip, this.props.serverPort).then(trip => {
+                this.processTripRequest(trip);
+            });
+        }
     }
 
     processTripRequest(tripResponse) {
@@ -172,5 +177,18 @@ export default class Trip extends Component {
         } else if (tripResponse.statusCode === HTTP_OK) {
             this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))}, this.getCumulativeDistance);
         }
+    }
+
+    addTitle() {
+        const {trip} = Object.assign(this.state);
+        trip["options"].title = prompt("Add a Title for your trip");
+        this.setState({trip});
+    }
+
+    addPlace(name, lat, lng) {
+        const place = {name: name, latitude: lat.toString(), longitude: lng.toString()};
+        let {trip} = Object.assign(this.state);
+        trip["places"].push(place);
+        this.setState({trip});
     }
 }
