@@ -29,6 +29,7 @@ export default class Atlas extends Component {
 
         this.addMarker = this.addMarker.bind(this);
         this.addPointToArray = this.addPointToArray.bind(this);
+        this.addPointsFromFileUpload = this.addPointsFromFileUpload.bind(this);
         this.markClientLocation = this.markClientLocation.bind(this);
         this.processGeolocation = this.processGeolocation.bind(this);
         this.changeOrigin = this.changeOrigin.bind(this);
@@ -63,6 +64,17 @@ export default class Atlas extends Component {
         this.setState({markerPositions: this.state.markerPositions.concat(point)}, this.setMapBounds);
     }
 
+    addPointsFromFileUpload(places)
+    {
+        let tempPlaces = [];
+        for(let i = 0; i <= places.length - 1; i++)
+        {
+            const place = {name: places[i].name, lat: parseFloat(places[i].latitude), lng: parseFloat(places[i].longitude)};
+            tempPlaces.push(place);
+        }
+        this.setState({markerPositions: tempPlaces}, this.setMapBounds);
+    }
+
     setMapBounds() {
         this.setState({mapBounds: L.latLngBounds(this.state.markerPositions)});
     }
@@ -91,6 +103,7 @@ export default class Atlas extends Component {
                 <Trip
                     serverPort={this.props.serverPort}
                     earthRadius={this.state.earthRadius}
+                    addPoints={this.addPointsFromFileUpload}
                     ref={Trip => {
                         this.Trip = Trip;
                     }}

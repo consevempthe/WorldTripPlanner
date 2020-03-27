@@ -155,6 +155,7 @@ export default class Trip extends Component {
         sendServerRequestWithBody('trip', jsonObject, this.props.serverPort).then(trip =>
             this.processTripRequest(trip)
         );
+        this.props.addPoints(jsonObject.places);
     }
 
     uploadFile()
