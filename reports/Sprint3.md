@@ -88,9 +88,9 @@
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *6* | *count* |
-| Tasks |  *19*   | *count* | 
-| Story Points |  *29*  | *sum* | 
+| Epics | *6* | *5* |
+| Tasks |  *19*   | *25* | 
+| Story Points |  *29*  | *29* | 
 
 
 ## Scrums
@@ -112,8 +112,10 @@
 * **Distance**: "Distance" was another epic which remained from Sprint #2. This epic was relatively short. The main goal of this epic was to move Distance to its own file, Distance.js. Moving distance to its own file cleared up Atlas.js a lot and allowed for smoother development with Trip.js. We also needed to change the server port since our distance was on the default server port which resulted in mis-calculations.
 * **Protocol V.3**: "Protocol V.3" was an epic for supporting the server. We created a trip request/response JSON with the server which allowed us to communicate with the server to do calculations server-side and displaying UI on the client-side.
 * **More Destinations**: "More Destinations" was one of the larger epics this sprint. It involved not only letting users clicking to add more destinations but also typing coordinates to add another destination for their itineraries. This epic also implemented point naming which allows the user to name a point that they add, this would later be displayed in their itinerary. One task which we decided not to implement was the dateline, It was simply not high on our priority list and we never got around to implementing it.
+* **Load**: "Load" was an epic which allows the user to load a trip.JSON file and view it with our application. Our team implemented a button to allow the user to upload files and the app renders the points respectively.
 
-### Epics not done 
+### Epics not done
+* **Itinerary**: "Itinerary" was the only Epic we did not have time to complete. The only task remaining in it was to store trips in cookies.
 
 ### What went well
 * Overall the general layout and design of our UI turned out really well. Although the UI design is not 100% polished yet, it still looks good. Also the functionality of everything and how everything works together is another thing that we are very proud of. Refactoring our project really helped us out in the long run and it was worth it.
