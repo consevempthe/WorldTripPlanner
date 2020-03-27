@@ -189,7 +189,7 @@ export default class Atlas extends Component {
     getMarker(bodyJSX, position) {
         if (position) {
             return (
-                <Marker autoPan={false} position={position} icon={MARKER_ICON} key={position.lat}>
+                <Marker autoPan={false} position={position} icon={MARKER_ICON} key={position.name}>
                     <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
                 </Marker>
             );
@@ -197,7 +197,7 @@ export default class Atlas extends Component {
     }
 
     processGeolocation(geolocation) {
-        const position = {lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
+        const position = {name: "Home", lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
         this.setState({markerPositions: this.state.markerPositions.concat(position),
             locationServiceOn: true, mapBounds: L.latLngBounds(position, position)
         });
