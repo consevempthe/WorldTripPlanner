@@ -106,21 +106,31 @@
 
 ## Review
 
-### Epics done  
+### Epics done
+
+* **Map**: "Map" was a residual epic that remained from Sprint #2. The tasks in this epic included implementing map bounds in order for the Polyline drawn would be centered on the map. Another feature implemented during this epic was allowing the user to add more than 2 markers to the map, as a preamble for what later came to be Trip.js which handles the user's itinerary. During this epic, we also had to refactor Atlas.js in attempt to smoothen our progress down the road.
+* **Distance**: "Distance" was another epic which remained from Sprint #2. This epic was relatively short. The main goal of this epic was to move Distance to its own file, Distance.js. Moving distance to its own file cleared up Atlas.js a lot and allowed for smoother development with Trip.js. We also needed to change the server port since our distance was on the default server port which resulted in mis-calculations.
+* **Protocol V.3**: "Protocol V.3" was an epic for supporting the server. We created a trip request/response JSON with the server which allowed us to communicate with the server to do calculations server-side and displaying UI on the client-side.
+* **More Destinations**: "More Destinations" was one of the larger epics this sprint. It involved not only letting users clicking to add more destinations but also typing coordinates to add another destination for their itineraries. This epic also implemented point naming which allows the user to name a point that they add, this would later be displayed in their itinerary. One task which we decided not to implement was the dateline, It was simply not high on our priority list and we never got around to implementing it.
 
 ### Epics not done 
 
 ### What went well
+* Overall the general layout and design of our UI turned out really well. Although the UI design is not 100% polished yet, it still looks good. Also the functionality of everything and how everything works together is another thing that we are very proud of. Refactoring our project really helped us out in the long run and it was worth it.
 
 ### Problems encountered and resolutions
-
+* One problem we encountered was refactoring our code. Everything about our code was so co-dependent on eachother since we initially wrote all of the distance functions inside of atlas.js which made it difficult to refactor. We collaborated on it though and how to refactor the project. We learned from our mistakes though to not throw a bunch of function into the same file and to create classes when necessary and appropriate.
 
 ## Retrospective
 
 ### What we changed this sprint
+* Half way through the sprint we needed to rely on other means of communication such as Microsoft Teams to communicate which we all had to adjust to due to not being able to meet up in the lab. We learned that sprint planning is much more simple when meeting in person rather than over Microsoft Teams.
 
 ### What went well
+* We work very strong as team. Whenever someone has a problem figuring something out everyone lends a hand to ensure the problem is solved. The four of us work together very well with lots of synergy.
 
 ### Potential improvements
+* A potential improvement would be to have even more communication between the 4 of us. Considering the circumstances with the Corona virus we communicated pretty well, but as a team communication can always be improved.
 
 ### What we will change next time
+* We will learn to work together over Microsoft Teams in order to complete the next two sprints. Although it is not ideal, it will work. It will be interesting learning to plan a sprint over Microsoft Teams but our team will adapt to the circumstance. 
