@@ -89,8 +89,8 @@
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | *6* | *5* |
-| Tasks |  *19*   | *25* | 
-| Story Points |  *29*  | *29* | 
+| Tasks |  *19*   | *26* | 
+| Story Points |  *29*  | *30* | 
 
 
 ## Scrums
