@@ -16,6 +16,8 @@ import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
 
+const reader = new FileReader();
+
 export default class Trip extends Component {
 
     constructor(props) {
@@ -24,6 +26,7 @@ export default class Trip extends Component {
         this.showLoadFileModal = this.showLoadFileModal.bind(this);
         this.addPlace = this.addPlace.bind(this);
         this.changeStartPlace = this.changeStartPlace.bind(this);
+        this.applyFileToTable = this.applyFileToTable.bind(this);
 
         this.state = {
             trip: {
@@ -88,8 +91,6 @@ export default class Trip extends Component {
         let runningTotalLeg = 0;
         let legLength = 0;
 
-        console.log(this.state.trip.distances);
-
         for (let i = 0; i < this.state.trip.places.length; i++) {
             const name = this.state.trip.places[i].name;
 
@@ -134,18 +135,45 @@ export default class Trip extends Component {
                     <ModalBody>
                         <Form>
                             <FormGroup>
-                                <Input type="file" name="itineraryFile" id="itineraryFile" />
+                                <Input type="file" name="itineraryFile" id="itineraryFile" onChange={() => this.loadFile()} />
                                 <FormText>Please upload your itinerary in a JSON file format.</FormText>
                             </FormGroup>
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button>Upload</Button>
+                        <Button onClick={() => this.uploadFile()}>Upload</Button>
                         <Button onClick={() => this.hideLoadFileModal()}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </div>
         );
+    }
+
+    applyFileToTable(file)
+    {
+        const jsonObject = JSON.parse(file);
+        sendServerRequestWithBody('trip', jsonObject, this.props.serverPort).then(trip =>
+            this.processTripRequest(trip)
+        );
+    }
+
+    uploadFile()
+    {
+        const inputFile = document.getElementById('itineraryFile').files[0];
+        if(inputFile.type == "application/json")
+        {
+            this.applyFileToTable(reader.result);
+            this.hideLoadFileModal();
+        }
+        else{
+            alert("Error: file format not recognized. Please upload a JSON formatted file.");
+        }
+    }
+
+    loadFile()
+    {
+        const inputFile = document.getElementById('itineraryFile').files[0];
+        reader.readAsText(inputFile);
     }
 
     showLoadFileModal()
@@ -160,11 +188,9 @@ export default class Trip extends Component {
 
     getCumulativeDistance() {
         let { cumulativeDistance } = Object.assign(this.state);
-
         for (let i = 0; i < this.state.trip.distances.length; i++) {
             cumulativeDistance += this.state.trip.distances[i];
         }
-
         this.setState({cumulativeDistance});
     }
 
@@ -184,7 +210,6 @@ export default class Trip extends Component {
 
     processTripRequest(tripResponse) {
         if(!isJsonResponseValid(tripResponse.body, tripSchema)) {
-
         } else if (tripResponse.statusCode === HTTP_OK) {
             this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))}, this.getCumulativeDistance);
         }
