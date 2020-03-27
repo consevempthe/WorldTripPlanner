@@ -68,10 +68,9 @@ function testChangeRadius() {
 test("Testing changing of earth radius", testChangeRadius);
 
 function addMarkerTest() {
-    window.prompt = () => {};
+    window.prompt = () => {return "hello"};
     const atlas = mount(<Atlas/>);
 
-    window.prompt = () => {};
 
     // placeholder dummy map click info for addMarker
     const dummyMapClickInfo = {latlng:{lat: 39.49, lng: -104.67}};

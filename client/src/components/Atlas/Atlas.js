@@ -164,9 +164,11 @@ export default class Atlas extends Component {
     }
 
     addMarker(mapClickInfo) {
-        this.setState({markerPositions: this.state.markerPositions.concat(mapClickInfo.latlng)}, this.setMapBounds);
+        let name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
+
+        let place = {name: name, lat: mapClickInfo.latlng.lat, lng: mapClickInfo.latlng.lng};
+        this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
         // currently name is added to map when user clicks using prompt(msg); a new method may need to be implemented
-        this.state.markerPositions[this.state.markerPositions.length - 1].name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
         this.getDistanceOnMapClick();
 
         this.Trip.addPlace(this.state.markerPositions[this.state.markerPositions.length-1].name,
@@ -201,7 +203,7 @@ export default class Atlas extends Component {
         this.setState({markerPositions: this.state.markerPositions.concat(position),
             locationServiceOn: true, mapBounds: L.latLngBounds(position, position)
         });
-        this.state.markerPositions[0].name = "Home";
+
         this.Trip.addPlace("Home", position.lat, position.lng);
     }
 
