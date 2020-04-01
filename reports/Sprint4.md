@@ -53,7 +53,7 @@
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* |  | 
+| *04/01/2020* | *257* | *263, 256, 255, 264* |  | 
 
 
 ## Review
