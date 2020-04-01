@@ -26,7 +26,6 @@ function testInitialState() {
     };
 
     expect(initial.state().trip).toEqual(expectedState);
-    expect(initial.state().cumulativeDistance).toEqual(0);
 }
 
 test("Testing the initial state", testInitialState);

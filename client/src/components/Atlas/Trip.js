@@ -24,8 +24,6 @@ export default class Trip extends Component {
         super(props);
 
         this.showLoadFileModal = this.showLoadFileModal.bind(this);
-        this.addPlace = this.addPlace.bind(this);
-        this.changeStartPlace = this.changeStartPlace.bind(this);
         this.applyFileToTable = this.applyFileToTable.bind(this);
 
         this.state = {
@@ -37,7 +35,6 @@ export default class Trip extends Component {
                 distances: []
             },
             showLoadFileModal: false,
-            cumulativeDistance: 0,
         };
     }
 
@@ -45,10 +42,10 @@ export default class Trip extends Component {
         return(
             <div>
                 <Container>
-                    {this.renderCumulativeDistance()}
                     <Row>
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             <h3 align={"right"}>My Trip</h3>
+                            {this.renderCumulativeDistance()}
                             <Button onClick={ () => {
                                 this.addTitle();
                                 this.changeRadius();
@@ -109,16 +106,6 @@ export default class Trip extends Component {
         return body;
     }
 
-    renderCumulativeDistance() {
-        if(this.state.cumulativeDistance !== 0) {
-            return (
-                <div>
-                    <UncontrolledAlert>Round Trip Distance: {this.state.cumulativeDistance}</UncontrolledAlert>
-                </div>
-            )
-        }
-    }
-
     renderLoadTripButton()
     {
         return(
@@ -149,6 +136,21 @@ export default class Trip extends Component {
         );
     }
 
+    renderCumulativeDistance() {
+        let cumulativeDistance = 0;
+
+        for (let i = 0; i < this.state.trip.distances.length; i++) {
+            cumulativeDistance += this.state.trip.distances[i];
+        }
+        if(cumulativeDistance !== 0) {
+            return (
+                <div>
+                    <UncontrolledAlert>Round Trip Distance: {cumulativeDistance}</UncontrolledAlert>
+                </div>
+            )
+        }
+    }
+
     applyFileToTable(file)
     {
         const jsonObject = JSON.parse(file);
@@ -161,8 +163,7 @@ export default class Trip extends Component {
     uploadFile()
     {
         const inputFile = document.getElementById('itineraryFile').files[0];
-        if(inputFile.type == "application/json")
-        {
+        if(inputFile.type === "application/json") {
             this.applyFileToTable(reader.result);
             this.hideLoadFileModal();
         }
@@ -187,14 +188,6 @@ export default class Trip extends Component {
         this.setState({showLoadFileModal: false});
     }
 
-    getCumulativeDistance() {
-        let { cumulativeDistance } = Object.assign(this.state);
-        for (let i = 0; i < this.state.trip.distances.length; i++) {
-            cumulativeDistance += this.state.trip.distances[i];
-        }
-        this.setState({cumulativeDistance});
-    }
-
     changeRadius() {
         let {trip} = Object.assign(this.state);
         trip["options"].earthRadius = this.props.earthRadius;
@@ -212,7 +205,7 @@ export default class Trip extends Component {
     processTripRequest(tripResponse) {
         if(!isJsonResponseValid(tripResponse.body, tripSchema)) {
         } else if (tripResponse.statusCode === HTTP_OK) {
-            this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))}, this.getCumulativeDistance);
+            this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))});
         }
     }
 
