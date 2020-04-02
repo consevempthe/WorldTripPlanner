@@ -133,9 +133,9 @@ export default class Distance extends Component {
             )
     }
 
-    createMarker(place) {
-        const { distance } = Object.assign(this.state);
-        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: this.state.name};
+    createMarker() {
+        const { place1 } = Object.assign(this.state.distance);
+        return {lat: parseFloat(place1.latitude), lng: parseFloat(place1.longitude), name: this.state.name};
     }
 
     renderAddLocation() {
@@ -147,11 +147,11 @@ export default class Distance extends Component {
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem onClick={ () => {
-                        this.props.changeStart(this.createMarker("place1"));
+                        this.props.changeStart(this.createMarker());
                     }}
                     >Change Start</DropdownItem>
                     <DropdownItem onClick={ () => {
-                        this.props.addPoint(this.createMarker("place1"));
+                        this.props.addPoint(this.createMarker());
                     }}
                     >Add Place</DropdownItem>
                 </DropdownMenu>
@@ -167,7 +167,7 @@ export default class Distance extends Component {
                     <InputGroup>
                         {this.renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
                         <FormFeedback valid>Nice! that's a valid name!</FormFeedback>
-                        <FormFeedback>Sorry, you must have a name for the point.</FormFeedback>
+                        <FormFeedback>Names have to be unique.</FormFeedback>
                     </InputGroup>
                     <InputGroup>
                         {this.renderRadiusButton()}

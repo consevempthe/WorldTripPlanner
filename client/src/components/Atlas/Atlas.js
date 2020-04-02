@@ -90,8 +90,17 @@ export default class Atlas extends Component {
                         </Col>
                     </Row>
                 </Container>
+                {this.renderChildren()}
+            </div>
+        );
+    }
+
+    renderChildren() {
+        return (
+            <div>
                 <Distance
                     changeStart={this.changeOrigin}
+                    names={this.state.markerPositions}
                     addPoint={this.addPointToArray}
                     changeRadius={this.changeEarthRadius}
                     serverPort={this.props.serverPort}
@@ -109,7 +118,7 @@ export default class Atlas extends Component {
                     }}
                 />
             </div>
-        );
+        )
     }
 
     renderWhereAmIButton() {
