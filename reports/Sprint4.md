@@ -68,7 +68,7 @@
     The completion of this epic will allow the user to edit attributes of individual places in their 
     trip. This will provide customization and allow the user to more closely tailor the application's 
     usage to their needs.
-     
+
 ## Metrics
 
 | Statistic | # Planned | # Completed |
