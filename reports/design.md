@@ -183,5 +183,9 @@ From here our group will take what we learned from defining our problem and unde
 
 We anticipate minor changes to this design but believe the simplicity of utilizing multiple tabs with our layout will keep screen space clean without compromising the usability of previously requested features such as the distance calculator.
     
-# Sprint 4 
+# Sprint 4
+### User Interface Updates
+![Design Layout](images/Sprint4-UIdesign.png)
+
+The changes to the user interface are shown in the above diagram in blue and green, while our previous design is in black. As seen, we anticipate minimal changes in order to keep the layout clean and easy to use on mobile without sacraficing usability.
 # Sprint 5
