@@ -136,12 +136,19 @@ export default class Trip extends Component {
         );
     }
 
-    renderCumulativeDistance() {
+    computeCumulativeDistance() {
         let cumulativeDistance = 0;
 
         for (let i = 0; i < this.state.trip.distances.length; i++) {
             cumulativeDistance += this.state.trip.distances[i];
         }
+
+        return cumulativeDistance;
+    }
+
+    renderCumulativeDistance() {
+        const cumulativeDistance = this.computeCumulativeDistance();
+
         if(cumulativeDistance !== 0) {
             return (
                 <div>
@@ -172,19 +179,16 @@ export default class Trip extends Component {
         }
     }
 
-    loadFile()
-    {
+    loadFile() {
         const inputFile = document.getElementById('itineraryFile').files[0];
         reader.readAsText(inputFile);
     }
 
-    showLoadFileModal()
-    {
+    showLoadFileModal() {
         this.setState({showLoadFileModal: true});
     }
 
-    hideLoadFileModal()
-    {
+    hideLoadFileModal() {
         this.setState({showLoadFileModal: false});
     }
 

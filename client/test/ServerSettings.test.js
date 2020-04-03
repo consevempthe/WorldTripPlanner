@@ -1,6 +1,7 @@
 import './enzyme.config.js'
 import React from 'react'
 import {mount, shallow} from 'enzyme'
+import './setupJest'
 
 import App from "../src/components/App"
 import Footer from '../src/components/Margins/Footer'
@@ -103,4 +104,3 @@ function mockConfigResponse() {
 }
 
 test('onClick event for Save Button should update server port in App component', testUpdateServerPort);
-
