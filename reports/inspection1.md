@@ -11,7 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Ethan Liem | 1 hr |
-|  |  |
+| Brandon Vasquez | .75 hr |
 
 ### Problems found
 
@@ -23,3 +23,6 @@
 | Atlas.js:170 | No way of stopping empty text in prompt, bad for keys | medium | Ethan Liem | consevempthe |
 | Atlas.js:69 | function doesn't fit formatting | low | Ethan Liem | consevempthe |
 | Atlas.js:194 | function is confusing and has multiple calls to other functions that make it hard to understand what it does | medium | Ethan Liem | consevempthe|
+| Atlas.js:169 | Could remove this comment as it is not necessary | low | Brandon Vasquez | btvasque | 
+| Atlas.js:191 | Not sure if we should clear this array after adding a location | low | Brandon Vasquez | btvasque |
+| Atlas.js:General| Check for duplicate "Place Names" before adding to point to array | medium | Brandon Vasquez | btvasque |
