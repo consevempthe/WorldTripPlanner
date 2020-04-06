@@ -8,9 +8,8 @@ import Trip from '../src/components/Atlas/Trip';
 function testRender() {
     const trip = mount(<Trip/>);
 
-    expect(trip.find('Container').length).toEqual(1);
     expect(trip.find('Modal').length).toEqual(1);
-    expect(trip.find('Button').length).toEqual(2);
+    expect(trip.find('Button').length).toEqual(3);
 
 }
 

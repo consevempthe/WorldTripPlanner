@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from 'reactstrap';
-import {Col, Container, Row, UncontrolledAlert} from 'reactstrap';
+import {UncontrolledAlert} from 'reactstrap';
 import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
 
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
@@ -44,16 +44,10 @@ export default class Distance extends Component {
     render() {
         return (
             <div>
-                <Container>
-                    <Row>
-                        <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
-                            {this.renderForm()}
-                            <div>
-                                {this.renderDistance()}
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
+                {this.renderForm()}
+                <div>
+                    {this.renderDistance()}
+                </div>
             </div>
         )
     }

@@ -4,7 +4,7 @@ import {shallow, mount} from 'enzyme';
 
 const Coordinate = require('coordinate-parser');
 
-import Distance from '../src/components/Atlas/distance';
+import Distance from '../src/components/Atlas/Distance';
 
 const startProperties = {
     changeRadius: () => ""
@@ -79,7 +79,7 @@ function testAddPlace() {
     let actualPlace1 = add.state().distance.place1;
     expect(actualPlace1).toEqual(expectedPlace1);
 
-    const test1 = add.instance().createMarker("place1");
+    const test1 = add.instance().createMarker();
     let coordinate = {lat: 34, lng: -105, name: ""};
     expect(test1).toEqual(coordinate);
 
@@ -89,7 +89,8 @@ function testAddPlace() {
     let actualPlace2 = add.state().distance.place2;
     expect(actualPlace2).toEqual(expectedPlace2);
 
-    const test3 = add.instance().createMarker(("place2"));
+    add.instance().addPlace("place1", new Coordinate("41.14 -104.82"));
+    const test3 = add.instance().createMarker();
     let coordinate1 = {lat: 41.14, lng: -104.82, name:""};
     expect(test3).toEqual(coordinate1);
 }
