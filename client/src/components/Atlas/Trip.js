@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import {
     Table,
-    Col,
-    Row,
-    Container,
-    Button,
+    Button, ButtonGroup,
     UncontrolledAlert,
+    UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
     Form, FormGroup, FormText,
     Input,
     Modal,
@@ -41,24 +39,20 @@ export default class Trip extends Component {
     render() {
         return(
             <div>
-                <Container>
-                    <Row>
-                        <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
-                            <h3 align={"right"}>My Trip</h3>
-                            {this.renderCumulativeDistance()}
-                            <Button onClick={ () => {
-                                this.addTitle();
-                                this.changeRadius();
-                                this.createTrip();
-                            }}>Create Trip</Button>
+                <h3 align={"right"}>My Trip</h3>
+                {this.renderCumulativeDistance()}
+                <ButtonGroup className={"float-right"}>
+                    <Button onClick={ () => {
+                        this.addTitle();
+                        this.changeRadius();
+                        this.createTrip();
+                    }}>Create Trip</Button>
+                    {this.renderLoadTripButton()}
+                    {this.renderEditButton()}
+                </ButtonGroup>
 
-                            {this.renderLoadTripButton()}
-                            {this.renderLoadFileModal()}
-                            {this.renderTable()}
-                        </Col>
-                    </Row>
-                </Container>
-
+                {this.renderLoadFileModal()}
+                {this.renderTable()}
             </div>
 
         )
@@ -106,15 +100,13 @@ export default class Trip extends Component {
         return body;
     }
 
-    renderLoadTripButton()
-    {
+    renderLoadTripButton() {
         return(
             <Button type="button" onClick={this.showLoadFileModal}>Load Trip</Button>
         );
     }
 
-    renderLoadFileModal()
-    {
+    renderLoadFileModal() {
         return(
             <div>
                 <Modal isOpen={this.state.showLoadFileModal} toggle={() => this.hideLoadFileModal()}>
@@ -134,6 +126,21 @@ export default class Trip extends Component {
                 </Modal>
             </div>
         );
+    }
+
+    renderEditButton() {
+        return (
+            <UncontrolledButtonDropdown>
+                <DropdownToggle caret>
+                    Edit
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem>New Start</DropdownItem>
+                    <DropdownItem>Reverse Trip</DropdownItem>
+                    <DropdownItem>Delete Destination</DropdownItem>
+                </DropdownMenu>
+            </UncontrolledButtonDropdown>
+        )
     }
 
     computeCumulativeDistance() {
@@ -158,8 +165,7 @@ export default class Trip extends Component {
         }
     }
 
-    applyFileToTable(file)
-    {
+    applyFileToTable(file) {
         const jsonObject = JSON.parse(file);
         sendServerRequestWithBody('trip', jsonObject, this.props.serverPort).then(trip =>
             this.processTripRequest(trip)
@@ -167,8 +173,7 @@ export default class Trip extends Component {
         this.props.addPoints(jsonObject.places);
     }
 
-    uploadFile()
-    {
+    uploadFile() {
         const inputFile = document.getElementById('itineraryFile').files[0];
         if(inputFile.type === "application/json") {
             this.applyFileToTable(reader.result);

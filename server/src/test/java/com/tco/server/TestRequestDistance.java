@@ -105,6 +105,7 @@ public class TestRequestDistance {
     public void testDistanceFortCollins2ZeroZero()
     {
         Long distance = this.fortCollins2ZeroZero.getDistance();
+        this.fortCollins2ZeroZero.buildResponse();
         assertEquals(7006.0, distance, 0);
     }
 }

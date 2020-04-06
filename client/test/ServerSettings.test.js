@@ -6,6 +6,7 @@ import './setupJest'
 import App from "../src/components/App"
 import Footer from '../src/components/Margins/Footer'
 import ServerSettings from '../src/components/Margins/ServerSettings'
+import ServerConfig from "../src/components/Margins/ServerConfig";
 
 const startProperties = {
     serverSettings: {'serverPort': 'black-bottle.cs.colostate.edu:31400', 'serverConfig': {}},
@@ -104,3 +105,21 @@ function mockConfigResponse() {
 }
 
 test('onClick event for Save Button should update server port in App component', testUpdateServerPort);
+
+function testServerConfig() {
+    const config = mount(<ServerConfig
+        serverName={"something"}
+        requestType={"config"}
+        requestVersion={3}
+        supportedRequests={['hi', 'hello', 'ok']}
+    />);
+
+    expect(config.state().isOpen).toEqual(false);
+    expect(config.find("Modal").length).toEqual(1);
+
+    config.setState({isOpen: true});
+    expect(config.state().isOpen).toEqual(true);
+
+}
+
+test('testing the config table', testServerConfig);

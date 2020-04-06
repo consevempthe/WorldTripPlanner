@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from 'reactstrap';
-import {Col, Container, Row, UncontrolledAlert} from 'reactstrap';
+import {UncontrolledAlert} from 'reactstrap';
 import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
 
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
@@ -44,16 +44,10 @@ export default class Distance extends Component {
     render() {
         return (
             <div>
-                <Container>
-                    <Row>
-                        <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
-                            {this.renderForm()}
-                            <div>
-                                {this.renderDistance()}
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
+                {this.renderForm()}
+                <div>
+                    {this.renderDistance()}
+                </div>
             </div>
         )
     }
@@ -133,9 +127,9 @@ export default class Distance extends Component {
             )
     }
 
-    createMarker(place) {
-        const { distance } = Object.assign(this.state);
-        return {lat: parseFloat(distance[place].latitude), lng: parseFloat(distance[place].longitude), name: this.state.name};
+    createMarker() {
+        const { place1 } = Object.assign(this.state.distance);
+        return {lat: parseFloat(place1.latitude), lng: parseFloat(place1.longitude), name: this.state.name};
     }
 
     renderAddLocation() {
@@ -147,11 +141,11 @@ export default class Distance extends Component {
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem onClick={ () => {
-                        this.props.changeStart(this.createMarker("place1"));
+                        this.props.changeStart(this.createMarker());
                     }}
                     >Change Start</DropdownItem>
                     <DropdownItem onClick={ () => {
-                        this.props.addPoint(this.createMarker("place1"));
+                        this.props.addPoint(this.createMarker());
                     }}
                     >Add Place</DropdownItem>
                 </DropdownMenu>
@@ -167,7 +161,7 @@ export default class Distance extends Component {
                     <InputGroup>
                         {this.renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
                         <FormFeedback valid>Nice! that's a valid name!</FormFeedback>
-                        <FormFeedback>Sorry, you must have a name for the point.</FormFeedback>
+                        <FormFeedback>Names have to be unique.</FormFeedback>
                     </InputGroup>
                     <InputGroup>
                         {this.renderRadiusButton()}

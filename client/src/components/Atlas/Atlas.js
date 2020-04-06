@@ -6,7 +6,7 @@ import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
-import Distance from "../Atlas/distance";
+import Distance from "./Distance";
 import Trip from "../Atlas/Trip";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
@@ -27,14 +27,16 @@ export default class Atlas extends Component {
     constructor(props) {
         super(props);
 
-        this.addMarker = this.addMarker.bind(this);
         this.addPointToArray = this.addPointToArray.bind(this);
         this.addPointsFromFileUpload = this.addPointsFromFileUpload.bind(this);
+        this.changeEarthRadius = this.changeEarthRadius.bind(this);
+        this.changeOrigin = this.changeOrigin.bind(this);
+
         this.markClientLocation = this.markClientLocation.bind(this);
         this.processGeolocation = this.processGeolocation.bind(this);
-        this.changeOrigin = this.changeOrigin.bind(this);
+
         this.renderLine = this.renderLine.bind(this);
-        this.changeEarthRadius = this.changeEarthRadius.bind(this);
+        this.addMarker = this.addMarker.bind(this);
 
         this.state = {
             LocationServiceOn: false,
@@ -87,11 +89,20 @@ export default class Atlas extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
                             {this.renderLeafletMap()}
                             {this.renderWhereAmIButton()}
+                            {this.renderChildren()}
                         </Col>
                     </Row>
                 </Container>
+            </div>
+        );
+    }
+
+    renderChildren() {
+        return (
+            <div>
                 <Distance
                     changeStart={this.changeOrigin}
+                    names={this.state.markerPositions}
                     addPoint={this.addPointToArray}
                     changeRadius={this.changeEarthRadius}
                     serverPort={this.props.serverPort}
@@ -109,7 +120,7 @@ export default class Atlas extends Component {
                     }}
                 />
             </div>
-        );
+        )
     }
 
     renderWhereAmIButton() {

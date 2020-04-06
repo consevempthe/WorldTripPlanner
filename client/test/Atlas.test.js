@@ -44,7 +44,7 @@ function renderTest() {
 
     const atlas = mount(<Atlas/>);
 
-    expect(atlas.find('Button').length).toEqual(4);
+    expect(atlas.find('Button').length).toEqual(5);
     expect(atlas.find('Map').length).toEqual(1);
     expect(atlas.find('Distance').length).toEqual(1);
     expect(atlas.find('Trip').length).toEqual(1);
