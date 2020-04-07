@@ -97,9 +97,33 @@ function testCumulativeDistance() {
     expect(cumulative.state().trip.places.length).toEqual(2);
     expect(cumulative.find('UncontrolledAlert').length).toEqual(1);
     expect(cumulative.find('Table').length).toEqual(1);
-
     expect(cumulative.instance().computeCumulativeDistance()).toEqual(250);
 
 }
 
 test("Testing distance and render", testCumulativeDistance);
+
+function testReverseList() {
+    const reverse = shallow(<Trip/>);
+
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'boulder', lat: 39.23, lng: -104.7};
+    const place3 = {name: 'denver', lat: 20, lng: -103.45};
+
+    reverse.instance().addPlace(place1);
+    reverse.instance().addPlace(place2);
+    reverse.instance().addPlace(place3);
+
+    const place1Actual = {name: 'fort collins', latitude: '40', longitude: '-105'};
+
+    const place2Actual = {name: 'boulder', latitude: '39.23', longitude: '-104.7'};
+
+    const place3Actual = {name: 'denver', latitude: '20', longitude: '-103.45'};
+
+    reverse.instance().reverseTrip();
+    expect(reverse.state().trip.places[0]).toEqual(place3Actual);
+    expect(reverse.state().trip.places[1]).toEqual(place2Actual);
+    expect(reverse.state().trip.places[2]).toEqual(place1Actual);
+}
+
+test("testing list reverse", testReverseList);
