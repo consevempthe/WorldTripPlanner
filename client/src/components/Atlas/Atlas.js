@@ -27,12 +27,11 @@ export default class Atlas extends Component {
     constructor(props) {
         super(props);
 
-        this.addPointToArray = this.addPointToArray.bind(this);
-        this.addPointsFromFileUpload = this.addPointsFromFileUpload.bind(this);
+        this.addPlaceToArray = this.addPlaceToArray.bind(this);
+        this.addPlacesFromFileUpload = this.addPlacesFromFileUpload.bind(this);
         this.changeEarthRadius = this.changeEarthRadius.bind(this);
         this.changeOrigin = this.changeOrigin.bind(this);
 
-        this.markClientLocation = this.markClientLocation.bind(this);
         this.processGeolocation = this.processGeolocation.bind(this);
 
         this.renderLine = this.renderLine.bind(this);
@@ -43,6 +42,7 @@ export default class Atlas extends Component {
             mapBounds: null,
             earthRadius: '3959.0',
             markerPositions: [],
+            LoadFile: false,
         };
 
         this.getClientLocation();
@@ -54,23 +54,21 @@ export default class Atlas extends Component {
         }
     }
 
-    changeOrigin(point) {
+    changeOrigin(place) {
         const { markerPositions } = Object.assign(this.state);
-        markerPositions.splice(0, 1, point);
-        this.Trip.changeStartPlace(point.name, point.lat, point.lng);
+        markerPositions.splice(0, 1, place);
+        this.Trip.changeStartPlace(place);
         this.setState({markerPositions}, this.setMapBounds);
     }
 
-    addPointToArray(point) {
-        this.Trip.addPlace(point.name, point.lat, point.lng);
-        this.setState({markerPositions: this.state.markerPositions.concat(point)}, this.setMapBounds);
+    addPlaceToArray(place) {
+        this.Trip.addPlace(place);
+        this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
     }
 
-    addPointsFromFileUpload(places)
-    {
+    addPlacesFromFileUpload(places) {
         let tempPlaces = [];
-        for(let i = 0; i <= places.length - 1; i++)
-        {
+        for(let i = 0; i <= places.length - 1; i++) {
             const place = {name: places[i].name, lat: parseFloat(places[i].latitude), lng: parseFloat(places[i].longitude)};
             tempPlaces.push(place);
         }
@@ -103,7 +101,7 @@ export default class Atlas extends Component {
                 <Distance
                     changeStart={this.changeOrigin}
                     names={this.state.markerPositions}
-                    addPoint={this.addPointToArray}
+                    addPoint={this.addPlaceToArray}
                     changeRadius={this.changeEarthRadius}
                     serverPort={this.props.serverPort}
                     ref={distance => {
@@ -114,7 +112,9 @@ export default class Atlas extends Component {
                 <Trip
                     serverPort={this.props.serverPort}
                     earthRadius={this.state.earthRadius}
-                    addPoints={this.addPointsFromFileUpload}
+                    isOpen={this.state.loadFile}
+                    toggleOpen={(isOpen = !this.state.loadFile) => this.setState({loadFile: isOpen})}
+                    addPlaces={this.addPlacesFromFileUpload}
                     ref={Trip => {
                         this.Trip = Trip;
                     }}
@@ -127,7 +127,10 @@ export default class Atlas extends Component {
         if (this.state.locationServiceOn) {
             return (
                 <div>
-                    <Button onClick={ () => this.markClientLocation()} size={"md"} block>Where Am I?</Button>
+                    <Button onClick={ () => {
+                        this.setState({markerPositions: this.state.markerPositions.concat(this.getClientLocation())});
+                        this.setState({markerPositions: []});
+                    }} size={"md"} block>Where Am I?</Button>
                 </div>
             )
         }
@@ -159,10 +162,6 @@ export default class Atlas extends Component {
         }
     }
 
-    clearMarkers() {
-        this.setState({markerPositions: []});
-    }
-
     renderOtherMarkers(otherMarkers) {
         if (otherMarkers.length !== 0) {
             let markers = [];
@@ -181,14 +180,7 @@ export default class Atlas extends Component {
         this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
         this.getDistanceOnMapClick();
 
-        this.Trip.addPlace(this.state.markerPositions[this.state.markerPositions.length-1].name,
-            this.state.markerPositions[this.state.markerPositions.length-1].lat, this.state.markerPositions[this.state.markerPositions.length-1].lng
-            );
-    }
-
-    markClientLocation() {
-        this.setState({markerPositions: this.state.markerPositions.concat(this.getClientLocation())});
-        this.clearMarkers();
+        this.Trip.addPlace(place);
     }
 
     getMarkerPosition(position) {
@@ -209,12 +201,11 @@ export default class Atlas extends Component {
     }
 
     processGeolocation(geolocation) {
-        const position = {name: "Home", lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-        this.setState({markerPositions: this.state.markerPositions.concat(position),
-            locationServiceOn: true, mapBounds: L.latLngBounds(position, position)
-        });
+        const place = {name: "Home", lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
+        this.setState({markerPositions: this.state.markerPositions.concat(place),
+            locationServiceOn: true}, this.setMapBounds);
 
-        this.Trip.addPlace("Home", position.lat, position.lng);
+        this.Trip.addPlace(place);
     }
 
     processGeolocationError(err) {
