@@ -4,25 +4,19 @@ import {
     Button, ButtonGroup,
     UncontrolledAlert,
     UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
-    Form, FormGroup, FormText,
-    Input,
-    Modal,
-    ModalHeader, ModalFooter, ModalBody
 } from 'reactstrap';
 import "./Trip.css"
+import LoadSave from "./LoadSave";
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
-
-const reader = new FileReader();
 
 export default class Trip extends Component {
 
     constructor(props) {
         super(props);
 
-        this.showLoadFileModal = this.showLoadFileModal.bind(this);
-        this.applyFileToTable = this.applyFileToTable.bind(this);
+        this.processTripRequest = this.processTripRequest.bind(this);
 
         this.state = {
             trip: {
@@ -41,17 +35,18 @@ export default class Trip extends Component {
             <div>
                 <h3 align={"right"}>My Trip</h3>
                 {this.renderCumulativeDistance()}
-                <ButtonGroup className={"float-right"}>
+                <ButtonGroup className={"float-left"}>
                     <Button onClick={ () => {
                         this.addTitle();
                         this.changeRadius();
                         this.createTrip();
-                    }}>Create Trip</Button>
-                    {this.renderLoadTripButton()}
+                    }}>Create</Button>
                     {this.renderEditButton()}
                 </ButtonGroup>
-
-                {this.renderLoadFileModal()}
+                <LoadSave
+                    addPlaces={this.props.addPlaces}
+                    processRequest={this.processTripRequest}
+                />
                 {this.renderTable()}
             </div>
 
@@ -100,34 +95,6 @@ export default class Trip extends Component {
         return body;
     }
 
-    renderLoadTripButton() {
-        return(
-            <Button type="button" onClick={this.showLoadFileModal}>Load Trip</Button>
-        );
-    }
-
-    renderLoadFileModal() {
-        return(
-            <div>
-                <Modal isOpen={this.state.showLoadFileModal} toggle={() => this.hideLoadFileModal()}>
-                    <ModalHeader toggle={() => this.hideLoadFileModal()}>Load a Trip to Your Itinerary</ModalHeader>
-                    <ModalBody>
-                        <Form>
-                            <FormGroup>
-                                <Input type="file" name="itineraryFile" id="itineraryFile" onChange={() => this.loadFile()} />
-                                <FormText>Please upload your itinerary in a JSON file format.</FormText>
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button onClick={() => this.uploadFile()}>Upload</Button>
-                        <Button onClick={() => this.hideLoadFileModal()}>Close</Button>
-                    </ModalFooter>
-                </Modal>
-            </div>
-        );
-    }
-
     renderEditButton() {
         return (
             <UncontrolledButtonDropdown>
@@ -136,7 +103,7 @@ export default class Trip extends Component {
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem>New Start</DropdownItem>
-                    <DropdownItem>Reverse Trip</DropdownItem>
+                    <DropdownItem onClick={ () => this.reverseTrip()}>Reverse Trip</DropdownItem>
                     <DropdownItem>Delete Destination</DropdownItem>
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
@@ -165,36 +132,10 @@ export default class Trip extends Component {
         }
     }
 
-    applyFileToTable(file) {
-        const jsonObject = JSON.parse(file);
-        sendServerRequestWithBody('trip', jsonObject, this.props.serverPort).then(trip =>
-            this.processTripRequest(trip)
-        );
-        this.props.addPoints(jsonObject.places);
-    }
-
-    uploadFile() {
-        const inputFile = document.getElementById('itineraryFile').files[0];
-        if(inputFile.type === "application/json") {
-            this.applyFileToTable(reader.result);
-            this.hideLoadFileModal();
-        }
-        else{
-            alert("Error: file format not recognized. Please upload a JSON formatted file.");
-        }
-    }
-
-    loadFile() {
-        const inputFile = document.getElementById('itineraryFile').files[0];
-        reader.readAsText(inputFile);
-    }
-
-    showLoadFileModal() {
-        this.setState({showLoadFileModal: true});
-    }
-
-    hideLoadFileModal() {
-        this.setState({showLoadFileModal: false});
+    reverseTrip() {
+        let {places} = Object.assign(this.state.trip);
+        places.reverse();
+        this.setState({places}, this.createTrip);
     }
 
     changeRadius() {
@@ -224,18 +165,18 @@ export default class Trip extends Component {
         this.setState({trip});
     }
 
-    addPlace(name, lat, lng) {
-        const place = {name: name, latitude: lat.toString(), longitude: lng.toString()};
+    addPlace(place) {
+        const add = {name: place.name, latitude: place.lat.toString(), longitude: place.lng.toString()};
         let {trip} = Object.assign(this.state);
-        trip["places"].push(place);
+        trip["places"].push(add);
         this.setState({trip});
     }
 
-    changeStartPlace(name, lat, lng) {
-        const place = {name: name, latitude: lat.toString(), longitude: lng.toString()};
+    changeStartPlace(place) {
+        const origin = {name: place.name, latitude: place.lat.toString(), longitude: place.lng.toString()};
         let {trip} = Object.assign(this.state);
 
-        trip["places"][0] = place;
+        trip["places"][0] = origin;
         this.setState({trip});
     }
 }
