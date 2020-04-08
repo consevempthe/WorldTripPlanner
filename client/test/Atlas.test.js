@@ -99,20 +99,48 @@ function testGetMarkerPosition() {
 
 test("Testing Atlas' Get Marker Position:", testGetMarkerPosition);
 
-function testClearOtherMarkers() {
-
-    window.prompt = () => {return "hello"};
+function testLoadTripFromFileUpload() {
 
     const atlas = mount(<Atlas/>);
 
-    const dummyMapClickInfo = {latlng:{lat: 105.45, lng: -40.85}};
-
-    atlas.instance().addMarker(dummyMapClickInfo);
-
-    atlas.instance().clearMarkers();
-
     expect(atlas.state().markerPositions.length).toEqual(0);
+
+    let dummyJSON =[
+        {
+            "id": "rwahlst",
+            "name": "Belching Beaver Brewery - Ocean Beach",
+            "municipality": "San Diego",
+            "state": "California",
+            "latitude": "32.745",
+            "longitude": "-117.248",
+            "altitude": "115"
+        }
+    ];
+
+    atlas.instance().addPlacesFromFileUpload(dummyJSON);
+
+    expect(atlas.state().markerPositions.length).toEqual(1);
+
+
+}
+test("Testing Atlas' Load Trip from File Upload:", testLoadTripFromFileUpload);
+
+function testSetMapBounds() {
+
+    window.prompt = () => { return "Location"; };
+
+    const atlas = mount(<Atlas/>);
+
+    expect(atlas.state().mapBounds).toEqual(null);
+
+    const dummyMapClickInfo = {latlng:{lat: 39.49, lng: -104.67}};
+    atlas.instance().addMarker(dummyMapClickInfo); // adding a marker in effect, sets map bounds
+
+    expect(atlas.state().mapBounds).toEqual(
+        {"_northEast": {"lat": 39.49, "lng": -104.67}, "_southWest": {"lat": 39.49, "lng": -104.67}}
+        );
+
 
 }
 
-test("Testing Atlas' Clear Other Markers:", testClearOtherMarkers);
+test("Testing Atlas' Set Map Bounds:", testSetMapBounds);
