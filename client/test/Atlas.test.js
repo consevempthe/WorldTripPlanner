@@ -98,3 +98,21 @@ function testGetMarkerPosition() {
 }
 
 test("Testing Atlas' Get Marker Position:", testGetMarkerPosition);
+
+function testClearOtherMarkers() {
+
+    window.prompt = () => {return "hello"};
+
+    const atlas = mount(<Atlas/>);
+
+    const dummyMapClickInfo = {latlng:{lat: 105.45, lng: -40.85}};
+
+    atlas.instance().addMarker(dummyMapClickInfo);
+
+    atlas.instance().clearMarkers();
+
+    expect(atlas.state().markerPositions.length).toEqual(0);
+
+}
+
+test("Testing Atlas' Clear Other Markers:", testClearOtherMarkers);
