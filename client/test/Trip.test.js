@@ -24,7 +24,6 @@ function testInitialState() {
         places: [],
         distances: []
     };
-    expect(initial.state().showLoadFileModal).toEqual(false);
     expect(initial.state().trip).toEqual(expectedState);
 }
 
@@ -43,37 +42,27 @@ function testChangeRadius() {
 
 test("Testing changing the earthRadius", testChangeRadius);
 
-function testModal() {
-    const modal = mount(<Trip/>);
-
-    expect(modal.state().showLoadFileModal).toEqual(false);
-    modal.instance().showLoadFileModal();
-    expect(modal.state().showLoadFileModal).toEqual(true);
-    modal.instance().hideLoadFileModal();
-    expect(modal.state().showLoadFileModal).toEqual(false);
-
-}
-
-test("Testing the Modal",testModal);
-
 function testAddPlace() {
     const add = mount(<Trip/>);
 
-    const place1 = {name: 'fort collins', latitude: '40', longitude: '-105'};
-    const place2 = {name: 'boulder', latitude: '39.23', longitude: '-104.7'};
-    const place3 = {name: 'denver', latitude: '20', longitude: '-103.45'};
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'boulder', lat: 39.23, lng: -104.7};
+    const place3 = {name: 'denver', lat: 20, lng: -103.45};
 
-    add.instance().addPlace('fort collins', '40', '-105');
+    add.instance().addPlace(place1);
     expect(add.state().trip.places.length).toEqual(1);
-    expect(add.state().trip.places[0]).toEqual(place1);
+    const place1Actual = {name: 'fort collins', latitude: '40', longitude: '-105'};
+    expect(add.state().trip.places[0]).toEqual(place1Actual);
 
-    add.instance().addPlace('boulder', '39.23', '-104.7');
+    add.instance().addPlace(place2);
     expect(add.state().trip.places.length).toEqual(2);
-    expect(add.state().trip.places[1]).toEqual(place2);
+    const place2Actual = {name: 'boulder', latitude: '39.23', longitude: '-104.7'};
+    expect(add.state().trip.places[1]).toEqual(place2Actual);
 
-    add.instance().changeStartPlace('denver', '20', '-103.45');
+    add.instance().changeStartPlace(place3);
     expect(add.state().trip.places.length).toEqual(2);
-    expect(add.state().trip.places[0]).toEqual(place3);
+    const place3Actual = {name: 'denver', latitude: '20', longitude: '-103.45'};
+    expect(add.state().trip.places[0]).toEqual(place3Actual);
 }
 
 test("Testing add place", testAddPlace);
@@ -108,9 +97,33 @@ function testCumulativeDistance() {
     expect(cumulative.state().trip.places.length).toEqual(2);
     expect(cumulative.find('UncontrolledAlert').length).toEqual(1);
     expect(cumulative.find('Table').length).toEqual(1);
-
     expect(cumulative.instance().computeCumulativeDistance()).toEqual(250);
 
 }
 
 test("Testing distance and render", testCumulativeDistance);
+
+function testReverseList() {
+    const reverse = shallow(<Trip/>);
+
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'boulder', lat: 39.23, lng: -104.7};
+    const place3 = {name: 'denver', lat: 20, lng: -103.45};
+
+    reverse.instance().addPlace(place1);
+    reverse.instance().addPlace(place2);
+    reverse.instance().addPlace(place3);
+
+    const place1Actual = {name: 'fort collins', latitude: '40', longitude: '-105'};
+
+    const place2Actual = {name: 'boulder', latitude: '39.23', longitude: '-104.7'};
+
+    const place3Actual = {name: 'denver', latitude: '20', longitude: '-103.45'};
+
+    reverse.instance().reverseTrip();
+    expect(reverse.state().trip.places[0]).toEqual(place3Actual);
+    expect(reverse.state().trip.places[1]).toEqual(place2Actual);
+    expect(reverse.state().trip.places[2]).toEqual(place1Actual);
+}
+
+test("testing list reverse", testReverseList);
