@@ -5,12 +5,13 @@ import {
     UncontrolledAlert,
     UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
 } from 'reactstrap';
-import "./Trip.css"
 import LoadSave from "./LoadSave";
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
-import {createPlace, numberToString, parseCoordinate, validateCoordinate, validateName} from "./Resources/HelpfulAPI";
+import {createPlace, createPoint, numberToString, validateName} from "./Resources/HelpfulAPI";
+
+const Coordinate = require('coordinate-parser');
 
 export default class Trip extends Component {
 
@@ -19,6 +20,7 @@ export default class Trip extends Component {
 
         this.processTripRequest = this.processTripRequest.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.newStartPlace = this.newStartPlace.bind(this);
 
         this.state = {
             trip: {
@@ -32,7 +34,8 @@ export default class Trip extends Component {
             newStart: {
                 name: '', latitude: '', longitude: '',
             },
-            validateName: '',
+            validName: '',
+            validCoordinate: '',
             modal: false,
         };
     }
@@ -68,7 +71,7 @@ export default class Trip extends Component {
     renderTable() {
         if(this.state.trip.places.length > 1 && this.state.trip.distances) {
             return (
-                <Table size={"sm"} responsive className={"tableBlockScroll"}>
+                <Table size={"sm"} responsive>
                     <thead>
                     <tr>
                         <th> Place</th>
@@ -109,7 +112,7 @@ export default class Trip extends Component {
 
     renderEditButton() {
         return (
-            <UncontrolledButtonDropdown>
+            <UncontrolledButtonDropdown direction={'up'}>
                 <DropdownToggle caret>
                     Edit
                 </DropdownToggle>
@@ -128,33 +131,67 @@ export default class Trip extends Component {
                 <ModalHeader toggle={this.toggle}>Add a new start</ModalHeader>
                 <ModalBody>
                     <Form>
-                        <Input placeholder={"Give a name."} onChange={ (event) => this.newStartName(event) } />
-                        <Input placeholder={"Add coordinates."} onChange={ (event) => this.newCoordinates(event)}/>
+                        <Input
+                            placeholder={"Give a name."}
+                            onChange={ (event) => this.newStartName(event)}
+                            valid={this.state.validName === 'success'}
+                            invalid={this.state.validName === 'failure'}
+                        />
+                        <Input
+                            placeholder={"Add coordinates."}
+                            onChange={ (event) => this.setCoordinate(event)}
+                            valid={this.state.validCoordinate === 'success'}
+                            invalid={this.state.validCoordinate === 'failure'}
+                        />
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button>Add New Start</Button>
+                    <Button onClick={ () => {this.newStartPlace(); this.toggle()}}
+                            disabled={this.state.validName !== 'success' || this.state.validCoordinate !== 'success'}
+                    >Add New Start</Button>
                     <Button onClick={this.toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         )
     }
 
+    newStartPlace() {
+        this.changeStartPlace(createPoint(this.state.newStart), 0);
+        this.setState({validName: '', validCoordinate: ''});
+    }
+
     newStartName(event) {
         const {newStart} = Object.assign(this.state);
-        this.setState({validateName: validateName(event)});
-        if(this.state.validateName === 'success') {
-            newStart.name = event.target.value;
+        this.setState({validName: validateName(event)});
+        if(this.state.validName === 'success') {
+            newStart["name"] = event.target.value;
         }
         this.setState({newStart});
     }
 
-    newCoordinates(event) {
-        const {newStart} = Object.assign(this.state);
-        this.setState({validateCoordinate: validateCoordinate(event)});
-        const coordinate = parseCoordinate(event);
-        newStart.latitude = numberToString(coordinate.getLatitude());
-        newStart.longitude = numberToString(coordinate.getLongitude());
+    setCoordinate(event) {
+        if(this.validateCoordinate(event)) {
+            let {newStart} = Object.assign(this.state);
+            const destination = new Coordinate(event.target.value);
+            newStart.latitude = numberToString(destination.getLatitude());
+            newStart.longitude = numberToString(destination.getLongitude());
+        }
+    }
+
+    validateCoordinate(event) {
+        let {validCoordinate} = Object.assign(this.state);
+        const coordinate = event.target.value;
+
+        try {
+            new Coordinate(coordinate);
+            validCoordinate = 'success';
+            return true;
+        } catch (error) {
+            validCoordinate = 'failure';
+            return false;
+        } finally {
+            this.setState({ validCoordinate });
+        }
     }
 
     computeCumulativeDistance() {

@@ -53,9 +53,10 @@ export default class Atlas extends Component {
         }
     }
 
-    changeOrigin(place) {
+    //destroy defaults to 1 meaning that it will change the start place, set it to 0 and it will merely append it.
+    changeOrigin(place, destroy=1) {
         const { markerPositions } = Object.assign(this.state);
-        markerPositions.splice(0, 1, place);
+        markerPositions.splice(0, destroy, place);
         this.Trip.changeStartPlace(place);
         this.setState({markerPositions}, this.setMapBounds);
     }
@@ -111,6 +112,7 @@ export default class Atlas extends Component {
                 <Trip
                     serverPort={this.props.serverPort}
                     earthRadius={this.state.earthRadius}
+                    newStart={this.changeOrigin}
                     addPlaces={this.addPlacesFromFileUpload}
                     ref={Trip => {
                         this.Trip = Trip;

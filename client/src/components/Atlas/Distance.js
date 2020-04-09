@@ -6,7 +6,7 @@ import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reacts
 import {PROTOCOL_VERSION} from "../Constants";
 import {sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as distanceSchema from "../../../schemas/TIPDistanceResponseSchema";
-import {processProtocolResponse, validateCoordinate, validateName} from "./Resources/HelpfulAPI";
+import {processProtocolResponse, validateName} from "./Resources/HelpfulAPI";
 
 const Coordinate = require('coordinate-parser');
 
@@ -197,8 +197,25 @@ export default class Distance extends Component {
     }
 
     setPlace(event) {
-        this.setState({validate: validateCoordinate(event)});
-        this.addPlace(event.target.name, new Coordinate(event.target.value));
+        if(this.validateCoordinate(event)) {
+            this.addPlace(event.target.name, new Coordinate(event.target.value));
+        }
+    }
+
+    validateCoordinate(event) {
+        let { validate } = Object.assign(this.state);
+        const coordinate = event.target.value;
+
+        try {
+            new Coordinate(coordinate);
+            validate = 'success';
+            return true;
+        } catch (error) {
+            validate = 'failure';
+            return false;
+        } finally {
+            this.setState({ validate });
+        }
     }
 
 }
