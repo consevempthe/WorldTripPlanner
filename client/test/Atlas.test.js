@@ -3,6 +3,7 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 
 import Atlas from "../src/components/Atlas/Atlas";
+import Distance from "../src/components/Atlas/Distance";
 
 function testInitialAppState() {
     const atlas = shallow(<Atlas/>);
@@ -84,3 +85,62 @@ function addMarkerTest() {
 }
 
 test("Testing Atlas' Add Marker:", addMarkerTest);
+
+function testGetMarkerPosition() {
+
+    const atlas = mount(<Atlas/>);
+    let positions = [{lat: 54.56148, lng: 98.56484, name: "Marker1"}, {lat: 105.55, lng: 65.54, name: "Marker2"}];
+    let Pos1 = atlas.instance().getMarkerPosition(positions[0]);
+    expect(Pos1).toEqual("54.56, 98.56");
+    let Pos2 = atlas.instance().getMarkerPosition(positions[1]);
+    expect(Pos2).toEqual("105.55, 65.54");
+
+}
+
+test("Testing Atlas' Get Marker Position:", testGetMarkerPosition);
+
+function testLoadTripFromFileUpload() {
+
+    const atlas = mount(<Atlas/>);
+
+    expect(atlas.state().markerPositions.length).toEqual(0);
+
+    let dummyJSON =[
+        {
+            "id": "rwahlst",
+            "name": "Belching Beaver Brewery - Ocean Beach",
+            "municipality": "San Diego",
+            "state": "California",
+            "latitude": "32.745",
+            "longitude": "-117.248",
+            "altitude": "115"
+        }
+    ];
+
+    atlas.instance().addPlacesFromFileUpload(dummyJSON);
+
+    expect(atlas.state().markerPositions.length).toEqual(1);
+
+
+}
+test("Testing Atlas' Load Trip from File Upload:", testLoadTripFromFileUpload);
+
+function testSetMapBounds() {
+
+    window.prompt = () => { return "Location"; };
+
+    const atlas = mount(<Atlas/>);
+
+    expect(atlas.state().mapBounds).toEqual(null);
+
+    const dummyMapClickInfo = {latlng:{lat: 39.49, lng: -104.67}};
+    atlas.instance().addMarker(dummyMapClickInfo); // adding a marker in effect, sets map bounds
+
+    expect(atlas.state().mapBounds).toEqual(
+        {"_northEast": {"lat": 39.49, "lng": -104.67}, "_southWest": {"lat": 39.49, "lng": -104.67}}
+        );
+
+
+}
+
+test("Testing Atlas' Set Map Bounds:", testSetMapBounds);
