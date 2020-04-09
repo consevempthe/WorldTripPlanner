@@ -84,7 +84,7 @@ export default class Trip extends Component {
                     <td>{name}</td>
                     <td style={{textAlign: 'right'}}>{legLength.toString()}</td>
                     <td style={{textAlign: 'right'}}>{runningTotalLeg.toString()}</td>
-                    <td><span>&time</span></td>
+                    <td style={{textAlign: 'center'}}><span onClick={() => this.deleteItem(i)}>&times;</span></td>
                 </tr>
             );
             runningTotalLeg += this.state.trip.distances[i];
@@ -176,5 +176,13 @@ export default class Trip extends Component {
         let {places} = Object.assign(this.state.trip);
         places.splice(0, destroy, createPlace(place));
         this.setState({places});
+    }
+
+    deleteItem(index){
+        let tempPlaces = Object.assign(this.state.trip.places);
+        tempPlaces.splice(index,1);
+        let tempDistances = Object.assign(this.state.trip.distances);
+        tempDistances.splice(index,1);
+        this.setState({trip: {places: tempPlaces, distances: tempDistances}});
     }
 }
