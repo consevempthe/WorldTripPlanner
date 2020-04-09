@@ -3,9 +3,10 @@ import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from '
 import {UncontrolledAlert} from 'reactstrap';
 import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
 
-import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
-import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
+import {PROTOCOL_VERSION} from "../Constants";
+import {sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as distanceSchema from "../../../schemas/TIPDistanceResponseSchema";
+import {processProtocolResponse, validateCoordinate, validateName} from "./Resources/HelpfulAPI";
 
 const Coordinate = require('coordinate-parser');
 
@@ -91,16 +92,8 @@ export default class Distance extends Component {
 
     getDistance() {
         sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then( distance => {
-            this.processDistanceResponse(distance);
+            this.setState({distance: processProtocolResponse(distance, distanceSchema)})
         });
-    }
-
-    processDistanceResponse(distanceResponse) {
-        if(!isJsonResponseValid(distanceResponse.body, distanceSchema)) {
-
-        } else if(distanceResponse.statusCode === HTTP_OK){
-            this.setState({distance: JSON.parse(JSON.stringify(distanceResponse.body))});
-        }
     }
 
     distanceOnClick(marker1, marker2) {
@@ -199,43 +192,13 @@ export default class Distance extends Component {
     }
 
     setName(event) {
-        if (this.validateName(event)) {
-            this.setState({name: event.target.value});
-        }
-    }
-
-    validateName(event) {
-        const val = event.target.value;
-
-        if(val.length !== 0){
-            this.setState({validName: 'success'});
-            return true;
-        }
-        else {
-            this.setState({validName: 'failure'});
-            return false;
-        }
+        this.setState({validName: validateName(event)});
+        this.setState({name: event.target.value});
     }
 
     setPlace(event) {
-        if(this.validateCoordinate(event)) {
-            this.addPlace(event.target.name, new Coordinate(event.target.value));
-        }
+        this.setState({validate: validateCoordinate(event)});
+        this.addPlace(event.target.name, new Coordinate(event.target.value));
     }
 
-    validateCoordinate(event) {
-        let { validate } = Object.assign(this.state);
-        const coordinate = event.target.value;
-
-        try {
-            new Coordinate(coordinate);
-            validate = 'success';
-            return true;
-        } catch (error) {
-            validate = 'failure';
-            return false;
-        } finally {
-            this.setState({ validate });
-        }
-    }
 }

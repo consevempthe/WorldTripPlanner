@@ -8,6 +8,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import Distance from "./Distance";
 import Trip from "../Atlas/Trip";
+import {geolocationAvailable, getClientLocation} from "./Resources/HelpfulAPI";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
@@ -32,20 +33,18 @@ export default class Atlas extends Component {
         this.changeEarthRadius = this.changeEarthRadius.bind(this);
         this.changeOrigin = this.changeOrigin.bind(this);
 
-        this.processGeolocation = this.processGeolocation.bind(this);
-
+        this.markClientLocation = this.markClientLocation.bind(this);
         this.renderLine = this.renderLine.bind(this);
         this.addMarker = this.addMarker.bind(this);
 
         this.state = {
-            LocationServiceOn: false,
             mapBounds: null,
             earthRadius: '3959.0',
             markerPositions: [],
             LoadFile: false,
         };
 
-        this.getClientLocation();
+        this.markClientLocation();
     }
 
     changeEarthRadius(radius) {
@@ -112,8 +111,6 @@ export default class Atlas extends Component {
                 <Trip
                     serverPort={this.props.serverPort}
                     earthRadius={this.state.earthRadius}
-                    isOpen={this.state.loadFile}
-                    toggleOpen={(isOpen = !this.state.loadFile) => this.setState({loadFile: isOpen})}
                     addPlaces={this.addPlacesFromFileUpload}
                     ref={Trip => {
                         this.Trip = Trip;
@@ -124,11 +121,11 @@ export default class Atlas extends Component {
     }
 
     renderWhereAmIButton() {
-        if (this.state.locationServiceOn) {
+        if (geolocationAvailable()) {
             return (
                 <div>
                     <Button onClick={ () => {
-                        this.setState({markerPositions: this.state.markerPositions.concat(this.getClientLocation())});
+                        this.setState({markerPositions: this.state.markerPositions.concat(this.markClientLocation())});
                         this.setState({markerPositions: []});
                     }} size={"md"} block>Where Am I?</Button>
                 </div>
@@ -200,22 +197,8 @@ export default class Atlas extends Component {
         }
     }
 
-    processGeolocation(geolocation) {
-        const place = {name: "Home", lat: geolocation.coords.latitude, lng: geolocation.coords.longitude};
-        this.setState({markerPositions: this.state.markerPositions.concat(place),
-            locationServiceOn: true}, this.setMapBounds);
-
-        this.Trip.addPlace(place);
-    }
-
-    processGeolocationError(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
-
-    getClientLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(this.processGeolocation, this.processGeolocationError);
-        }
+    markClientLocation() {
+        getClientLocation(this.addPlaceToArray);
     }
 
     getDistanceOnMapClick() {

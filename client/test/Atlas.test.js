@@ -13,12 +13,6 @@ function testInitialAppState() {
 
     expect(actualMarkerPos).toEqual(expectedMarkerPos);
 
-    // test client Location Services
-    let actualLocationServices = atlas.state().LocationServiceOn;
-    let expectedLocationServices = false;
-
-    expect(actualLocationServices).toEqual(expectedLocationServices);
-
     // test mapBounds
     let actualMapBounds = atlas.state().mapBounds;
     let expectedMapBounds = null;
@@ -48,7 +42,6 @@ function renderTest() {
     expect(atlas.find('Map').length).toEqual(1);
     expect(atlas.find('Distance').length).toEqual(1);
     expect(atlas.find('Trip').length).toEqual(1);
-
 
 }
 

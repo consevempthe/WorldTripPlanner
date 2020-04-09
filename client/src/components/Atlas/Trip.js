@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    Table,
+    Table, Modal, ModalBody, ModalHeader, ModalFooter, Form, Input,
     Button, ButtonGroup,
     UncontrolledAlert,
     UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
@@ -10,6 +10,7 @@ import LoadSave from "./LoadSave";
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
+import {createPlace, numberToString, parseCoordinate, validateCoordinate, validateName} from "./Resources/HelpfulAPI";
 
 export default class Trip extends Component {
 
@@ -17,6 +18,7 @@ export default class Trip extends Component {
         super(props);
 
         this.processTripRequest = this.processTripRequest.bind(this);
+        this.toggle = this.toggle.bind(this);
 
         this.state = {
             trip: {
@@ -26,8 +28,17 @@ export default class Trip extends Component {
                 places: [],
                 distances: []
             },
-            showLoadFileModal: false,
+
+            newStart: {
+                name: '', latitude: '', longitude: '',
+            },
+            validateName: '',
+            modal: false,
         };
+    }
+
+    toggle() {
+        this.setState({modal: !this.state.modal});
     }
 
     render() {
@@ -43,6 +54,7 @@ export default class Trip extends Component {
                     }}>Create</Button>
                     {this.renderEditButton()}
                 </ButtonGroup>
+                {this.renderAddNewStart()}
                 <LoadSave
                     addPlaces={this.props.addPlaces}
                     processRequest={this.processTripRequest}
@@ -56,7 +68,7 @@ export default class Trip extends Component {
     renderTable() {
         if(this.state.trip.places.length > 1 && this.state.trip.distances) {
             return (
-                <Table size={"sm"} striped responsive className={"tableBlockScroll"}>
+                <Table size={"sm"} responsive className={"tableBlockScroll"}>
                     <thead>
                     <tr>
                         <th> Place</th>
@@ -102,12 +114,47 @@ export default class Trip extends Component {
                     Edit
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem>New Start</DropdownItem>
+                    <DropdownItem onClick={this.toggle}>New Start</DropdownItem>
                     <DropdownItem onClick={ () => this.reverseTrip()}>Reverse Trip</DropdownItem>
                     <DropdownItem>Delete Destination</DropdownItem>
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
         )
+    }
+
+    renderAddNewStart() {
+        return(
+            <Modal isOpen={this.state.modal} toggle={this.toggle}>
+                <ModalHeader toggle={this.toggle}>Add a new start</ModalHeader>
+                <ModalBody>
+                    <Form>
+                        <Input placeholder={"Give a name."} onChange={ (event) => this.newStartName(event) } />
+                        <Input placeholder={"Add coordinates."} onChange={ (event) => this.newCoordinates(event)}/>
+                    </Form>
+                </ModalBody>
+                <ModalFooter>
+                    <Button>Add New Start</Button>
+                    <Button onClick={this.toggle}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+        )
+    }
+
+    newStartName(event) {
+        const {newStart} = Object.assign(this.state);
+        this.setState({validateName: validateName(event)});
+        if(this.state.validateName === 'success') {
+            newStart.name = event.target.value;
+        }
+        this.setState({newStart});
+    }
+
+    newCoordinates(event) {
+        const {newStart} = Object.assign(this.state);
+        this.setState({validateCoordinate: validateCoordinate(event)});
+        const coordinate = parseCoordinate(event);
+        newStart.latitude = numberToString(coordinate.getLatitude());
+        newStart.longitude = numberToString(coordinate.getLongitude());
     }
 
     computeCumulativeDistance() {
@@ -166,17 +213,15 @@ export default class Trip extends Component {
     }
 
     addPlace(place) {
-        const add = {name: place.name, latitude: place.lat.toString(), longitude: place.lng.toString()};
         let {trip} = Object.assign(this.state);
-        trip["places"].push(add);
+        trip["places"].push(createPlace(place));
         this.setState({trip});
     }
 
-    changeStartPlace(place) {
-        const origin = {name: place.name, latitude: place.lat.toString(), longitude: place.lng.toString()};
-        let {trip} = Object.assign(this.state);
-
-        trip["places"][0] = origin;
-        this.setState({trip});
+    //destroy defaults to 1 meaning that it will change the start place, set it to 0 and it will merely append it.
+    changeStartPlace(place, destroy=1) {
+        let {places} = Object.assign(this.state.trip);
+        places.splice(0, destroy, createPlace(place));
+        this.setState({places});
     }
 }

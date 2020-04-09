@@ -48,6 +48,9 @@ function testInitialAppState() {
 
     expect(actualDistance).toEqual(expectedDistance);
     expect(actualValidate).toEqual(expectedValidate);
+    expect(app.state().validName).toEqual('');
+    expect(app.state().name).toEqual('');
+
 }
 
 test("Testing Distance's initial state", testInitialAppState);
@@ -98,19 +101,11 @@ function testAddPlace() {
 test("Testing add place function and create marker", testAddPlace);
 
 function testValidate() {
-    let event = {target: {value: "34 -105"}};
+    let event = {target: {name: "place1", value: "34 -105"}};
     const valid = mount(<Distance/>);
 
-    let bool = valid.instance().validateCoordinate(event);
-    expect(bool).toEqual(true);
-    let validate = valid.state().validate;
-    expect(validate).toEqual('success');
-
-    let badEvent = {target: {value: "foobar"}};
-    let bool1 = valid.instance().validateCoordinate(badEvent);
-    expect(bool1).toEqual(false);
-    let validateF = valid.state().validate;
-    expect(validateF).toEqual('failure');
+    valid.instance().setPlace(event);
+    expect(valid.state().validate).toEqual('success');
 }
 
 test("Testing validate coordinates", testValidate);
@@ -124,11 +119,6 @@ function testSetPlace() {
     let actualPlace1 = setPlace.state().distance.place1;
     expect(actualPlace1).toEqual(expectPlace1);
 
-    let event1 = {target: {value: "feel awful", name: "place2"}};
-    setPlace.instance().setPlace(event1);
-    let expectPlace2 = {latitude: '', longitude: ''};
-    let actualPlace2 = setPlace.state().distance.place2;
-    expect(actualPlace2).toEqual(expectPlace2);
 }
 
 test("Testing set place", testSetPlace);
