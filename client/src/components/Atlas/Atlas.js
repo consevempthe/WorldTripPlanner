@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css';
 import Distance from "./Distance";
 import Trip from "../Atlas/Trip";
 import {geolocationAvailable, getClientLocation} from "./Resources/HelpfulAPI";
+import StartModal from "./StartModal";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
@@ -36,63 +37,42 @@ export default class Atlas extends Component {
         this.markClientLocation = this.markClientLocation.bind(this);
         this.renderLine = this.renderLine.bind(this);
         this.addMarker = this.addMarker.bind(this);
+        this.addNewStart = this.addNewStart.bind(this);
 
         this.state = {
             mapBounds: null,
             earthRadius: '3959.0',
             markerPositions: [],
             LoadFile: false,
+            modal: false,
         };
 
         this.markClientLocation();
     }
 
-    changeEarthRadius(radius) {
-        if(radius) {
-            this.setState({earthRadius: radius});
-        }
-    }
-
-    //destroy defaults to 1 meaning that it will change the start place, set it to 0 and it will merely prepend it.
-    changeOrigin(place, destroy=1) {
-        const { markerPositions } = Object.assign(this.state);
-        markerPositions.splice(0, destroy, place);
-        this.Trip.changeStartPlace(place);
-        this.setState({markerPositions}, this.setMapBounds);
-    }
-
-    addPlaceToArray(place) {
-        this.Trip.addPlace(place);
-        this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
-    }
-
-    addPlacesFromFileUpload(places) {
-        let tempPlaces = [];
-        for(let i = 0; i <= places.length - 1; i++) {
-            const place = {name: places[i].name, lat: parseFloat(places[i].latitude), lng: parseFloat(places[i].longitude)};
-            tempPlaces.push(place);
-        }
-        this.setState({markerPositions: tempPlaces}, this.setMapBounds);
-    }
-
-    setMapBounds() {
-        this.setState({mapBounds: L.latLngBounds(this.state.markerPositions)});
-    }
-
     render() {
         return (
-            <div>
-                <Container>
-                    <Row>
-                        <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
-                            {this.renderLeafletMap()}
-                            {this.renderWhereAmIButton()}
-                            {this.renderChildren()}
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
+            <Container>
+                <Row>
+                    <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
+                        {this.renderLeafletMap()}
+                        {this.renderWhereAmIButton()}
+                        {this.renderChildren()}
+                        {this.renderStartModal()}
+                    </Col>
+                </Row>
+            </Container>
         );
+    }
+
+    renderStartModal() {
+        return (
+            <StartModal
+                newStart={this.addNewStart}
+                modal={this.state.modal}
+                toggle={(modal= !this.state.modal) => this.setState({modal: modal})}
+            />
+        )
     }
 
     renderChildren() {
@@ -108,11 +88,11 @@ export default class Atlas extends Component {
                         this.distance = distance;
                     }}
                 />
-
                 <Trip
                     serverPort={this.props.serverPort}
                     earthRadius={this.state.earthRadius}
-                    newStart={this.changeOrigin}
+                    modal={this.state.modal}
+                    toggle={(modal= !this.state.modal) => this.setState({modal: modal})}
                     addPlaces={this.addPlacesFromFileUpload}
                     ref={Trip => {
                         this.Trip = Trip;
@@ -201,6 +181,43 @@ export default class Atlas extends Component {
 
     markClientLocation() {
         getClientLocation(this.addPlaceToArray);
+    }
+
+    changeEarthRadius(radius) {
+        if(radius) {
+            this.setState({earthRadius: radius});
+        }
+    }
+
+    changeOrigin(place) {
+        const { markerPositions } = Object.assign(this.state);
+        markerPositions.splice(0, 1, place);
+        this.Trip.changeStartPlace(place);
+        this.setState({markerPositions}, this.setMapBounds);
+    }
+
+    addNewStart(place) {
+        const newStart= {name: place.name, lat: parseFloat(place.lat), lng: parseFloat(place.lng)};
+        this.setState({markerPositions: [newStart, ...this.state.markerPositions]}, this.setMapBounds);
+        this.Trip.changeStartPlace(place,0);
+    }
+
+    addPlaceToArray(place) {
+        this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
+        this.Trip.addPlace(place);
+    }
+
+    addPlacesFromFileUpload(places) {
+        let tempPlaces = [];
+        for(let i = 0; i <= places.length - 1; i++) {
+            const place = {name: places[i].name, lat: parseFloat(places[i].latitude), lng: parseFloat(places[i].longitude)};
+            tempPlaces.push(place);
+        }
+        this.setState({markerPositions: tempPlaces}, this.setMapBounds);
+    }
+
+    setMapBounds() {
+        this.setState({mapBounds: L.latLngBounds(this.state.markerPositions)});
     }
 
     getDistanceOnMapClick() {

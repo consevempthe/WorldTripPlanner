@@ -8,3 +8,4 @@ export const PROTOCOL_VERSION = 3;
 export const HTTP_OK = 200;
 export const HTTP_BAD_REQUEST = 400;
 export const HTTP_INTERNAL_SERVER_ERROR = 500;
+export const COORDINATE = require('coordinate-parser');

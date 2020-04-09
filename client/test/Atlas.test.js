@@ -38,6 +38,7 @@ function renderTest() {
 
     const atlas = mount(<Atlas/>);
 
+    expect(atlas.find('Modal').length).toEqual(2);
     expect(atlas.find('Button').length).toEqual(5);
     expect(atlas.find('Map').length).toEqual(1);
     expect(atlas.find('Distance').length).toEqual(1);
@@ -77,3 +78,17 @@ function addMarkerTest() {
 }
 
 test("Testing Atlas' Add Marker:", addMarkerTest);
+
+function testAddNewStart() {
+    const testNewStart = mount(<Atlas
+    />);
+    let add1 = {name: 'hello', lat: '42.40', lng: '40.34'};
+    let expectedAdd1 = {name: 'hello', lat: 42.40, lng: 40.34};
+
+    testNewStart.instance().addNewStart(add1);
+    expect(testNewStart.state().markerPositions.length).toEqual(1);
+    expect(testNewStart.state().markerPositions[0]).toEqual(expectedAdd1);
+
+}
+
+test("Testing adding a new start", testAddNewStart);

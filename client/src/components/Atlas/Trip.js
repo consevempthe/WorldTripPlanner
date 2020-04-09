@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
 import {
-    Table, Modal, ModalBody, ModalHeader, ModalFooter, Form, Input,
-    Button, ButtonGroup,
-    UncontrolledAlert,
+    Table, Button, ButtonGroup, UncontrolledAlert,
     UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
 } from 'reactstrap';
 import LoadSave from "./LoadSave";
+import './Resources/tripTable.css'
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
-import {createPlace, createPoint, numberToString, validateName} from "./Resources/HelpfulAPI";
-
-const Coordinate = require('coordinate-parser');
+import {createPlace} from "./Resources/HelpfulAPI";
 
 export default class Trip extends Component {
 
@@ -19,8 +16,6 @@ export default class Trip extends Component {
         super(props);
 
         this.processTripRequest = this.processTripRequest.bind(this);
-        this.toggle = this.toggle.bind(this);
-        this.newStartPlace = this.newStartPlace.bind(this);
 
         this.state = {
             trip: {
@@ -30,18 +25,7 @@ export default class Trip extends Component {
                 places: [],
                 distances: []
             },
-
-            newStart: {
-                name: '', latitude: '', longitude: '',
-            },
-            validName: '',
-            validCoordinate: '',
-            modal: false,
         };
-    }
-
-    toggle() {
-        this.setState({modal: !this.state.modal});
     }
 
     render() {
@@ -57,7 +41,6 @@ export default class Trip extends Component {
                     }}>Create</Button>
                     {this.renderEditButton()}
                 </ButtonGroup>
-                {this.renderAddNewStart()}
                 <LoadSave
                     addPlaces={this.props.addPlaces}
                     processRequest={this.processTripRequest}
@@ -71,7 +54,7 @@ export default class Trip extends Component {
     renderTable() {
         if(this.state.trip.places.length > 1 && this.state.trip.distances) {
             return (
-                <Table size={"sm"} responsive>
+                <Table size={"sm"} responsive className={'tableBlockScroll'}>
                     <thead>
                     <tr>
                         <th> Place</th>
@@ -117,83 +100,12 @@ export default class Trip extends Component {
                     Edit
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem onClick={this.toggle}>New Start</DropdownItem>
+                    <DropdownItem onClick={ () => this.props.toggle()}>New Start</DropdownItem>
                     <DropdownItem onClick={ () => this.reverseTrip()}>Reverse Trip</DropdownItem>
                     <DropdownItem>Delete Destination</DropdownItem>
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
         )
-    }
-
-    renderAddNewStart() {
-        return(
-            <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                <ModalHeader toggle={this.toggle}>Add a new start</ModalHeader>
-                <ModalBody>
-                    <Form>
-                        <Input
-                            placeholder={"Give a name."}
-                            onChange={ (event) => this.newStartName(event)}
-                            valid={this.state.validName === 'success'}
-                            invalid={this.state.validName === 'failure'}
-                        />
-                        <Input
-                            placeholder={"Add coordinates."}
-                            onChange={ (event) => this.setCoordinate(event)}
-                            valid={this.state.validCoordinate === 'success'}
-                            invalid={this.state.validCoordinate === 'failure'}
-                        />
-                    </Form>
-                </ModalBody>
-                <ModalFooter>
-                    <Button onClick={ () => {this.newStartPlace(); this.toggle()}}
-                            disabled={this.state.validName !== 'success' || this.state.validCoordinate !== 'success'}
-                    >Add New Start</Button>
-                    <Button onClick={this.toggle}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
-        )
-    }
-
-    newStartPlace() {
-        this.changeStartPlace(createPoint(this.state.newStart), 0);
-        const newStart = {lat: parseFloat(this.state.newStart.latitude), lng: parseFloat(this.state.newStart.longitude), name: this.state.newStart.name};
-        this.props.newStart(newStart, 0);
-        this.setState({validName: '', validCoordinate: ''});
-    }
-
-    newStartName(event) {
-        const {newStart} = Object.assign(this.state);
-        this.setState({validName: validateName(event)});
-        if(this.state.validName === 'success') {
-            newStart["name"] = event.target.value;
-        }
-        this.setState({newStart});
-    }
-
-    setCoordinate(event) {
-        if(this.validateCoordinate(event)) {
-            let {newStart} = Object.assign(this.state);
-            const destination = new Coordinate(event.target.value);
-            newStart.latitude = numberToString(destination.getLatitude());
-            newStart.longitude = numberToString(destination.getLongitude());
-        }
-    }
-
-    validateCoordinate(event) {
-        let {validCoordinate} = Object.assign(this.state);
-        const coordinate = event.target.value;
-
-        try {
-            new Coordinate(coordinate);
-            validCoordinate = 'success';
-            return true;
-        } catch (error) {
-            validCoordinate = 'failure';
-            return false;
-        } finally {
-            this.setState({ validCoordinate });
-        }
     }
 
     computeCumulativeDistance() {
