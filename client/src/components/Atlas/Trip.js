@@ -60,6 +60,7 @@ export default class Trip extends Component {
                         <th> Place</th>
                         <th style={{textAlign: 'right'}}>Leg dist.</th>
                         <th style={{textAlign: 'right'}}>Cumulative dist.</th>
+                        <th style={{textAlign: 'right'}}>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -83,6 +84,7 @@ export default class Trip extends Component {
                     <td>{name}</td>
                     <td style={{textAlign: 'right'}}>{legLength.toString()}</td>
                     <td style={{textAlign: 'right'}}>{runningTotalLeg.toString()}</td>
+                    <td><span>&time</span></td>
                 </tr>
             );
             runningTotalLeg += this.state.trip.distances[i];
