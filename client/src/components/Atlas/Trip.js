@@ -184,5 +184,6 @@ export default class Trip extends Component {
         let tempDistances = Object.assign(this.state.trip.distances);
         tempDistances.splice(index,1);
         this.setState({trip: {places: tempPlaces, distances: tempDistances}});
+        this.props.deleteMarkerPosition(index);
     }
 }
