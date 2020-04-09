@@ -3,12 +3,10 @@ import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from '
 import {UncontrolledAlert} from 'reactstrap';
 import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
 
-import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
-import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
+import {COORDINATE, PROTOCOL_VERSION} from "../Constants";
+import {sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as distanceSchema from "../../../schemas/TIPDistanceResponseSchema";
-
-const Coordinate = require('coordinate-parser');
-
+import {numberToString, processProtocolResponse, validateName} from "./Resources/HelpfulAPI";
 
 export default class Distance extends Component {
 
@@ -91,21 +89,13 @@ export default class Distance extends Component {
 
     getDistance() {
         sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then( distance => {
-            this.processDistanceResponse(distance);
+            this.setState({distance: processProtocolResponse(distance, distanceSchema)})
         });
     }
 
-    processDistanceResponse(distanceResponse) {
-        if(!isJsonResponseValid(distanceResponse.body, distanceSchema)) {
-
-        } else if(distanceResponse.statusCode === HTTP_OK){
-            this.setState({distance: JSON.parse(JSON.stringify(distanceResponse.body))});
-        }
-    }
-
     distanceOnClick(marker1, marker2) {
-        const position1 = new Coordinate(marker1);
-        const position2 = new Coordinate(marker2);
+        const position1 = new COORDINATE(marker1);
+        const position2 = new COORDINATE(marker2);
         this.addPlace("place1", position1);
         this.addPlace("place2", position2);
 
@@ -191,35 +181,21 @@ export default class Distance extends Component {
 
     addPlace(name, coordinate) {
         const {distance} = Object.assign(this.state);
-        distance[name].latitude = coordinate.getLatitude().toFixed(2).toString();
-        distance[name].longitude = coordinate.getLongitude().toFixed(2).toString();
+        distance[name].latitude = numberToString(coordinate.getLatitude());
+        distance[name].longitude = numberToString(coordinate.getLongitude());
         distance[name].name = this.state.name;
 
         this.setState({distance});
     }
 
     setName(event) {
-        if (this.validateName(event)) {
-            this.setState({name: event.target.value});
-        }
-    }
-
-    validateName(event) {
-        const val = event.target.value;
-
-        if(val.length !== 0){
-            this.setState({validName: 'success'});
-            return true;
-        }
-        else {
-            this.setState({validName: 'failure'});
-            return false;
-        }
+        this.setState({validName: validateName(event)});
+        this.setState({name: event.target.value});
     }
 
     setPlace(event) {
         if(this.validateCoordinate(event)) {
-            this.addPlace(event.target.name, new Coordinate(event.target.value));
+            this.addPlace(event.target.name, new COORDINATE(event.target.value));
         }
     }
 
@@ -228,7 +204,7 @@ export default class Distance extends Component {
         const coordinate = event.target.value;
 
         try {
-            new Coordinate(coordinate);
+            new COORDINATE(coordinate);
             validate = 'success';
             return true;
         } catch (error) {
@@ -238,4 +214,5 @@ export default class Distance extends Component {
             this.setState({ validate });
         }
     }
+
 }

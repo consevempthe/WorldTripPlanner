@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import {
-    Table,
-    Button, ButtonGroup,
-    UncontrolledAlert,
+    Table, Button, ButtonGroup, UncontrolledAlert,
     UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
 } from 'reactstrap';
-import "./Trip.css"
 import LoadSave from "./LoadSave";
+import './Resources/tripTable.css'
 import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
+import {createPlace} from "./Resources/HelpfulAPI";
 
 export default class Trip extends Component {
 
@@ -26,7 +25,6 @@ export default class Trip extends Component {
                 places: [],
                 distances: []
             },
-            showLoadFileModal: false,
         };
     }
 
@@ -56,7 +54,7 @@ export default class Trip extends Component {
     renderTable() {
         if(this.state.trip.places.length > 1 && this.state.trip.distances) {
             return (
-                <Table size={"sm"} striped responsive className={"tableBlockScroll"}>
+                <Table size={"sm"} responsive className={'tableBlockScroll'}>
                     <thead>
                     <tr>
                         <th> Place</th>
@@ -97,12 +95,12 @@ export default class Trip extends Component {
 
     renderEditButton() {
         return (
-            <UncontrolledButtonDropdown>
+            <UncontrolledButtonDropdown direction={'up'}>
                 <DropdownToggle caret>
                     Edit
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem>New Start</DropdownItem>
+                    <DropdownItem onClick={ () => this.props.toggle()}>New Start</DropdownItem>
                     <DropdownItem onClick={ () => this.reverseTrip()}>Reverse Trip</DropdownItem>
                     <DropdownItem>Delete Destination</DropdownItem>
                 </DropdownMenu>
@@ -166,17 +164,15 @@ export default class Trip extends Component {
     }
 
     addPlace(place) {
-        const add = {name: place.name, latitude: place.lat.toString(), longitude: place.lng.toString()};
         let {trip} = Object.assign(this.state);
-        trip["places"].push(add);
+        trip["places"].push(createPlace(place));
         this.setState({trip});
     }
 
-    changeStartPlace(place) {
-        const origin = {name: place.name, latitude: place.lat.toString(), longitude: place.lng.toString()};
-        let {trip} = Object.assign(this.state);
-
-        trip["places"][0] = origin;
-        this.setState({trip});
+    //destroy defaults to 1 meaning that it will change the start place, set it to 0 and it will merely append it.
+    changeStartPlace(place, destroy=1) {
+        let {places} = Object.assign(this.state.trip);
+        places.splice(0, destroy, createPlace(place));
+        this.setState({places});
     }
 }
