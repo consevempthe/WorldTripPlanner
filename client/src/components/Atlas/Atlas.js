@@ -53,7 +53,7 @@ export default class Atlas extends Component {
         }
     }
 
-    //destroy defaults to 1 meaning that it will change the start place, set it to 0 and it will merely append it.
+    //destroy defaults to 1 meaning that it will change the start place, set it to 0 and it will merely prepend it.
     changeOrigin(place, destroy=1) {
         const { markerPositions } = Object.assign(this.state);
         markerPositions.splice(0, destroy, place);

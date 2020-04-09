@@ -157,6 +157,8 @@ export default class Trip extends Component {
 
     newStartPlace() {
         this.changeStartPlace(createPoint(this.state.newStart), 0);
+        const newStart = {lat: parseFloat(this.state.newStart.latitude), lng: parseFloat(this.state.newStart.longitude), name: this.state.newStart.name};
+        this.props.newStart(newStart, 0);
         this.setState({validName: '', validCoordinate: ''});
     }
 
