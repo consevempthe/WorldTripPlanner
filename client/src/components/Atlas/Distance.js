@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from 'reactstrap';
 import {UncontrolledAlert} from 'reactstrap';
-import {Form, FormGroup, Input, FormFeedback, FormText, InputGroup} from 'reactstrap';
+import {Form, FormGroup, FormFeedback, FormText, InputGroup} from 'reactstrap';
 
 import {COORDINATE, PROTOCOL_VERSION} from "../Constants";
 import {sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as distanceSchema from "../../../schemas/TIPDistanceResponseSchema";
-import {numberToString, processProtocolResponse, validateName} from "./Resources/HelpfulAPI";
+import {numberToString, processProtocolResponse, validateName, renderInput} from "./Resources/HelpfulAPI";
 
 export default class Distance extends Component {
 
@@ -149,33 +149,19 @@ export default class Distance extends Component {
                 <FormGroup>
                     <FormText>Input a name and coordinates to plan your trip.</FormText>
                     <InputGroup>
-                        {this.renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
+                        {renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
                         <FormFeedback valid>Nice! that's a valid name!</FormFeedback>
                         <FormFeedback>Names have to be unique.</FormFeedback>
                     </InputGroup>
                     <InputGroup>
                         {this.renderRadiusButton()}
-                        {this.renderInput("place1", "Enter lat and lng.", this.state.validate, this.setPlace)}
+                        {renderInput("place1", "Enter lat and lng.", this.state.validate, this.setPlace)}
                         {this.renderAddLocation()}
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
                     </InputGroup>
                 </FormGroup>
             </Form>
-        )
-    }
-
-    renderInput(name, placeholder, validate, changeFunction) {
-        return (
-            <Input
-                name={name}
-                placeholder={placeholder}
-                valid={validate === 'success'}
-                invalid={validate === 'failure'}
-                onChange={(event) => {
-                    changeFunction(event);
-                }}
-            />
         )
     }
 
