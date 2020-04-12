@@ -5,23 +5,24 @@ import {mount} from 'enzyme';
 
 import LoadSave from "../src/components/Atlas/LoadSave";
 
-function testRender() {
+function testRenderLoad() {
     const loadSave = mount(<LoadSave/>);
 
-    expect(loadSave.find('Button').length).toEqual(1);
-    expect(loadSave.find('Modal').length).toEqual(2);
+    expect(loadSave.find('UncontrolledDropdown').length).toEqual(1);
 
-    loadSave.find('Button').at(0).simulate('click');
+    loadSave.find('UncontrolledDropdown').at(0).simulate('click');
+    loadSave.find('DropdownItem').at(0).simulate('click');
+    loadSave.find('DropdownItem').at(1).simulate('click');
 
-    expect(loadSave.find('ModalHeader').length).toEqual(1);
-    expect(loadSave.find('ModalFooter').length).toEqual(1);
-    expect(loadSave.find('ModalBody').length).toEqual(1);
-    expect(loadSave.find('Form').length).toEqual(1);
-    expect(loadSave.find('Button').length).toEqual(3);
+    expect(loadSave.find('ModalHeader').length).toEqual(2);
+    expect(loadSave.find('ModalFooter').length).toEqual(2);
+    expect(loadSave.find('ModalBody').length).toEqual(2);
+    expect(loadSave.find('Form').length).toEqual(2);
+    expect(loadSave.find('Button').length).toEqual(6);
 
 }
 
-test("testing render", testRender);
+test("testing render of Load", testRenderLoad);
 
 function testModals() {
     const modal = mount(<LoadSave/>);
