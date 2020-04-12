@@ -5,7 +5,7 @@ import {mount} from 'enzyme';
 
 import LoadSave from "../src/components/Atlas/LoadSave";
 
-function testRenderLoad() {
+function testRenderLoadSave() {
     const loadSave = mount(<LoadSave/>);
 
     expect(loadSave.find('UncontrolledDropdown').length).toEqual(1);
@@ -22,7 +22,7 @@ function testRenderLoad() {
 
 }
 
-test("testing render of Load", testRenderLoad);
+test("testing render of Load", testRenderLoadSave);
 
 function testModals() {
     const modal = mount(<LoadSave/>);
