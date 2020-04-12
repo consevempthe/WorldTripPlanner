@@ -1,7 +1,7 @@
 import './enzyme.config.js';
 import './setupJest'
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {mount} from 'enzyme';
 
 import LoadSave from "../src/components/Atlas/LoadSave";
 
@@ -9,7 +9,7 @@ function testRender() {
     const loadSave = mount(<LoadSave/>);
 
     expect(loadSave.find('Button').length).toEqual(1);
-    expect(loadSave.find('Modal').length).toEqual(1);
+    expect(loadSave.find('Modal').length).toEqual(2);
 
     loadSave.find('Button').at(0).simulate('click');
 
@@ -23,19 +23,26 @@ function testRender() {
 
 test("testing render", testRender);
 
-function testModal() {
-    const modal = shallow(<LoadSave/>);
+function testModals() {
+    const modal = mount(<LoadSave/>);
 
-    expect(modal.state().showLoadFile).toEqual(false);
+    let initialOpenState = false;
 
-    modal.instance().openModal();
+    expect(modal.state().showLoadFile).toEqual(initialOpenState);
+    expect(modal.state().showSaveFile).toEqual(initialOpenState);
 
-    expect(modal.state().showLoadFile).toEqual(true);
+    initialOpenState = true;
 
-    modal.instance().closeModal();
+    modal.instance().toggleSaveModal();
 
-    expect(modal.state().showLoadFile).toEqual(false);
+    expect(modal.state().showSaveFile).toEqual(initialOpenState);
+    expect(modal.state().fileName).toEqual('');
+    expect(modal.state().validFileName).toEqual('');
+
+    modal.instance().toggleLoadModal();
+
+    expect(modal.state().showLoadFile).toEqual(initialOpenState);
 
 }
 
-test("test the modal", testModal);
+test("test the modals", testModals);

@@ -39,7 +39,7 @@ function renderTest() {
 
     const atlas = mount(<Atlas/>);
 
-    expect(atlas.find('Modal').length).toEqual(2);
+    expect(atlas.find('Modal').length).toEqual(3);
     expect(atlas.find('Button').length).toEqual(5);
     expect(atlas.find('Map').length).toEqual(1);
     expect(atlas.find('Distance').length).toEqual(1);
@@ -157,7 +157,7 @@ test("Testing Atlas' Set Map Bounds:", testSetMapBounds);
 function testDeleteMarkerPosition() {
     window.prompt = () => {return "Las Vegas"};
     const atlas = mount(<Atlas/>);
-    const markerPosition1 = {latlng: {lat: 36.17, lng: -115.14}}
+    const markerPosition1 = {latlng: {lat: 36.17, lng: -115.14}};
     atlas.instance().addMarker(markerPosition1);
     let actualMarkerPositionSize = atlas.state().markerPositions.length;
     expect(actualMarkerPositionSize).toEqual(1);
