@@ -12,10 +12,7 @@ import {
     FormFeedback,
 } from 'reactstrap';
 import {sendServerRequestWithBody} from "../../utils/restfulAPI";
-import UncontrolledDropdown from "reactstrap/lib/UncontrolledDropdown";
-import DropdownToggle from "reactstrap/es/DropdownToggle";
-import DropdownMenu from "reactstrap/es/DropdownMenu";
-import DropdownItem from "reactstrap/es/DropdownItem";
+import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from 'reactstrap';
 import Label from "reactstrap/es/Label";
 import {renderInput, validateName} from "./Resources/HelpfulAPI";
 
