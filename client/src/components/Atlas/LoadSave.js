@@ -12,8 +12,7 @@ import {
     FormFeedback,
 } from 'reactstrap';
 import {sendServerRequestWithBody} from "../../utils/restfulAPI";
-import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown} from 'reactstrap';
-import Label from "reactstrap/es/Label";
+import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown, Label} from 'reactstrap';
 import {renderInput, validateName} from "./Resources/HelpfulAPI";
 
 const reader = new FileReader();
