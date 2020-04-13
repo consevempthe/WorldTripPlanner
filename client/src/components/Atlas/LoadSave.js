@@ -96,5 +96,34 @@ export default class LoadSave extends Component {
         }, 0);
     }
 
+    buildKML(places) {
+        const placeMarkers = this.buildPlaceMarks(places);
+        let dataStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n" +
+            "  <Document>\n" +
+            "    <name>Single Simple Line</name>\n" +
+            "    <open>1</open>\n" +
+            "    <description>Just a single blue line across Colorado</description>\n" +
+            "    <Style id=\"CrossStyle\">\n" +
+            "      <LineStyle>\n" +
+            "        <color>ffffffb6</color>\n" +
+            "        <width>4</width>\n" +
+            "      </LineStyle>\n" +
+            "    </Style>\n" + placeMarkers +"" +
+            "    </Document>\n" +
+            "</kml>";
+        console.log(dataStr);
+        return(
+            dataStr
+        );
+    }
 
+    buildPlaceMarks(places) {
+        let placeMarkers = "<Placemark><name>Cross-corner line</name><styleUrl>#CrossStyle</styleUrl><LineString><coordinates>";
+        for(let i = 0; i < places.length; i++){
+            placeMarkers += `${places[i].latitude},${places[i].longitude},0\n`;
+        }
+        placeMarkers += "</coordinates></LineString></Placemark>";
+        return placeMarkers;
+    }
 }
