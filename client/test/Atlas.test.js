@@ -158,9 +158,11 @@ function testDeleteMarkerPosition() {
     window.prompt = () => {return "Las Vegas"};
     const atlas = mount(<Atlas/>);
     const markerPosition1 = {latlng: {lat: 36.17, lng: -115.14}};
+
     atlas.instance().addMarker(markerPosition1);
     let actualMarkerPositionSize = atlas.state().markerPositions.length;
     expect(actualMarkerPositionSize).toEqual(1);
+
     atlas.instance().deleteMarkerPosition(0);
     actualMarkerPositionSize = atlas.state().markerPositions.length;
     expect(actualMarkerPositionSize).toEqual(0);

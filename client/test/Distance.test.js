@@ -59,16 +59,21 @@ function testSetEarthRadius() {
     const distanceEarth = mount(<Distance
         changeRadius={startProperties.changeRadius}
     />);
+    let miles = 3959.0;
     let kilometers = 6371.0;
     let nautical = 3440.0;
 
-    distanceEarth.instance().setEarthRadius(kilometers);
-    let expectedEarthRadiusKM = distanceEarth.state().distance.earthRadius;
-    expect(expectedEarthRadiusKM).toEqual(6371.0);
+    distanceEarth.find('DropdownItem').at(1).simulate('click');
 
-    distanceEarth.instance().setEarthRadius(nautical);
-    let expectedEarthRadiusNM = distanceEarth.state().distance.earthRadius;
-    expect(expectedEarthRadiusNM).toEqual(3440.0);
+    expect(distanceEarth.state().distance.earthRadius).toEqual(kilometers);
+
+    distanceEarth.find('DropdownItem').at(2).simulate('click');
+
+    expect(distanceEarth.state().distance.earthRadius).toEqual(nautical);
+
+    distanceEarth.find('DropdownItem').at(0).simulate('click');
+
+    expect(distanceEarth.state().distance.earthRadius).toEqual(miles);
 }
 
 test("Test setEarthRadius", testSetEarthRadius);
@@ -106,19 +111,35 @@ function testValidate() {
 
     valid.instance().setPlace(event);
     expect(valid.state().validate).toEqual('success');
+
+    let fail = {target: {name: "place1", value: "foobar"}};
+
+    valid.instance().setPlace(fail);
+    expect(valid.state().validate).toEqual('failure');
+
+    let expectedPlace = {latitude: '34.00', longitude: '-105.00', name: ''};
+    expect(valid.state().distance.place1).toEqual(expectedPlace);
 }
 
 test("Testing validate coordinates", testValidate);
 
-function testSetPlace() {
-    const setPlace = mount(<Distance/>);
+function testSetPlaceSetName() {
+    const set = mount(<Distance/>);
     let event = {target: {value: "34 -105", name: "place1"}};
 
-    setPlace.instance().setPlace(event);
-    let expectPlace1 = {latitude: "34.00", longitude: "-105.00", name:""};
-    let actualPlace1 = setPlace.state().distance.place1;
+    let name = {target:{value: "someName", name: "name1"}};
+
+
+    set.instance().setName(name);
+
+    expect(set.state().validName).toEqual('success');
+
+    set.instance().setPlace(event);
+
+    let expectPlace1 = {latitude: "34.00", longitude: "-105.00", name:"someName"};
+    let actualPlace1 = set.state().distance.place1;
     expect(actualPlace1).toEqual(expectPlace1);
 
 }
 
-test("Testing set place", testSetPlace);
+test("Testing setPlace and setName", testSetPlaceSetName);

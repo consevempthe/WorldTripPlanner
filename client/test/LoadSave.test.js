@@ -1,7 +1,7 @@
 import './enzyme.config.js';
 import './setupJest'
 import React from 'react';
-import {mount} from 'enzyme';
+import {mount, shallow} from 'enzyme';
 
 import LoadSave from "../src/components/Atlas/LoadSave";
 
@@ -47,3 +47,21 @@ function testModals() {
 }
 
 test("test the modals", testModals);
+
+function testFunctions() {
+    const test = shallow(<LoadSave/>);
+
+    const event = {target: {value: 'nameOfFile'}};
+
+    test.instance().setName(event);
+
+    expect(test.state().validFileName).toEqual('success');
+    expect(test.state().fileName).toEqual('nameOfFile');
+
+    const fileType = test.instance().getFileType();
+
+    expect(fileType).toEqual('.KML');
+}
+
+test("testing set and get functions", testFunctions);
+
