@@ -1,6 +1,19 @@
 import React, {Component} from 'react';
-import {Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, FormText, ModalFooter} from 'reactstrap';
+import {
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    Form,
+    FormGroup,
+    Input,
+    FormText,
+    ModalFooter,
+    FormFeedback,
+} from 'reactstrap';
 import {sendServerRequestWithBody} from "../../utils/restfulAPI";
+import {DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown, Label} from 'reactstrap';
+import {renderInput, validateName} from "./Resources/HelpfulAPI";
 
 const reader = new FileReader();
 
@@ -8,39 +21,57 @@ export default class LoadSave extends Component {
 
     constructor(props) {
         super(props);
-        this.openModal = this.openModal.bind(this);
-        this.state = { showLoadFile: false};
+        this.toggleLoadModal = this.toggleLoadModal.bind(this);
+        this.toggleSaveModal = this.toggleSaveModal.bind(this);
+        this.setName = this.setName.bind(this);
+        this.state = {
+            showLoadFile: false,
+            showSaveFile: false,
+            validFileName: '',
+            fileName: '',
+            fileType: ".KML"
+        };
 
     }
 
     render() {
         return(
             <div>
+                {this.renderLoadSave()}
                 {this.renderLoadFile()}
-                {this.renderLoadForm()}
+                {this.renderSaveFile()}
             </div>
         )
     }
 
-    openModal() {
-        this.setState({showLoadFile: true});
+    toggleLoadModal() {
+        this.setState({showLoadFile: !this.state.showLoadFile});
     }
 
-    closeModal() {
-        this.setState({showLoadFile: false});
+    toggleSaveModal() {
+        this.setState({showSaveFile: !this.state.showSaveFile});
+        this.setState({validFileName: ''});
+    }
+
+    renderLoadSave() {
+        return(
+            <UncontrolledDropdown className={"float-right"} direction={"up"}>
+                <DropdownToggle caret>
+                    File
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem onClick={this.toggleLoadModal}>Load</DropdownItem>
+                    <DropdownItem onClick={this.toggleSaveModal}>Save</DropdownItem>
+                </DropdownMenu>
+            </UncontrolledDropdown>
+        )
     }
 
     renderLoadFile() {
         return(
-            <Button className={"float-right"} type={"button"} onClick={this.openModal}>Load</Button>
-        )
-    }
-
-    renderLoadForm() {
-        return(
             <div>
-                <Modal isOpen={this.state.showLoadFile} toggle={ () => this.closeModal()}>
-                    <ModalHeader toggle={ () => this.closeModal()}>Load a trip to your itinerary.</ModalHeader>
+                <Modal isOpen={this.state.showLoadFile} toggle={() => this.toggleLoadModal()}>
+                    <ModalHeader toggle={() => this.toggleLoadModal()}>Load a trip to your itinerary.</ModalHeader>
                     <ModalBody>
                         <Form>
                             <FormGroup>
@@ -51,11 +82,65 @@ export default class LoadSave extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={ () => this.uploadFile()}>Upload</Button>
-                        <Button onClick={ () => this.closeModal()}>Cancel</Button>
+                        <Button onClick={ () => this.toggleLoadModal()}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </div>
         )
+    }
+
+    renderSaveFile() {
+        return(
+            <div>
+                <Modal isOpen={this.state.showSaveFile} toggle={() => this.toggleSaveModal()}>
+                    <ModalHeader toggle={() => this.toggleSaveModal()}>
+                        Save Your Itinerary for Later
+                    </ModalHeader>
+                    <ModalBody>
+                        <Form>
+                            <FormGroup tag="fieldset">
+                                <legend>How would you like to save your itinerary?</legend>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="radio" name="radio1" defaultChecked/>{' '}
+                                        Save Map
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="radio" name="radio1" />{' '}
+                                        Save Itinerary
+                                    </Label>
+                                </FormGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                {renderInput("save", "Specify a name for the file: (ex. MyTrip)", this.state.validFileName, this.setName)}
+                                <FormFeedback valid>Ready to save the world!</FormFeedback>
+                                <FormFeedback>Sorry, you need to specify a name for the file!</FormFeedback>
+                            </FormGroup>
+                        </Form>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button onClick={() => this.toggleSaveModal()} disabled={this.state.validFileName !== 'success'}>Save</Button>
+                        <UncontrolledDropdown addonType={"prepend"}>
+                            <DropdownToggle caret>
+                                {this.getFileType()}
+                            </DropdownToggle>
+                        </UncontrolledDropdown>
+                        <Button onClick={() => this.toggleSaveModal()}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
+            </div>
+        );
+    }
+
+    getFileType() {
+        return this.state.fileType;
+    }
+
+    setName(event) {
+        this.setState({validFileName: validateName(event)});
+        this.setState({fileName: event.target.value});
     }
 
     applyFileToTable(file) {
@@ -71,7 +156,7 @@ export default class LoadSave extends Component {
 
         if(uploadFile.type === "application/json") {
             this.applyFileToTable(reader.result);
-            this.closeModal();
+            this.toggleLoadModal();
         } else {
             alert("Error: file format not recognized. Please upload a JSON formatted file.");
         }

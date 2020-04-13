@@ -1,6 +1,8 @@
 import {isJsonResponseValid} from "../../../utils/restfulAPI";
 import {HTTP_OK} from "../../Constants";
 import log from "../../../utils/globals";
+import {Input} from "reactstrap";
+import React from "react";
 
 let place = {name: "home", lat:0, lng:0};
 
@@ -13,7 +15,7 @@ export function numberToString(number) {
 export function validateName(event) {
     const name = event.target.value;
 
-    if(name.length > 0) {
+    if(name.length > 0 && name.charAt(0) !== ' ') {
         return 'success';
     } else {
         return 'failure';
@@ -46,6 +48,20 @@ function processGeolocation(geolocation, updateLocation) {
     locationAvailable = true;
     updateLocation(place);
     log.trace("Geolocation response:", geolocation);
+}
+
+export function renderInput(name, placeholder, validate, changeFunction) {
+    return (
+        <Input
+            name={name}
+            placeholder={placeholder}
+            valid={validate === 'success'}
+            invalid={validate === 'failure'}
+            onChange={(event) => {
+                changeFunction(event);
+            }}
+        />
+    )
 }
 
 function processErrorGeolocation(error) {
