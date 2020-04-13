@@ -184,13 +184,14 @@ export default class Trip extends Component {
     }
 
     saveTrip() {
-        console.log("Atlas' Save Trip");
         let requestType = "{\"requestType\":\"trip\",";
         let requestVersion = "\"requestVersion\": 3,";
         let options = "\"options\":{\"earthRadius\":\"3959.0\"},";
         let places = "\"places\":" + JSON.stringify(this.state.trip.places) + "}";
         let dataStr = requestType + requestVersion + options + places;
         this.SaveLoad.downloadFile('json', 'trip.json', dataStr);
+        let kmlFile = this.SaveLoad.buildKML(this.state.trip.places);
+        this.SaveLoad.downloadFile('application/vnd.google-earth.kml+xml', 'trip.kml', kmlFile);
     }
 
     deleteItem(index){
