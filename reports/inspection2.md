@@ -11,7 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Ethan Liem | .6 hour |
-|  |  |
+| Brandon Vasquez  | .5 hour |
 
 ### Problems found
 
@@ -26,3 +26,6 @@
 | GreatCircleDistance.java:General | Describe purpose of functions with comments, would benefit team communication | low | Axel Wahlstrom | rwahlst |
 | RequestDistance.java:General  | Describe purpose of functions with comments | low | Axel Wahlstrom | rwahlst |
 | GreatCircleDistance.java:General | class should be final if it is not being used for inheritance | low | Axel Wahlstrom | rwahlst |
+| RequestDistance.java:43,48  | I think these methods may be unused | low | Brandon Vasquez | btvasque |
+| GreatCircleDistance.java:General  | Could use a link to formula being used | low | Brandon Vasquez | btvasque |
+| GreatCircleDistance.java:64| Line should be removed | low | Brandon Vasquez | btvasque |
