@@ -22,6 +22,7 @@
 | GreatCircleDistance.java:34 | vincenty formula could use some comments to understand how it works| medium | Ethan Liem | |
 | GreatCircleDistance.java:42-47 | variables don't fit naming conventions | low | Ethan Liem | |
 | RequestDistance.java:38 | build response is the same code as the getDistance function | medium | Ethan Liem | |
-|  | | | | |
-|  | | | | |
-|  | | | | |
+| GreatCircleDistance.java:23,27 | Redundant comments, consider removing | low | Axel Wahlstrom | rwahlst |
+| GreatCircleDistance.java:General | Describe purpose of functions with comments, would benefit team communication | low | Axel Wahlstrom | rwahlst |
+| RequestDistance.java:General  | Describe purpose of functions with comments | low | Axel Wahlstrom | rwahlst |
+| GreatCircleDistance.java:General | class should be final if it is not being used for inheritance | low | Axel Wahlstrom | rwahlst |
