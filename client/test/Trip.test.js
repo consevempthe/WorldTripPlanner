@@ -5,6 +5,10 @@ import {shallow, mount} from 'enzyme';
 
 import Trip from '../src/components/Atlas/Trip';
 
+const startProperties = {
+    deleteMarkerPosition: () => ""
+};
+
 function testRender() {
     const trip = mount(<Trip/>);
 
@@ -127,3 +131,21 @@ function testReverseList() {
 }
 
 test("testing list reverse", testReverseList);
+
+function testDelteItemIndex() {
+    const trip = shallow(<Trip
+        deleteMarkerPosition={startProperties.deleteMarkerPosition}
+    />);
+
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'boulder', lat: 39.23, lng: -104.7};
+
+    trip.instance().addPlace(place1);
+    trip.instance().addPlace(place2);
+    expect(trip.state().trip.places.length).toEqual(2);
+
+    trip.instance().deleteItem(0);
+    expect(trip.state().trip.places.length).toEqual(1);
+}
+
+test("Testing Trip's Delete Item", testDelteItemIndex)
