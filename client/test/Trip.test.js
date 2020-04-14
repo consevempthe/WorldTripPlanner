@@ -5,6 +5,10 @@ import {shallow, mount} from 'enzyme';
 
 import Trip from '../src/components/Atlas/Trip';
 
+const startProperties = {
+    deleteMarkerPosition: () => ""
+};
+
 function testRender() {
     const trip = mount(<Trip/>);
 
@@ -127,3 +131,37 @@ function testReverseList() {
 }
 
 test("testing list reverse", testReverseList);
+
+function testDelteItemIndex() {
+    const trip = shallow(<Trip
+        deleteMarkerPosition={startProperties.deleteMarkerPosition}
+    />);
+
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'boulder', lat: 39.23, lng: -104.7};
+
+    trip.instance().addPlace(place1);
+    trip.instance().addPlace(place2);
+    expect(trip.state().trip.places.length).toEqual(2);
+
+    trip.instance().deleteItem(0);
+    expect(trip.state().trip.places.length).toEqual(1);
+}
+
+test("Testing Trip's Delete Item", testDelteItemIndex);
+
+function testChangeStartPlace() {
+    const trip = shallow(<Trip/>);
+
+    const place1 = {name: 'Las Vegas', lat: 36.17, lng: -115.14};
+    trip.instance().addPlace(place1);
+
+    const place2 = {name: 'Pitsburg', lat: 40.44, lng: -80.00};
+    trip.instance().changeStartPlace(place2,1);
+
+    const expectedName = 'Pitsburg';
+    expect(trip.state().trip.places[0].name).toEqual(expectedName);
+}
+
+test("Testing Trip's Change Start Place", testChangeStartPlace);
+
