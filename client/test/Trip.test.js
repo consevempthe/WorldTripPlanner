@@ -148,4 +148,20 @@ function testDelteItemIndex() {
     expect(trip.state().trip.places.length).toEqual(1);
 }
 
-test("Testing Trip's Delete Item", testDelteItemIndex)
+test("Testing Trip's Delete Item", testDelteItemIndex);
+
+function testChangeStartPlace() {
+    const trip = shallow(<Trip/>);
+
+    const place1 = {name: 'Las Vegas', lat: 36.17, lng: -115.14};
+    trip.instance().addPlace(place1);
+
+    const place2 = {name: 'Pitsburg', lat: 40.44, lng: -80.00};
+    trip.instance().changeStartPlace(place2,1);
+
+    const expectedName = 'Pitsburg';
+    expect(trip.state().trip.places[0].name).toEqual(expectedName);
+}
+
+test("Testing Trip's Change Start Place", testChangeStartPlace);
+
