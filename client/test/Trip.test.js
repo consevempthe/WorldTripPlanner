@@ -12,7 +12,7 @@ const startProperties = {
 function testRender() {
     const trip = mount(<Trip/>);
 
-    expect(trip.find('Modal').length).toEqual(2);
+    expect(trip.find('Modal').length).toEqual(3);
     expect(trip.find('Button').length).toEqual(3);
 
 }
@@ -73,9 +73,7 @@ test("Testing add place", testAddPlace);
 
 function testAddTitle() {
     const title = mount(<Trip/>);
-    window.prompt = () => { return "trip"};
-
-    title.instance().addTitle();
+    title.instance().addTitle('trip');
     expect(title.state().trip.options.title).toEqual('trip');
 }
 

@@ -9,6 +9,7 @@ import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
 import {createPlace} from "./Resources/HelpfulAPI";
+import CreateTripModal from "./CreateTripModal";
 
 export default class Trip extends Component {
 
@@ -16,6 +17,10 @@ export default class Trip extends Component {
         super(props);
 
         this.processTripRequest = this.processTripRequest.bind(this);
+        this.saveTrip = this.saveTrip.bind(this);
+        this.addTitle = this.addTitle.bind(this);
+        this.changeRadius = this.changeRadius.bind(this);
+        this.createTrip = this.createTrip.bind(this);
 
         this.state = {
             trip: {
@@ -31,8 +36,9 @@ export default class Trip extends Component {
                     }
                 },
                 places: [],
-                distances: []
+                distances: [],
             },
+            createTripModalOpen: false
         };
     }
 
@@ -43,9 +49,7 @@ export default class Trip extends Component {
                 {this.renderCumulativeDistance()}
                 <ButtonGroup className={"float-left"}>
                     <Button onClick={ () => {
-                        this.addTitle();
-                        this.changeRadius();
-                        this.createTrip();
+                        this.setState({createTripModalOpen: true});
                     }}>Create</Button>
                     {this.renderEditButton()}
                 </ButtonGroup>
@@ -59,6 +63,7 @@ export default class Trip extends Component {
                     }}
                 />
                 {this.renderTable()}
+                {this.renderCreateTripModal()}
             </div>
 
         )
@@ -123,14 +128,16 @@ export default class Trip extends Component {
         )
     }
 
-    computeCumulativeDistance() {
-        let cumulativeDistance = 0;
-
-        for (let i = 0; i < this.state.trip.distances.length; i++) {
-            cumulativeDistance += this.state.trip.distances[i];
-        }
-
-        return cumulativeDistance;
+    renderCreateTripModal() {
+        return(
+            <CreateTripModal
+                isOpen={this.state.createTripModalOpen}
+                toggleModal={(isOpen = !this.state.createTripModalOpen) => this.setState({createTripModalOpen: isOpen})}
+                addTitle={this.addTitle}
+                changeRadius={this.changeRadius}
+                createTrip={this.createTrip}
+            />
+        );
     }
 
     renderCumulativeDistance() {
@@ -143,6 +150,16 @@ export default class Trip extends Component {
                 </div>
             )
         }
+    }
+
+    computeCumulativeDistance() {
+        let cumulativeDistance = 0;
+
+        for (let i = 0; i < this.state.trip.distances.length; i++) {
+            cumulativeDistance += this.state.trip.distances[i];
+        }
+
+        return cumulativeDistance;
     }
 
     reverseTrip() {
@@ -172,9 +189,9 @@ export default class Trip extends Component {
         }
     }
 
-    addTitle() {
+    addTitle(title) {
         const {trip} = Object.assign(this.state);
-        trip["options"].title = prompt("Add a Title for your trip");
+        trip["options"].title = title;
         this.setState({trip});
     }
 
