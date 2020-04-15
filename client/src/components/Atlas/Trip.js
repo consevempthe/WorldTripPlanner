@@ -18,6 +18,9 @@ export default class Trip extends Component {
 
         this.processTripRequest = this.processTripRequest.bind(this);
         this.saveTrip = this.saveTrip.bind(this);
+        this.addTitle = this.addTitle.bind(this);
+        this.changeRadius = this.changeRadius.bind(this);
+        this.createTrip = this.createTrip.bind(this);
 
         this.state = {
             trip: {
@@ -26,16 +29,12 @@ export default class Trip extends Component {
                 options: {
                     title: '',
                     earthRadius: '3959.0',
-                    optimization: {
-                        response: '',       // response time 0 - 60
-                        construction: '',   // is either ["none","one","some"]
-                        improvement: ''    // is either ["none","2opt","3opt"]
-                    }
+
                 },
                 places: [],
                 distances: [],
-                createTripModalOpen: false
             },
+            createTripModalOpen: false
         };
     }
 
@@ -47,9 +46,6 @@ export default class Trip extends Component {
                 <ButtonGroup className={"float-left"}>
                     <Button onClick={ () => {
                         this.setState({createTripModalOpen: true});
-                        // this.addTitle();
-                        // this.changeRadius();
-                        // this.createTrip();
                     }}>Create</Button>
                     {this.renderEditButton()}
                 </ButtonGroup>
@@ -132,6 +128,9 @@ export default class Trip extends Component {
             <CreateTripModal
                 isOpen={this.state.createTripModalOpen}
                 toggleModal={(isOpen = !this.state.createTripModalOpen) => this.setState({createTripModalOpen: isOpen})}
+                addTitle={this.addTitle}
+                changeRadius={this.changeRadius}
+                createTrip={this.createTrip}
             />
         );
     }
@@ -185,9 +184,9 @@ export default class Trip extends Component {
         }
     }
 
-    addTitle() {
+    addTitle(title) {
         const {trip} = Object.assign(this.state);
-        trip["options"].title = prompt("Add a Title for your trip");
+        trip["options"].title = title;
         this.setState({trip});
     }
 
