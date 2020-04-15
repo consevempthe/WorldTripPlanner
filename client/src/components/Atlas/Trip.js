@@ -16,7 +16,6 @@ export default class Trip extends Component {
         super(props);
 
         this.processTripRequest = this.processTripRequest.bind(this);
-        this.saveTrip = this.saveTrip.bind(this);
 
         this.state = {
             trip: {
@@ -54,6 +53,7 @@ export default class Trip extends Component {
                     addPlaces={this.props.addPlaces}
                     processRequest={this.processTripRequest}
                     saveTrip={this.saveTrip}
+                    places={this.state.trip.places}
                     ref={SaveLoad =>{
                         this.SaveLoad = SaveLoad;
                     }}
@@ -189,17 +189,6 @@ export default class Trip extends Component {
         let {places} = Object.assign(this.state.trip);
         places.splice(0, destroy, createPlace(place));
         this.setState({places});
-    }
-
-    saveTrip() {
-        let requestType = "{\"requestType\":\"trip\",";
-        let requestVersion = "\"requestVersion\": 3,";
-        let options = "\"options\":{\"earthRadius\":\"3959.0\"},";
-        let places = "\"places\":" + JSON.stringify(this.state.trip.places) + "}";
-        let dataStr = requestType + requestVersion + options + places;
-        this.SaveLoad.downloadFile('json', 'trip.json', dataStr);
-        let kmlFile = this.SaveLoad.buildKML(this.state.trip.places);
-        this.SaveLoad.downloadFile('application/vnd.google-earth.kml+xml', 'trip.kml', kmlFile);
     }
 
     deleteItem(index){

@@ -27,14 +27,12 @@ export default class LoadSave extends Component {
         this.toggleSaveModal = this.toggleSaveModal.bind(this);
         this.setFileName = this.setFileName.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.setFileType = this.setFileType.bind(this);
 
         this.state = {
             showLoadFile: false,
             showSaveFile: false,
             validFileName: '',
             fileName: '',
-            fileTypes: [".KML", ".SVG"],
             fileType: ".KML",
         };
 
@@ -117,7 +115,7 @@ export default class LoadSave extends Component {
                 </FormGroup>
                 <FormGroup>
                     {renderInput("save", "Specify a name for the file: (ex. MyTrip)", this.state.validFileName, this.setFileName)}
-                    <FormFeedback valid>Ready to save the world!</FormFeedback>
+                    <FormFeedback valid>Ready to save the world! Currently saving as {this.state.fileType}</FormFeedback>
                     <FormFeedback>Sorry, you need to specify a valid name for the file!</FormFeedback>
                 </FormGroup>
             </Form>
@@ -126,10 +124,8 @@ export default class LoadSave extends Component {
 
     handleChange(radioButton) {
         if(radioButton === 0) {
-            this.setState({fileTypes: [".KML", ".SVG"]});
             this.setState({fileType: ".KML"});
         } else {
-            this.setState({fileTypes: [".JSON", ".CSV"]});
             this.setState({fileType: ".JSON"});
         }
     }
@@ -145,15 +141,7 @@ export default class LoadSave extends Component {
                         {this.renderSaveForm()}
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={() => this.toggleSaveModal()} disabled={this.state.validFileName !== 'success'}>Save</Button>
-                        <UncontrolledDropdown addonType={"prepend"}>
-                            <DropdownToggle caret>
-                                {this.getFileType()}
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                {this.renderFileIcons()}
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
+                        <Button onClick={() => this.handleSave()} disabled={this.state.validFileName !== 'success'}>Save</Button>
                         <Button onClick={() => this.toggleSaveModal()}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
@@ -161,15 +149,30 @@ export default class LoadSave extends Component {
         );
     }
 
-    renderFileIcons() {
-        return [
-            <DropdownItem key={1} onClick={() => this.setFileType(this.state.fileTypes[0])}>{this.state.fileTypes[0]}</DropdownItem>,
-            <DropdownItem key={2} onClick={() => this.setFileType(this.state.fileTypes[1])}>{this.state.fileTypes[1]}</DropdownItem>
-        ];
-    }
-
-    setFileType(newFileType) {
-        this.setState({fileType: newFileType});
+    handleSave() {
+        switch (this.state.fileType) {
+            default:
+                console.error("An unexpected error occurred");
+                break;
+            case ".KML":
+                let kml = this.buildKML(this.props.places);
+                this.downloadFile('application/vnd.google-earth.kml+xml', this.state.fileName + ".kml", kml);
+                break;
+            case ".JSON":
+                let requestType = "{\"requestType\":\"trip\",";
+                let requestVersion = "\"requestVersion\": 3,";
+                let options = "\"options\":{\"earthRadius\":\"3959.0\"},";
+                let places = "\"places\":" + JSON.stringify(this.props.places) + "}";
+                let dataStr = requestType + requestVersion + options + places;
+                this.downloadFile('json', this.state.fileName + '.json', dataStr);
+                break;
+            case ".CSV":
+                console.log(".CSV");
+                break;
+            case ".SVG":
+                console.log(".SVG");
+                break;
+        }
     }
 
     getFileType() {
