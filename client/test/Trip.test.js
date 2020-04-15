@@ -20,7 +20,7 @@ function testInitialState() {
     const expectedState = {
         requestType: "trip",
         requestVersion: 3,
-        options: {title: "", earthRadius: '3959.0', optimization: {construction: '', improvement: ''}},
+        options: {title: "", earthRadius: '3959.0', optimization: {response: '', construction: '', improvement: ''}},
         places: [],
         distances: []
     };
