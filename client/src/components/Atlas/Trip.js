@@ -21,7 +21,14 @@ export default class Trip extends Component {
             trip: {
                 requestType: "trip",
                 requestVersion: PROTOCOL_VERSION,
-                options: {title: '', earthRadius: '3959.0'},
+                options: {
+                    title: '',
+                    earthRadius: '3959.0',
+                    optimization: {
+                        construction: '',   // is either ["none","one","some"]
+                        improvement: ''    // is either ["none","2opt","3opt"]
+                    }
+                },
                 places: [],
                 distances: []
             },

@@ -51,5 +51,4 @@ public class RequestTrip extends RequestHeader {
         return table;
     }
 
-
 }
