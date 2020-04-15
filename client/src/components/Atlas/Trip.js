@@ -33,6 +33,11 @@ export default class Trip extends Component {
                 },
                 places: [],
                 distances: [],
+                optimization: {
+                    response: '',       // response time 0 - 60
+                    construction: '',   // is either ["none","one","some"]
+                    improvement: ''    // is either ["none","2opt","3opt"]
+                }
             },
             createTripModalOpen: false
         };
