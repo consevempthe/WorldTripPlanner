@@ -73,9 +73,7 @@ test("Testing add place", testAddPlace);
 
 function testAddTitle() {
     const title = mount(<Trip/>);
-    window.prompt = () => { return "trip"};
-
-    title.instance().addTitle();
+    title.instance().addTitle('trip');
     expect(title.state().trip.options.title).toEqual('trip');
 }
 
