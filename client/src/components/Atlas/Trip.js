@@ -25,6 +25,7 @@ export default class Trip extends Component {
                     title: '',
                     earthRadius: '3959.0',
                     optimization: {
+                        response: '',       // response time 0 - 60
                         construction: '',   // is either ["none","one","some"]
                         improvement: ''    // is either ["none","2opt","3opt"]
                     }
