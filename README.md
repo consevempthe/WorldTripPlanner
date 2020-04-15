@@ -9,3 +9,4 @@
 | Axel Wahlstrom | 831409230 | rwahlst | rwahlst@rams.colostate.edu |
 | Brandon Vasquez | 830984463 | btvasque | btvasque@colostate.edu |
 | Moise Lacrete | 831054939 | Moise98 | moise@rams.colostate.edu |
+| Winter Meng | 832764367 | qm3 | qm3@rams.colostate.edu |
