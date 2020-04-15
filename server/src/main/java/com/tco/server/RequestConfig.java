@@ -1,4 +1,5 @@
 package com.tco.server;
+import com.tco.misc.OptimizationConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class RequestConfig extends RequestHeader {
   private String serverName;
   protected List<String> supportedRequests = Arrays.asList("config", "distance", "trip");
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
-
+  protected Object optimization;
 
   RequestConfig() {
     this.requestType = "config";
@@ -35,6 +36,7 @@ public class RequestConfig extends RequestHeader {
   public void buildResponse() {
     this.serverName = "T03 Hugh-Lit Pack-Herd";
     log.trace("buildResponse -> {}", this);
+    this.optimization = new OptimizationConfig();
   }
 
 

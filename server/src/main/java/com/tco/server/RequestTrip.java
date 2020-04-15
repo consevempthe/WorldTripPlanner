@@ -1,16 +1,14 @@
 package com.tco.server;
 
 import com.tco.misc.Place;
-
-import java.util.Map;
+import com.tco.misc.Options;
 
 public class RequestTrip extends RequestHeader {
-    //key: Unit Title value: corresponding Earth radius
-    final Map<String, String> options;
+    final Options options;
     final Place[] places;
     Long[] distances;
 
-    public RequestTrip(Map<String, String> o, Place[] p, Long[] d) {
+    public RequestTrip(Options o, Place[] p, Long[] d) {
         this.options = o;
         this.places = p;
         this.distances = d;
@@ -24,7 +22,7 @@ public class RequestTrip extends RequestHeader {
     public Long[] getDistances()
     {
         Long[] distances = new Long[this.places.length];
-        Double earthRadius = Double.parseDouble(options.get("earthRadius"));
+        Double earthRadius = Double.parseDouble(options.getEarthRadius());
 
         for (int i = 0; i < distances.length; i++) {
             if(i == distances.length - 1) {
@@ -38,4 +36,20 @@ public class RequestTrip extends RequestHeader {
 
         return distances;
     }
+
+    public Long[][] distanceMatrix() {
+        Long [][] table = new Long[places.length][places.length];
+        double earthRadius = Double.parseDouble(options.getEarthRadius());
+
+        for (int i = 0; i < places.length; i++) {
+            for (int j = 0; j < places.length; j++) {
+                RequestDistance distance = new RequestDistance(places[i], places[j], earthRadius);
+                table[i][j] = distance.getDistance();
+            }
+        }
+
+        return table;
+    }
+
+
 }

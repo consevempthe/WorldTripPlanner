@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
-import {Modal, ModalBody, ModalHeader, ModalFooter, Form, FormText, Input, Button} from 'reactstrap';
-import {createPoint, numberToString, validateName} from "./Resources/HelpfulAPI";
+import {Modal, ModalBody, ModalHeader, ModalFooter, Form, FormText, Button} from 'reactstrap';
+import {numberToString, validateName, renderInput} from "./Resources/HelpfulAPI";
 import {COORDINATE} from "../Constants";
 
 export default class StartModal extends Component {
     constructor(props) {
         super(props);
+
+        this.setCoordinate = this.setCoordinate.bind(this);
+        this.newStartName = this.newStartName.bind(this);
 
         this.state = {
             newStart: {
@@ -32,18 +35,10 @@ export default class StartModal extends Component {
                 <ModalBody>
                     <Form>
                         <FormText>Add a new start to your trip!</FormText>
-                        <Input
-                            placeholder={"Give your start a name."}
-                            onChange={ (event) => this.newStartName(event)}
-                            valid={this.state.validName === 'success'}
-                            invalid={this.state.validName === 'failure'}
-                        />
-                        <Input
-                            placeholder={"Enter the coordinates for your start"}
-                            onChange={ (event) => this.setCoordinate(event)}
-                            valid={this.state.validCoordinate === 'success'}
-                            invalid={this.state.validCoordinate === 'failure'}
-                        />
+                        {renderInput("validName", "Give your start a name.",
+                            this.state.validName, this.newStartName)}
+                        {renderInput("validCoordinate", "Enter the coordinates for your start.",
+                            this.state.validCoordinate, this.setCoordinate)}
                     </Form>
                 </ModalBody>
                 <ModalFooter>
@@ -58,7 +53,8 @@ export default class StartModal extends Component {
     }
 
     newStartPlace() {
-        this.props.newStart(createPoint(this.state.newStart)); // this is an object in the form {name, lat.string, lng.string}
+        let point = {name: this.state.newStart.name, lat: this.state.newStart.latitude.toString(), lng: this.state.newStart.longitude.toString()};
+        this.props.newStart(point); // this is an object in the form {name, lat.string, lng.string}
         this.setState({validName: '', validCoordinate: ''});
     }
 

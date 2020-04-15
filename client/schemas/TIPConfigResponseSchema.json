@@ -25,7 +25,29 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["config", "distance","trip"]
+        "enum": ["config","distance","trip"]
+      }
+    },
+    "optimization": {
+      "description": "optimization methods available",
+      "type": "object",
+      "properties": {
+        "construction": {
+          "description": "supported construction methods",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["none", "one", "some"]
+          }
+        },
+        "improvement": {
+          "description": "supported improvement methods",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["none", "2opt", "3opt"]
+          }
+        }
       }
     }
   },

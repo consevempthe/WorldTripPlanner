@@ -149,13 +149,15 @@ export default class Distance extends Component {
                 <FormGroup>
                     <FormText>Input a name and coordinates to plan your trip.</FormText>
                     <InputGroup>
-                        {renderInput("name1", "Enter name of the place:", this.state.validName, this.setName)}
+                        {renderInput("name1", "Enter name of the place:",
+                            this.state.validName, this.setName)}
                         <FormFeedback valid>Nice! that's a valid name!</FormFeedback>
                         <FormFeedback>Names have to be unique.</FormFeedback>
                     </InputGroup>
                     <InputGroup>
                         {this.renderRadiusButton()}
-                        {renderInput("place1", "Enter lat and lng.", this.state.validate, this.setPlace)}
+                        {renderInput("place1", "Enter lat and lng.",
+                            this.state.validate, this.setPlace)}
                         {this.renderAddLocation()}
                         <FormFeedback valid>Nice coordinates!</FormFeedback>
                         <FormFeedback>Nope. Try Again!</FormFeedback>
