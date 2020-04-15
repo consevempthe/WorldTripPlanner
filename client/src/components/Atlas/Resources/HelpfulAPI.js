@@ -26,10 +26,6 @@ export function createPlace(point) {
     return {name: point.name, latitude: point.lat.toString(), longitude: point.lng.toString()}
 }
 
-export function createPoint(place) {
-    return {name: place.name, lat: place.latitude.toString(), lng: place.longitude.toString()}
-}
-
 export function processProtocolResponse(response, schema) {
     if(!isJsonResponseValid(response.body, schema)) {
 

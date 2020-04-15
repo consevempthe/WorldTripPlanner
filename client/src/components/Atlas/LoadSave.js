@@ -23,7 +23,8 @@ export default class LoadSave extends Component {
         super(props);
         this.toggleLoadModal = this.toggleLoadModal.bind(this);
         this.toggleSaveModal = this.toggleSaveModal.bind(this);
-        this.setName = this.setName.bind(this);
+        this.setFileName = this.setFileName.bind(this);
+
         this.state = {
             showLoadFile: false,
             showSaveFile: false,
@@ -89,6 +90,33 @@ export default class LoadSave extends Component {
         )
     }
 
+    renderSaveForm() {
+        return(
+            <Form>
+                <FormGroup tag="fieldset">
+                    <legend>How would you like to save your itinerary?</legend>
+                    <FormGroup check>
+                        <Label check>
+                            <Input type="radio" name="radio1" defaultChecked/>{' '}
+                            Save Map
+                        </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                        <Label check>
+                            <Input type="radio" name="radio1" />{' '}
+                            Save Itinerary
+                        </Label>
+                    </FormGroup>
+                </FormGroup>
+                <FormGroup>
+                    {renderInput("save", "Specify a name for the file: (ex. MyTrip)", this.state.validFileName, this.setFileName)}
+                    <FormFeedback valid>Ready to save the world!</FormFeedback>
+                    <FormFeedback>Sorry, you need to specify a name for the file!</FormFeedback>
+                </FormGroup>
+            </Form>
+        )
+    }
+
     renderSaveFile() {
         return(
             <div>
@@ -97,28 +125,7 @@ export default class LoadSave extends Component {
                         Save Your Itinerary for Later
                     </ModalHeader>
                     <ModalBody>
-                        <Form>
-                            <FormGroup tag="fieldset">
-                                <legend>How would you like to save your itinerary?</legend>
-                                <FormGroup check>
-                                    <Label check>
-                                        <Input type="radio" name="radio1" defaultChecked/>{' '}
-                                        Save Map
-                                    </Label>
-                                </FormGroup>
-                                <FormGroup check>
-                                    <Label check>
-                                        <Input type="radio" name="radio1" />{' '}
-                                        Save Itinerary
-                                    </Label>
-                                </FormGroup>
-                            </FormGroup>
-                            <FormGroup>
-                                {renderInput("save", "Specify a name for the file: (ex. MyTrip)", this.state.validFileName, this.setName)}
-                                <FormFeedback valid>Ready to save the world!</FormFeedback>
-                                <FormFeedback>Sorry, you need to specify a name for the file!</FormFeedback>
-                            </FormGroup>
-                        </Form>
+                        {this.renderSaveForm()}
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={() => this.toggleSaveModal()} disabled={this.state.validFileName !== 'success'}>Save</Button>
@@ -138,7 +145,7 @@ export default class LoadSave extends Component {
         return this.state.fileType;
     }
 
-    setName(event) {
+    setFileName(event) {
         this.setState({validFileName: validateName(event)});
         this.setState({fileName: event.target.value});
     }

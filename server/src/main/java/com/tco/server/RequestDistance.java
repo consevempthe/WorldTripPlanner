@@ -40,13 +40,11 @@ public class RequestDistance extends RequestHeader {
         this.distance = greatCircleDistance.calculateDistance();
     }
 
-    Double getEarthRadius()
-    {
+    Double getEarthRadius() {
         return this.earthRadius;
     }
 
-    Long getDistance()
-    {
+    Long getDistance() {
         GreatCircleDistance greatCircleDistance = new GreatCircleDistance(place1, place2, earthRadius);
         return greatCircleDistance.calculateDistance();
     }

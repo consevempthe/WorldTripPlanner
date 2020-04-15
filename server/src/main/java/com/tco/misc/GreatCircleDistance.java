@@ -10,16 +10,7 @@ public class GreatCircleDistance {
     Double place2Latitude;
     Double earthRadius;
 
-    public GreatCircleDistance()
-    {
-        this.place1Longitude = 0.0;
-        this.place1Latitude = 0.0;
-        this.place2Longitude = 0.0;
-        this.place2Latitude = 0.0;
-    }
-
-    public GreatCircleDistance(Map<String,String> place1, Map<String,String> place2, Double earthRadius)
-    {
+    public GreatCircleDistance(Map<String,String> place1, Map<String,String> place2, Double earthRadius) {
         //Initialize points for place1
         this.place1Longitude = Double.parseDouble(place1.get("longitude"));
         this.place1Latitude = Double.parseDouble(place1.get("latitude"));
@@ -31,8 +22,7 @@ public class GreatCircleDistance {
         this.earthRadius = earthRadius;
     }
 
-    public Double vincentyFormula()
-    {
+    public Double vincentyFormula() {
         Double place1LongitudeRadians = Math.toRadians(this.place1Longitude);
         Double place1LatitudeRadians = Math.toRadians(this.place1Latitude);
         Double place2LongitudeRadians = Math.toRadians(this.place2Longitude);
@@ -59,9 +49,7 @@ public class GreatCircleDistance {
         return Math.atan2(numerator,denominator);
     }
 
-    public Long calculateDistance()
-    {
-
+    public Long calculateDistance() {
         return Math.round(this.vincentyFormula() * this.earthRadius);
     }
 }

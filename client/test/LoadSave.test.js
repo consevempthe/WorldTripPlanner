@@ -5,6 +5,23 @@ import {mount, shallow} from 'enzyme';
 
 import LoadSave from "../src/components/Atlas/LoadSave";
 
+function testState() {
+    const state = shallow(<LoadSave/>);
+
+    let expectedState = {
+        showLoadFile: false,
+        showSaveFile: false,
+        validFileName: '',
+        fileName: '',
+        fileType: ".KML"
+    };
+
+    expect(state.state()).toEqual(expectedState);
+
+}
+
+test("testing initial state", testState);
+
 function testRenderLoadSave() {
     const loadSave = mount(<LoadSave/>);
 
@@ -27,22 +44,13 @@ test("testing render of Load", testRenderLoadSave);
 function testModals() {
     const modal = mount(<LoadSave/>);
 
-    let initialOpenState = false;
+    modal.find('DropdownItem').at(0).simulate('click');
+    expect(modal.state().showLoadFile).toEqual(true);
+    expect(modal.find('Button').length).toEqual(3);
 
-    expect(modal.state().showLoadFile).toEqual(initialOpenState);
-    expect(modal.state().showSaveFile).toEqual(initialOpenState);
-
-    initialOpenState = true;
-
-    modal.instance().toggleSaveModal();
-
-    expect(modal.state().showSaveFile).toEqual(initialOpenState);
-    expect(modal.state().fileName).toEqual('');
-    expect(modal.state().validFileName).toEqual('');
-
-    modal.instance().toggleLoadModal();
-
-    expect(modal.state().showLoadFile).toEqual(initialOpenState);
+    modal.find('DropdownItem').at(1).simulate('click');
+    expect(modal.state().showSaveFile).toEqual(true);
+    expect(modal.find('Form').length).toEqual(2);
 
 }
 
@@ -53,14 +61,19 @@ function testFunctions() {
 
     const event = {target: {value: 'nameOfFile'}};
 
-    test.instance().setName(event);
+    test.instance().setFileName(event);
 
     expect(test.state().validFileName).toEqual('success');
     expect(test.state().fileName).toEqual('nameOfFile');
 
-    const fileType = test.instance().getFileType();
+    test.instance().toggleSaveModal();
 
-    expect(fileType).toEqual('.KML');
+    expect(test.state().validFileName).toEqual('');
+
+    let kml = test.instance().getFileType();
+
+    expect(kml).toEqual(".KML");
+
 }
 
 test("testing set and get functions", testFunctions);
