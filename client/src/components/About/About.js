@@ -7,6 +7,7 @@ import Axel from "./Resources/Axel.jpg";
 import Ethan from "./Resources/ethanAboutPhoto.jpg";
 import Brandon from "./Resources/brandon.jpg";
 import Moise from "./Resources/moise.jpg";
+import Winter from "./Resources/Winter.jpg";
 
 export default class About extends Component {
 
@@ -25,6 +26,7 @@ export default class About extends Component {
                     {this.renderBio("Profile picture for Brandon Vasquez", "Brandon Vasquez", "I am currently a student at CSU majoring in Applied Computing Technology with a minor in Business Administration. I am Colorado born and raised and enjoy hiking, sports and spending time in the gym.", Brandon)}
                     {this.renderBio("This photo has Ethan looking his best, don't expect much", "Ethan Liem", "I am a second Bachelor's Computer Science major at CSU. My other degrees are in Journalism and Liberal Arts, which I also got at CSU (I just really like giving Tony Frank). I work at the climbing wall on campus and I enjoy Magic: The Gathering.", Ethan)}
                     {this.renderBio("Profile picture for Moise Lacrete", "Moise Lacrete", "I am a Computer Science major at CSU. I grew up on the east coast, from a small town on Long Island, New York. I'm an advocate for fitness and enjoy spending what little free time I have outdoors enjoying Colorado's beautiful sunny weather. Skill toys are another passion of mine so I usually have something to play with in my backpack.", Moise)}
+                    {this.renderBio("Profile picture for Winter Meng", "Winter Meng", "I am a second-bachelor student majoring in computer science. Before coming to CSU, I completed my first degree in physics at the University of Washington-Seattle. For my spare time I enjoy hiking in the wilds and watching old movies.", Winter)}
                 </Row>
             </Container>
         )
