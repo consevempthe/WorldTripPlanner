@@ -35,7 +35,8 @@ function testRenderLoadSave() {
     expect(loadSave.find('ModalFooter').length).toEqual(2);
     expect(loadSave.find('ModalBody').length).toEqual(2);
     expect(loadSave.find('Form').length).toEqual(2);
-    expect(loadSave.find('Button').length).toEqual(6);
+    expect(loadSave.find('Button').length).toEqual(5);
+    expect(loadSave.find('Input').length).toEqual(4);
 
 }
 
@@ -50,7 +51,7 @@ function testModals() {
 
     modal.find('DropdownItem').at(1).simulate('click');
     expect(modal.state().showSaveFile).toEqual(true);
-    expect(modal.find('Form').length).toEqual(2);
+    expect(modal.find('[name="radio1"]').length).toEqual(4);
 
 }
 
@@ -73,6 +74,7 @@ function testFunctions() {
     let kml = test.instance().getFileType();
 
     expect(kml).toEqual(".KML");
+
 
 }
 

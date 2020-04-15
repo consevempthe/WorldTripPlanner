@@ -93,8 +93,6 @@ export default class LoadSave extends Component {
         )
     }
 
-    // Map = KML & SVG
-    // Trip = JSON & CSV
     renderSaveForm() {
         return(
             <Form>
@@ -114,7 +112,7 @@ export default class LoadSave extends Component {
                     </FormGroup>
                 </FormGroup>
                 <FormGroup>
-                    {renderInput("save", "Specify a name for the file: (ex. MyTrip)", this.state.validFileName, this.setFileName)}
+                    {renderInput("save", "Specify a name for the file, we'll handle the file extension: (ex. MyTrip)", this.state.validFileName, this.setFileName)}
                     <FormFeedback valid>Ready to save the world! Currently saving as {this.state.fileType}</FormFeedback>
                     <FormFeedback>Sorry, you need to specify a valid name for the file!</FormFeedback>
                 </FormGroup>
@@ -167,10 +165,10 @@ export default class LoadSave extends Component {
                 this.downloadFile('json', this.state.fileName + '.json', dataStr);
                 break;
             case ".CSV":
-                console.log(".CSV");
+                console.log(".CSV not supported yet");
                 break;
             case ".SVG":
-                console.log(".SVG");
+                console.log(".SVG not supported yet");
                 break;
         }
     }
