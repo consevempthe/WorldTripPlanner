@@ -55,6 +55,7 @@ export default class LoadSave extends Component {
     toggleSaveModal() {
         this.setState({showSaveFile: !this.state.showSaveFile});
         this.setState({validFileName: ''});
+        this.setState({fileType: '.KML'});
     }
 
     renderLoadSave() {
@@ -171,6 +172,7 @@ export default class LoadSave extends Component {
                 console.log(".SVG not supported yet");
                 break;
         }
+        this.toggleSaveModal();
     }
 
     getFileType() {
