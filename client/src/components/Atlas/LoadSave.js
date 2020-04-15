@@ -20,17 +20,22 @@ const reader = new FileReader();
 export default class LoadSave extends Component {
 
     constructor(props) {
+
         super(props);
+
         this.toggleLoadModal = this.toggleLoadModal.bind(this);
         this.toggleSaveModal = this.toggleSaveModal.bind(this);
         this.setFileName = this.setFileName.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.setFileType = this.setFileType.bind(this);
 
         this.state = {
             showLoadFile: false,
             showSaveFile: false,
             validFileName: '',
             fileName: '',
-            fileType: ".KML"
+            fileTypes: [".KML", ".SVG"],
+            fileType: ".KML",
         };
 
     }
@@ -90,6 +95,8 @@ export default class LoadSave extends Component {
         )
     }
 
+    // Map = KML & SVG
+    // Trip = JSON & CSV
     renderSaveForm() {
         return(
             <Form>
@@ -97,13 +104,13 @@ export default class LoadSave extends Component {
                     <legend>How would you like to save your itinerary?</legend>
                     <FormGroup check>
                         <Label check>
-                            <Input type="radio" name="radio1" defaultChecked/>{' '}
+                            <Input type="radio" name="radio1" onChange={() => {this.handleChange(0)}} defaultChecked/>{' '}
                             Save Map
                         </Label>
                     </FormGroup>
                     <FormGroup check>
                         <Label check>
-                            <Input type="radio" name="radio1" />{' '}
+                            <Input type="radio" name="radio1" onChange={() => {this.handleChange(1)}}/>{' '}
                             Save Itinerary
                         </Label>
                     </FormGroup>
@@ -111,10 +118,20 @@ export default class LoadSave extends Component {
                 <FormGroup>
                     {renderInput("save", "Specify a name for the file: (ex. MyTrip)", this.state.validFileName, this.setFileName)}
                     <FormFeedback valid>Ready to save the world!</FormFeedback>
-                    <FormFeedback>Sorry, you need to specify a name for the file!</FormFeedback>
+                    <FormFeedback>Sorry, you need to specify a valid name for the file!</FormFeedback>
                 </FormGroup>
             </Form>
         )
+    }
+
+    handleChange(radioButton) {
+        if(radioButton === 0) {
+            this.setState({fileTypes: [".KML", ".SVG"]});
+            this.setState({fileType: ".KML"});
+        } else {
+            this.setState({fileTypes: [".JSON", ".CSV"]});
+            this.setState({fileType: ".JSON"});
+        }
     }
 
     renderSaveFile() {
@@ -133,12 +150,26 @@ export default class LoadSave extends Component {
                             <DropdownToggle caret>
                                 {this.getFileType()}
                             </DropdownToggle>
+                            <DropdownMenu>
+                                {this.renderFileIcons()}
+                            </DropdownMenu>
                         </UncontrolledDropdown>
                         <Button onClick={() => this.toggleSaveModal()}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </div>
         );
+    }
+
+    renderFileIcons() {
+        return [
+            <DropdownItem key={1} onClick={() => this.setFileType(this.state.fileTypes[0])}>{this.state.fileTypes[0]}</DropdownItem>,
+            <DropdownItem key={2} onClick={() => this.setFileType(this.state.fileTypes[1])}>{this.state.fileTypes[1]}</DropdownItem>
+        ];
+    }
+
+    setFileType(newFileType) {
+        this.setState({fileType: newFileType});
     }
 
     getFileType() {
