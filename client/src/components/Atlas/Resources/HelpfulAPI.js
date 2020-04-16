@@ -15,7 +15,7 @@ export function numberToString(number) {
 export function validateName(event) {
     const name = event.target.value;
 
-    if(name.length > 0 && name.charAt(0) !== ' ') {
+    if(name.length > 0 && name.charAt(0) !== ' ' && name.charAt(name.length - 1) !== ' ') {
         return 'success';
     } else {
         return 'failure';

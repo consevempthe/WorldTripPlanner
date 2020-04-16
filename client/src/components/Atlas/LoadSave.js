@@ -20,17 +20,20 @@ const reader = new FileReader();
 export default class LoadSave extends Component {
 
     constructor(props) {
+
         super(props);
+
         this.toggleLoadModal = this.toggleLoadModal.bind(this);
         this.toggleSaveModal = this.toggleSaveModal.bind(this);
         this.setFileName = this.setFileName.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 
         this.state = {
             showLoadFile: false,
             showSaveFile: false,
             validFileName: '',
             fileName: '',
-            fileType: ".KML"
+            fileType: ".KML",
         };
 
     }
@@ -52,6 +55,7 @@ export default class LoadSave extends Component {
     toggleSaveModal() {
         this.setState({showSaveFile: !this.state.showSaveFile});
         this.setState({validFileName: ''});
+        this.setState({fileType: '.KML'});
     }
 
     renderLoadSave() {
@@ -97,24 +101,32 @@ export default class LoadSave extends Component {
                     <legend>How would you like to save your itinerary?</legend>
                     <FormGroup check>
                         <Label check>
-                            <Input type="radio" name="radio1" defaultChecked/>{' '}
+                            <Input type="radio" name="radio1" onChange={() => {this.handleChange(0)}} defaultChecked/>{' '}
                             Save Map
                         </Label>
                     </FormGroup>
                     <FormGroup check>
                         <Label check>
-                            <Input type="radio" name="radio1" />{' '}
+                            <Input type="radio" name="radio1" onChange={() => {this.handleChange(1)}}/>{' '}
                             Save Itinerary
                         </Label>
                     </FormGroup>
                 </FormGroup>
                 <FormGroup>
-                    {renderInput("save", "Specify a name for the file: (ex. MyTrip)", this.state.validFileName, this.setFileName)}
-                    <FormFeedback valid>Ready to save the world!</FormFeedback>
-                    <FormFeedback>Sorry, you need to specify a name for the file!</FormFeedback>
+                    {renderInput("save", "Specify a name for the file, we'll handle the file extension: (ex. MyTrip)", this.state.validFileName, this.setFileName)}
+                    <FormFeedback valid>Ready to save the world! Currently saving as {this.state.fileType}</FormFeedback>
+                    <FormFeedback>Sorry, you need to specify a valid name for the file!</FormFeedback>
                 </FormGroup>
             </Form>
         )
+    }
+
+    handleChange(radioButton) {
+        if(radioButton === 0) {
+            this.setState({fileType: ".KML"});
+        } else {
+            this.setState({fileType: ".JSON"});
+        }
     }
 
     renderSaveFile() {
@@ -128,17 +140,39 @@ export default class LoadSave extends Component {
                         {this.renderSaveForm()}
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={() => this.toggleSaveModal()} disabled={this.state.validFileName !== 'success'}>Save</Button>
-                        <UncontrolledDropdown addonType={"prepend"}>
-                            <DropdownToggle caret>
-                                {this.getFileType()}
-                            </DropdownToggle>
-                        </UncontrolledDropdown>
+                        <Button onClick={() => this.handleSave()} disabled={this.state.validFileName !== 'success'}>Save</Button>
                         <Button onClick={() => this.toggleSaveModal()}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </div>
         );
+    }
+
+    handleSave() {
+        switch (this.state.fileType) {
+            default:
+                console.error("An unexpected error occurred");
+                break;
+            case ".KML":
+                let kml = this.buildKML(this.props.places);
+                this.downloadFile('application/vnd.google-earth.kml+xml', this.state.fileName + ".kml", kml);
+                break;
+            case ".JSON":
+                let requestType = "{\"requestType\":\"trip\",";
+                let requestVersion = "\"requestVersion\": 3,";
+                let options = "\"options\":{\"earthRadius\":\"3959.0\"},";
+                let places = "\"places\":" + JSON.stringify(this.props.places) + "}";
+                let dataStr = requestType + requestVersion + options + places;
+                this.downloadFile('json', this.state.fileName + '.json', dataStr);
+                break;
+            case ".CSV":
+                console.log(".CSV not supported yet");
+                break;
+            case ".SVG":
+                console.log(".SVG not supported yet");
+                break;
+        }
+        this.toggleSaveModal();
     }
 
     getFileType() {
