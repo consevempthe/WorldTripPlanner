@@ -7,9 +7,9 @@ import org.junit.Test;
 import com.tco.misc.Place;
 
 
-import static org.junit.Assert.assertEquals;
-
 import com.tco.misc.Options;
+
+import static org.junit.Assert.*;
 
 public class TestRequestTrip {
     private RequestTrip test1;
@@ -50,7 +50,7 @@ public class TestRequestTrip {
     @Test
     public void testingTrip() {
         //Test the getDistances function --> used to find a normal round trip distance
-        test1.getDistances();
+        test1.getTripDistances();
 
         assertEquals(3, test1.distances.length, 0);
         assertEquals(30, test1.distances[0], 0);
@@ -79,70 +79,34 @@ public class TestRequestTrip {
     }
 
     @Test
-    public void testOptimize() {
-        Integer[] test1New = new Integer[3];
-        test1New[0] = 2;
-        test1New[1] = 0;
-        test1New[2] = 1;
-
-        test2.reorderPlaces(test1New);
-
-        test2.optimizer();
-        assertEquals(3, test2.distances.length);
-
-        for(int i = 0; i < test1.places.length; i++) {
-            String name = test1.places[i].getName();
-            String lat = test1.places[i].getLatitude();
-            String lng = test1.places[i].getLongitude();
-
-            assertEquals(name, test2.places[i].getName());
-            assertEquals(lat, test2.places[i].getLatitude());
-            assertEquals(lng, test2.places[i].getLongitude());
-        }
-    }
-
-    @Test
     public void testNearestNeighbor() {
-        Long[][] testMatrix = test2.distanceMatrix();
 
-        test2.getDistances();
+        test2.getTripDistances();
 
         Long[] originalDistances = test2.distances;
 
-//        for (Long[] matrix : testMatrix) {
-//            StringBuilder line = new StringBuilder();
-//            for (int j = 0; j < testMatrix.length; j++) {
-//                line.append(matrix[j].toString()).append(" ");
-//            }
-//            System.out.println(line);
-//        }
-
-        Integer[] testNewOrder = test2.options.optimization.nearestNeighbor(0, testMatrix);
-
-//        for(Integer i : testNewOrder) {
-//            System.out.println(i);
-//        }
-//
         test2.optimizer();
-//
-//        for(Place i : test2.places ) {
-//            System.out.println(i.getName() + " " + i.getLatitude() + " " + i.getLongitude());
-//        }
 
-        test2.getDistances();
         Long totalOG = 0L;
         for(Long i : originalDistances) {
             totalOG += i;
         }
 
-        System.out.println(totalOG);
-        System.out.println();
 
         Long totalNew = 0L;
         for(Long i : test2.distances) {
             totalNew += i;
         }
 
-        System.out.println(totalNew);
+        assertNotEquals(totalNew, totalOG);
+
+        test1.getTripDistances();
+
+        Long[] originalDistance = test1.distances;
+
+        test1.optimizer();
+
+        assertArrayEquals(originalDistance, test1.distances);
+
     }
 }

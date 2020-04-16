@@ -51,7 +51,6 @@ export default class Trip extends Component {
                     {this.renderEditButton()}
                 </ButtonGroup>
                 <LoadSave
-                    addPlaces={this.props.addPlaces}
                     processRequest={this.processTripRequest}
                     saveTrip={this.saveTrip}
                     ref={SaveLoad =>{
@@ -168,6 +167,7 @@ export default class Trip extends Component {
         if(!isJsonResponseValid(tripResponse.body, tripSchema)) {
         } else if (tripResponse.statusCode === HTTP_OK) {
             this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))});
+            this.props.addPlaces(this.state.trip.places);
         }
     }
 

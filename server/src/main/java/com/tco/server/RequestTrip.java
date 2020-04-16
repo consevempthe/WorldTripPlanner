@@ -18,7 +18,7 @@ public class RequestTrip extends RequestHeader {
     @Override
     public void buildResponse() {
         if(this.options.optimization == null) {
-            this.getDistances();
+            this.getTripDistances();
         } else {
             this.optimizer();
         }
@@ -31,20 +31,20 @@ public class RequestTrip extends RequestHeader {
         if(Optimizations.Constructions.one.equals(this.options.optimization.construction)) {
             Integer[] optimizedPlaces = this.options.optimization.nearestNeighbor(0, distanceMatrix);
             this.reorderPlaces(optimizedPlaces);
-
+            this.getTripDistances();
         //Some optimization occurs -- IMPLEMENT
         }
-//        else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
-//
-//            //NOT IMPLEMENTED YET
-//
-//        }
+        else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
+
+            System.out.println("Got here");
+
+        }
         else { //If None or no construction just get the distance
-            this.getDistances();
+            this.getTripDistances();
         }
     }
 
-    public void getDistances()
+    public void getTripDistances()
     {
         Long[] distances = new Long[this.places.length];
         Double earthRadius = Double.parseDouble(options.getEarthRadius());
@@ -66,10 +66,16 @@ public class RequestTrip extends RequestHeader {
         Long [][] table = new Long[places.length][places.length];
         double earthRadius = Double.parseDouble(options.getEarthRadius());
 
+
         for (int i = 0; i < places.length; i++) {
             for (int j = 0; j < places.length; j++) {
-                RequestDistance distance = new RequestDistance(places[i], places[j], earthRadius);
-                table[i][j] = distance.getDistance();
+                if(i == j) {
+                    table[i][j] = 0L;
+                } else if(table[i][j] == null) {
+                    RequestDistance distance = new RequestDistance(places[i], places[j], earthRadius);
+                    table[i][j] = distance.getDistance();
+                    table[j][i] = table[i][j];
+                }
             }
         }
 

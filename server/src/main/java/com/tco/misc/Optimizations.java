@@ -46,7 +46,7 @@ public class Optimizations {
             newOrder[count++] = nearestCity; // add nearest city to our new order
 
             start = nearestCity;
-            visited[start] = true;
+            visited[start] = true; // new START is visited
 
         }
 
@@ -65,7 +65,7 @@ public class Optimizations {
 
     public Integer findClosestDestination(Long[] nearestCities, boolean[] visited) {
         Long minimum = Long.MAX_VALUE;
-        Integer index = -1;
+        int index = -1;
 
             for(int i = 0; i < nearestCities.length; i++) {
                 if(!visited[i]) {

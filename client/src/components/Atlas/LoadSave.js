@@ -155,7 +155,6 @@ export default class LoadSave extends Component {
         sendServerRequestWithBody('trip', jsonObject, this.props.serverPort).then(trip =>
             this.props.processRequest(trip)
         );
-        this.props.addPlaces(jsonObject.places);
     }
 
     uploadFile() {
