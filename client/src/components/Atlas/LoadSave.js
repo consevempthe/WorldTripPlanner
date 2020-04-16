@@ -237,7 +237,6 @@ export default class LoadSave extends Component {
             "    </Style>\n" + placeMarkers +"" +
             "    </Document>\n" +
             "</kml>";
-        console.log(dataStr);
         return(
             dataStr
         );
@@ -246,7 +245,7 @@ export default class LoadSave extends Component {
     buildPlaceMarks(places) {
         let placeMarkers = "<Placemark><name>Cross-corner line</name><styleUrl>#CrossStyle</styleUrl><LineString><coordinates>";
         for(let i = 0; i < places.length; i++){
-            placeMarkers += `${places[i].latitude},${places[i].longitude},0\n`;
+            placeMarkers += `${places[i].longitude},${places[i].latitude},0\n`;
         }
         placeMarkers += "</coordinates></LineString></Placemark>";
         return placeMarkers;

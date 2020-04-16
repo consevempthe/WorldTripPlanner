@@ -9,6 +9,7 @@ export default class CreateTripModal extends Component {
         super(props);
 
         this.createTrip = this.createTrip.bind(this);
+        this.setTripOptimization = this.setTripOptimization.bind(this);
 
         this.state = {
             showModal: false,
@@ -89,6 +90,14 @@ export default class CreateTripModal extends Component {
         )
     }
 
+    createTrip() {
+        this.setTripOptimization(this.state.optLevel);
+        this.props.addTitle(this.state.title);
+        this.props.changeRadius();
+        this.props.createTrip();
+        this.props.toggleModal();
+    }
+
     updateTitle(value) {
         this.setState({title: value});
     }
@@ -97,10 +106,12 @@ export default class CreateTripModal extends Component {
         this.setState({optLevel: value});
     }
 
-    createTrip() {
-        this.props.addTitle(this.state.title);
-        this.props.changeRadius();
-        this.props.createTrip();
-        this.props.toggleModal();
+    setTripOptimization(optLevel) {
+        if(optLevel > 0) {
+            this.props.setTripOptimization(optLevel,"one","none");
+        }
+        else {
+            this.props.setTripOptimization(1, "none", "none");
+        }
     }
 }

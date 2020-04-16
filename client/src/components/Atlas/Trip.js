@@ -20,6 +20,7 @@ export default class Trip extends Component {
         this.addTitle = this.addTitle.bind(this);
         this.changeRadius = this.changeRadius.bind(this);
         this.createTrip = this.createTrip.bind(this);
+        this.setOptimization = this.setOptimization.bind(this);
         this.resetTrip = this.resetTrip.bind(this);
 
         this.state = {
@@ -133,6 +134,7 @@ export default class Trip extends Component {
                 addTitle={this.addTitle}
                 changeRadius={this.changeRadius}
                 createTrip={this.createTrip}
+                setTripOptimization={this.setOptimization}
             />
         );
     }
@@ -217,5 +219,13 @@ export default class Trip extends Component {
 
     resetTrip() {
         this.setState({trip: {places: [], distances: []}});
+    }
+
+    setOptimization(response, construction, improvement) {
+        let {trip} = Object.assign(this.state);
+        trip.options.optimization.response = response.toString();
+        trip.options.optimization.construction = construction;
+        trip.options.optimization.improvement = improvement;
+        this.setState({trip});
     }
 }
