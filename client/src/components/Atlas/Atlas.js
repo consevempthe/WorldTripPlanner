@@ -108,8 +108,8 @@ export default class Atlas extends Component {
             return (
                 <div>
                     <Button onClick={ () => {
-                        this.setState({markerPositions: this.state.markerPositions.concat(this.markClientLocation())});
-                        this.setState({markerPositions: []});
+                        this.setState({markerPositions: []}, this.Trip.resetTrip);
+                        this.markClientLocation();
                     }} size={"md"} block>Where Am I?</Button>
                 </div>
             )
@@ -232,7 +232,7 @@ export default class Atlas extends Component {
 
     deleteMarkerPosition(index){
         this.setState(state => {
-            const markerPositions = state.markerPositions.filter((item,j) => index !== j)
+            const markerPositions = state.markerPositions.filter((item,j) => index !== j);
             return{
                 markerPositions,
             }

@@ -130,7 +130,7 @@ function testReverseList() {
 
 test("testing list reverse", testReverseList);
 
-function testDelteItemIndex() {
+function testDeleteItemIndex() {
     const trip = shallow(<Trip
         deleteMarkerPosition={startProperties.deleteMarkerPosition}
     />);
@@ -146,7 +146,7 @@ function testDelteItemIndex() {
     expect(trip.state().trip.places.length).toEqual(1);
 }
 
-test("Testing Trip's Delete Item", testDelteItemIndex);
+test("Testing Trip's Delete Item", testDeleteItemIndex);
 
 function testChangeStartPlace() {
     const trip = shallow(<Trip/>);
@@ -154,12 +154,27 @@ function testChangeStartPlace() {
     const place1 = {name: 'Las Vegas', lat: 36.17, lng: -115.14};
     trip.instance().addPlace(place1);
 
-    const place2 = {name: 'Pitsburg', lat: 40.44, lng: -80.00};
+    const place2 = {name: 'Pittsburgh', lat: 40.44, lng: -80.00};
     trip.instance().changeStartPlace(place2,1);
 
-    const expectedName = 'Pitsburg';
+    const expectedName = 'Pittsburgh';
     expect(trip.state().trip.places[0].name).toEqual(expectedName);
 }
 
 test("Testing Trip's Change Start Place", testChangeStartPlace);
 
+function testReset() {
+    const trip = mount(<Trip/>);
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'boulder', lat: 39.23, lng: -104.7};
+
+    trip.instance().addPlace(place1);
+    trip.instance().addPlace(place2);
+
+    trip.instance().resetTrip();
+
+    expect(trip.state().trip.places.length).toEqual(0);
+    expect(trip.state().trip.distances.length).toEqual(0);
+}
+
+test("Testing Trip reset", testReset);

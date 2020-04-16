@@ -54,7 +54,6 @@ export default class Trip extends Component {
                     {this.renderEditButton()}
                 </ButtonGroup>
                 <LoadSave
-                    addPlaces={this.props.addPlaces}
                     processRequest={this.processTripRequest}
                     saveTrip={this.saveTrip}
                     ref={SaveLoad =>{
@@ -121,7 +120,6 @@ export default class Trip extends Component {
                 <DropdownMenu>
                     <DropdownItem onClick={ () => this.props.toggle()}>New Start</DropdownItem>
                     <DropdownItem onClick={ () => this.reverseTrip()}>Reverse Trip</DropdownItem>
-                    <DropdownItem>Delete Destination</DropdownItem>
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
         )
@@ -185,6 +183,7 @@ export default class Trip extends Component {
         if(!isJsonResponseValid(tripResponse.body, tripSchema)) {
         } else if (tripResponse.statusCode === HTTP_OK) {
             this.setState({trip: JSON.parse(JSON.stringify(tripResponse.body))});
+            this.props.addPlaces(this.state.trip.places);
         }
     }
 
@@ -225,5 +224,12 @@ export default class Trip extends Component {
         tempDistances.splice(index,1);
         this.setState({trip: {places: tempPlaces, distances: tempDistances}});
         this.props.deleteMarkerPosition(index);
+    }
+
+    resetTrip() {
+        let {trip} = Object.assign(this.state);
+        trip.places = [];
+        trip.distances = [];
+        this.setState({trip});
     }
 }
