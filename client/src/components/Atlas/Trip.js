@@ -210,4 +210,11 @@ export default class Trip extends Component {
         this.setState({trip: {places: tempPlaces, distances: tempDistances}});
         this.props.deleteMarkerPosition(index);
     }
+
+    resetTrip() {
+        let {trip} = Object.assign(this.state);
+        trip.places = [];
+        trip.distances = [];
+        this.setState({trip});
+    }
 }

@@ -1,8 +1,8 @@
 package com.tco.misc;
 
 public class Options {
-    String earthRadius;
-    Optimizations optimization;
+    public String earthRadius;
+    public Optimizations optimization;
 
     public Options(String earthRadius) {
         this.earthRadius = earthRadius;

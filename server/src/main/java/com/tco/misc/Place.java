@@ -11,4 +11,15 @@ public class Place {
         this.longitude = lng;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
 }
