@@ -20,7 +20,7 @@ public class TestRequestTrip {
 
         Options test1Option = new Options("3959.0");
         test1Option.optimization = new Optimizations("1",
-                Optimizations.Improvements.none, Optimizations.Constructions.one);
+                Optimizations.Improvements.none, Optimizations.Constructions.none);
 
         Place[] places = new Place[3];
         places[0] = new Place("denver", "39.7", "-105.0");
@@ -32,14 +32,14 @@ public class TestRequestTrip {
 
         Options test2Option = new Options("3959.0");
         test2Option.optimization = new Optimizations("1",
-                Optimizations.Improvements.none, Optimizations.Constructions.none);
+                Optimizations.Improvements.none, Optimizations.Constructions.one);
 
         Place[] places2 = new Place[5];
         places2[0] = new Place("boulder", "40.0", "-105.4");
         places2[1] = new Place("fort collins", "40.6", "-105.1");
         places2[2] = new Place("denver", "39.7", "-105.0");
-        places2[4] = new Place("cheyenne", "41.1", "-104.8");
         places2[3] = new Place("pueblo", "38.3", "-104.6");
+        places2[4] = new Place("cheyenne", "41.1", "-104.8");
 
 
 
@@ -105,18 +105,44 @@ public class TestRequestTrip {
     public void testNearestNeighbor() {
         Long[][] testMatrix = test2.distanceMatrix();
 
-        for (Long[] matrix : testMatrix) {
-            StringBuilder line = new StringBuilder();
-            for (int j = 0; j < testMatrix.length; j++) {
-                line.append(matrix[j].toString()).append(" ");
-            }
-            System.out.println(line);
-        }
+        test2.getDistances();
+
+        Long[] originalDistances = test2.distances;
+
+//        for (Long[] matrix : testMatrix) {
+//            StringBuilder line = new StringBuilder();
+//            for (int j = 0; j < testMatrix.length; j++) {
+//                line.append(matrix[j].toString()).append(" ");
+//            }
+//            System.out.println(line);
+//        }
 
         Integer[] testNewOrder = test2.options.optimization.nearestNeighbor(0, testMatrix);
 
-        for(Integer i : testNewOrder) {
-            System.out.println(i);
+//        for(Integer i : testNewOrder) {
+//            System.out.println(i);
+//        }
+//
+        test2.optimizer();
+//
+//        for(Place i : test2.places ) {
+//            System.out.println(i.getName() + " " + i.getLatitude() + " " + i.getLongitude());
+//        }
+
+        test2.getDistances();
+        Long totalOG = 0L;
+        for(Long i : originalDistances) {
+            totalOG += i;
         }
+
+        System.out.println(totalOG);
+        System.out.println();
+
+        Long totalNew = 0L;
+        for(Long i : test2.distances) {
+            totalNew += i;
+        }
+
+        System.out.println(totalNew);
     }
 }
