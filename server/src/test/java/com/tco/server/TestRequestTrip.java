@@ -34,10 +34,13 @@ public class TestRequestTrip {
         test2Option.optimization = new Optimizations("1",
                 Optimizations.Improvements.none, Optimizations.Constructions.none);
 
-        Place[] places2 = new Place[3];
+        Place[] places2 = new Place[5];
         places2[0] = new Place("boulder", "40.0", "-105.4");
         places2[1] = new Place("fort collins", "40.6", "-105.1");
         places2[2] = new Place("denver", "39.7", "-105.0");
+        places2[4] = new Place("cheyenne", "41.1", "-104.8");
+        places2[3] = new Place("pueblo", "38.3", "-104.6");
+
 
 
 
@@ -95,6 +98,25 @@ public class TestRequestTrip {
             assertEquals(name, test2.places[i].getName());
             assertEquals(lat, test2.places[i].getLatitude());
             assertEquals(lng, test2.places[i].getLongitude());
+        }
+    }
+
+    @Test
+    public void testNearestNeighbor() {
+        Long[][] testMatrix = test2.distanceMatrix();
+
+        for (Long[] matrix : testMatrix) {
+            StringBuilder line = new StringBuilder();
+            for (int j = 0; j < testMatrix.length; j++) {
+                line.append(matrix[j].toString()).append(" ");
+            }
+            System.out.println(line);
+        }
+
+        Integer[] testNewOrder = test2.options.optimization.nearestNeighbor(0, testMatrix);
+
+        for(Integer i : testNewOrder) {
+            System.out.println(i);
         }
     }
 }

@@ -30,18 +30,53 @@ public class Optimizations {
         @param visited is how we determine if we have visited a place
         @param places contains the indexes of our trip
      */
-    public Integer[] nearestNeighbor(Long[][] distanceMatrix, boolean[] visited, Integer[] places) {
-        Long bestDistance = Long.MAX_VALUE;
-        visited[0] = true;
+    public Integer[] nearestNeighbor(int start, Long[][] distanceMatrix) {
+        int count = 0;
+        int length = distanceMatrix.length;
+        Integer[] newOrder = new Integer[length];
 
-        for(int i = 0; i < distanceMatrix.length; i++) {
-            if(distanceMatrix[0][i] < bestDistance && distanceMatrix[0][i] != 0) {
-                if(!visited[i]) {
-                    bestDistance = distanceMatrix[0][i];
-                }
+        //set the first index of the new order to START, increment count
+        newOrder[count++] = start;
+        boolean[] visited = new boolean[length];
+        visited[start] = true; // set the first index of visited to true.
+
+        while(unvisitedCitiesRemain(visited)) {
+            Long[] nearestCities = distanceMatrix[start]; // get vector of all the other distances to our START
+            Integer nearestCity = findClosestDestination(nearestCities, visited); // find the nearest city
+            newOrder[count++] = nearestCity; // add nearest city to our new order
+
+            start = nearestCity;
+            visited[start] = true;
+
+        }
+
+        return newOrder;
+    }
+
+    public boolean unvisitedCitiesRemain(boolean[] visited) {
+        for(boolean isVisited : visited) {
+            if(!isVisited) {
+                return true;
             }
         }
-        return places;
+
+        return false;
+    }
+
+    public Integer findClosestDestination(Long[] nearestCities, boolean[] visited) {
+        Long minimum = Long.MAX_VALUE;
+        Integer index = -1;
+
+            for(int i = 0; i < nearestCities.length; i++) {
+                if(!visited[i]) {
+                    if(nearestCities[i] < minimum) {
+                        minimum = nearestCities[i];
+                        index = i;
+                    }
+                }
+            }
+
+        return index;
     }
 
 }

@@ -117,7 +117,6 @@ export default class Trip extends Component {
                 <DropdownMenu>
                     <DropdownItem onClick={ () => this.props.toggle()}>New Start</DropdownItem>
                     <DropdownItem onClick={ () => this.reverseTrip()}>Reverse Trip</DropdownItem>
-                    <DropdownItem>Delete Destination</DropdownItem>
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
         )

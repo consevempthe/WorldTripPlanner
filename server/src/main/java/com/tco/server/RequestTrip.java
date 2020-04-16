@@ -26,13 +26,10 @@ public class RequestTrip extends RequestHeader {
 
     public void optimizer() {
         Long[][] distanceMatrix = this.distanceMatrix();
-        boolean[] visited = new boolean[distanceMatrix.length]; // all false
-        Integer[] places = this.createTourIndexes(); // Uses places to create an index
-
 
         //One optimizations
         if(Optimizations.Constructions.one.equals(this.options.optimization.construction)) {
-            Integer[] optimizedPlaces = this.options.optimization.nearestNeighbor(distanceMatrix, visited, places);
+            Integer[] optimizedPlaces = this.options.optimization.nearestNeighbor(0, distanceMatrix);
             this.reorderPlaces(optimizedPlaces);
 
         //Some optimization occurs -- IMPLEMENT
