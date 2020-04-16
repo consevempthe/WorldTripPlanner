@@ -89,14 +89,14 @@ function testFunctions() {
         "        <width>4</width>\n" +
         "      </LineStyle>\n" +
         "    </Style>\n" +
-        "<Placemark><name>Cross-corner line</name><styleUrl>#CrossStyle</styleUrl><LineString><coordinates>34.23,54.66,0\n" +
-        "64.32,67.88,0\n" +
+        "<Placemark><name>Cross-corner line</name><styleUrl>#CrossStyle</styleUrl><LineString><coordinates>54.66,34.23,0\n" +
+        "67.88,64.32,0\n" +
         "</coordinates></LineString></Placemark>    </Document>\n" +
         "</kml>");
 
     let arr = test.instance().buildPlaceMarks(dummyPlaces);
-    expect(arr.toString()).toEqual("<Placemark><name>Cross-corner line</name><styleUrl>#CrossStyle</styleUrl><LineString><coordinates>34.23,54.66,0\n" +
-        "64.32,67.88,0\n" +
+    expect(arr.toString()).toEqual("<Placemark><name>Cross-corner line</name><styleUrl>#CrossStyle</styleUrl><LineString><coordinates>54.66,34.23,0\n" +
+        "67.88,64.32,0\n" +
         "</coordinates></LineString></Placemark>");
 
     let radioSelector = 0;
