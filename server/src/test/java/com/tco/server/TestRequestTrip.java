@@ -48,6 +48,12 @@ public class TestRequestTrip {
     }
 
     @Test
+    public void testGetEarthRadius() {
+        Double earth = test1.getEarthRadius();
+        assertEquals(Double.valueOf(3959.0), earth);
+    }
+
+    @Test
     public void testingTrip() {
         //Test the getDistances function --> used to find a normal round trip distance
         test1.getTripDistances();

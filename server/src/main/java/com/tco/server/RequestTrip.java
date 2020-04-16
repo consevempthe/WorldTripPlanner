@@ -24,6 +24,10 @@ public class RequestTrip extends RequestHeader {
         }
     }
 
+    public Double getEarthRadius() {
+        return Double.parseDouble(options.getEarthRadius());
+    }
+
     public void optimizer() {
         Long[][] distanceMatrix = this.distanceMatrix();
 
@@ -47,14 +51,13 @@ public class RequestTrip extends RequestHeader {
     public void getTripDistances()
     {
         Long[] distances = new Long[this.places.length];
-        Double earthRadius = Double.parseDouble(options.getEarthRadius());
 
         for (int i = 0; i < distances.length; i++) {
             if(i == distances.length - 1) {
-                RequestDistance distance = new RequestDistance(places[i], places[0], earthRadius);
+                RequestDistance distance = new RequestDistance(places[i], places[0], getEarthRadius());
                 distances[i] = distance.getDistance();
             } else {
-                RequestDistance distance = new RequestDistance(places[i], places[i + 1], earthRadius);
+                RequestDistance distance = new RequestDistance(places[i], places[i + 1], getEarthRadius());
                 distances[i] = distance.getDistance();
             }
         }
@@ -64,15 +67,13 @@ public class RequestTrip extends RequestHeader {
 
     public Long[][] distanceMatrix() {
         Long [][] table = new Long[places.length][places.length];
-        double earthRadius = Double.parseDouble(options.getEarthRadius());
-
 
         for (int i = 0; i < places.length; i++) {
             for (int j = 0; j < places.length; j++) {
                 if(i == j) {
                     table[i][j] = 0L;
                 } else if(table[i][j] == null) {
-                    RequestDistance distance = new RequestDistance(places[i], places[j], earthRadius);
+                    RequestDistance distance = new RequestDistance(places[i], places[j], getEarthRadius());
                     table[i][j] = distance.getDistance();
                     table[j][i] = table[i][j];
                 }

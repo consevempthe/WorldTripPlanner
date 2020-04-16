@@ -68,11 +68,9 @@ public class Optimizations {
         int index = -1;
 
             for(int i = 0; i < nearestCities.length; i++) {
-                if(!visited[i]) {
-                    if(nearestCities[i] < minimum) {
-                        minimum = nearestCities[i];
-                        index = i;
-                    }
+                if(!visited[i] && nearestCities[i] < minimum) {
+                    minimum = nearestCities[i];
+                    index = i;
                 }
             }
 
