@@ -204,8 +204,10 @@ export default class Atlas extends Component {
     }
 
     addPlaceToArray(place) {
-        this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
-        this.Trip.addPlace(place);
+        if(place) {
+            this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
+            this.Trip.addPlace(place);
+        }
     }
 
     addPlacesFromFileUpload(places) {
