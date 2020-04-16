@@ -30,7 +30,7 @@ function testInitialAppState() {
     let actualDistance = app.state().distance;
     let expectedDistance = {
         requestType: "distance",
-        requestVersion: 3, // This needs to be changed anytime we change version.
+        requestVersion: 4, // This needs to be changed anytime we change version.
         place1: {
             latitude: '',
             longitude: '',

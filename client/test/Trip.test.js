@@ -23,7 +23,7 @@ function testInitialState() {
     const initial = shallow(<Trip/>);
     const expectedState = {
         requestType: "trip",
-        requestVersion: 3,
+        requestVersion: 4,
         options: {title: "", earthRadius: '3959.0', optimization: {response: '1', construction: 'none', improvement: 'none'}},
         places: [],
         distances: []
