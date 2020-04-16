@@ -165,3 +165,18 @@ function testChangeStartPlace() {
 
 test("Testing Trip's Change Start Place", testChangeStartPlace);
 
+function testReset() {
+    const trip = mount(<Trip/>);
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'boulder', lat: 39.23, lng: -104.7};
+
+    trip.instance().addPlace(place1);
+    trip.instance().addPlace(place2);
+
+    trip.instance().resetTrip();
+
+    expect(trip.state().trip.places.length).toEqual(0);
+    expect(trip.state().trip.distances.length).toEqual(0);
+}
+
+test("Testing Trip reset", testReset);

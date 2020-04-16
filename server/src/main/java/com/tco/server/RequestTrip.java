@@ -9,16 +9,16 @@ public class RequestTrip extends RequestHeader {
     Place[] places;
     Long[] distances;
 
-    public RequestTrip(Options o, Place[] p, Long[] d) {
+    public RequestTrip(Options o, Place[] p) {
         this.options = o;
         this.places = p;
-        this.distances = d;
+
     }
 
     @Override
     public void buildResponse() {
         if(this.options.optimization == null) {
-            this.distances = this.getDistances();
+            this.getDistances();
         } else {
             this.optimizer();
         }
@@ -43,11 +43,11 @@ public class RequestTrip extends RequestHeader {
 //
 //        }
         else { //If None or no construction just get the distance
-            this.distances = this.getDistances();
+            this.getDistances();
         }
     }
 
-    public Long[] getDistances()
+    public void getDistances()
     {
         Long[] distances = new Long[this.places.length];
         Double earthRadius = Double.parseDouble(options.getEarthRadius());
@@ -62,7 +62,7 @@ public class RequestTrip extends RequestHeader {
             }
         }
 
-        return distances;
+        this.distances = distances;
     }
 
     public Long[][] distanceMatrix() {
