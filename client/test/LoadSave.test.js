@@ -75,8 +75,38 @@ function testFunctions() {
 
     expect(kml).toEqual(".KML");
 
+    let dummyPlaces = [{latitude: 34.23, longitude: 54.66, name:"pt1"}, {latitude: 64.32, longitude: 67.88, name: "pt2"}];
+    let output = test.instance().buildKML(dummyPlaces);
+    expect(output).toEqual("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        "<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n" +
+        "  <Document>\n" +
+        "    <name>Single Simple Line</name>\n" +
+        "    <open>1</open>\n" +
+        "    <description>Just a single blue line across Colorado</description>\n" +
+        "    <Style id=\"CrossStyle\">\n" +
+        "      <LineStyle>\n" +
+        "        <color>ffffffb6</color>\n" +
+        "        <width>4</width>\n" +
+        "      </LineStyle>\n" +
+        "    </Style>\n" +
+        "<Placemark><name>Cross-corner line</name><styleUrl>#CrossStyle</styleUrl><LineString><coordinates>34.23,54.66,0\n" +
+        "64.32,67.88,0\n" +
+        "</coordinates></LineString></Placemark>    </Document>\n" +
+        "</kml>");
+
+    let arr = test.instance().buildPlaceMarks(dummyPlaces);
+    expect(arr.toString()).toEqual("<Placemark><name>Cross-corner line</name><styleUrl>#CrossStyle</styleUrl><LineString><coordinates>34.23,54.66,0\n" +
+        "64.32,67.88,0\n" +
+        "</coordinates></LineString></Placemark>");
+
+    let radioSelector = 0;
+    test.instance().handleChange(radioSelector);
+    expect(test.state().fileType).toEqual(".KML");
+    radioSelector = 1;
+    test.instance().handleChange(radioSelector);
+    expect(test.state().fileType).toEqual(".JSON");
 
 }
 
-test("testing set and get functions", testFunctions);
+test("Performing LoadSave.js Functional tests", testFunctions);
 
