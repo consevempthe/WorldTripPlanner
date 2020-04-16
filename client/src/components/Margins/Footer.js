@@ -70,6 +70,10 @@ export default class Footer extends Component {
         return this.props.serverSettings.serverConfig && this.props.serverSettings.serverConfig.serverName;
     }
 
+    getOptimizations() {
+        return this.connectedToValidServer() ? this.props.serverSettings.serverConfig.optimization : UNKNOWN_SERVER_NAME;
+    }
+
     renderServerSettings() {
         return (
             <ServerSettings
@@ -90,6 +94,7 @@ export default class Footer extends Component {
                 requestType={this.getRequestTypeFromConnectionStatus()}
                 requestVersion={this.getRequestVersionFromConnectionStatus()}
                 supportedRequests={this.getSupportedRequestsFromConnectionStatus()}
+                optimization={this.getOptimizations()}
             />
         );
     }

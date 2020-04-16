@@ -31,16 +31,12 @@ export default class ServerConfig extends Component
 
     renderBody ()
     {
-        const supported_requests = this.props.supportedRequests;
 
         return(
             <ModalBody>
                 <Table>
                     <tbody>
-                        <tr>
-                            <td>serverName</td>
-                            <td>{this.props.serverName}</td>
-                        </tr>
+                        {this.renderServer()}
                         <tr>
                             <td>requestVersion</td>
                             <td>{PROTOCOL_VERSION}</td>
@@ -49,14 +45,41 @@ export default class ServerConfig extends Component
                             <td>requestType</td>
                             <td>{this.props.requestType}</td>
                         </tr>
-                        <tr>
-                            <td>supportedRequests</td>
-                            <td>{supported_requests[0] + ", " + supported_requests[1] + ", " + supported_requests[2]}</td>
-                        </tr>
+                        {this.renderSupportedRequests()}
+                        {this.renderOptimizations()}
                     </tbody>
                 </Table>
             </ModalBody>
         );
+    }
+
+    renderServer() {
+        return(
+            <tr>
+                <td>serverName</td>
+                <td>{this.props.serverName}</td>
+            </tr>
+        )
+    }
+
+    renderSupportedRequests() {
+        const supported_requests = this.props.supportedRequests;
+        return(
+            <tr>
+                <td>supportedRequests</td>
+                <td>{supported_requests[0] + ", " + supported_requests[1] + ", " + supported_requests[2]}</td>
+            </tr>
+        )
+    }
+
+    renderOptimizations() {
+        const optimization = this.props.optimization;
+        return(
+            <tr>
+                <td>Optimizations:</td>
+                <td>{optimization.construction + " " + optimization.improvement}</td>
+            </tr>
+        )
     }
 
 }
