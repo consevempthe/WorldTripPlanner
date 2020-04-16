@@ -17,7 +17,6 @@ export default class Trip extends Component {
         super(props);
 
         this.processTripRequest = this.processTripRequest.bind(this);
-        this.saveTrip = this.saveTrip.bind(this);
         this.addTitle = this.addTitle.bind(this);
         this.changeRadius = this.changeRadius.bind(this);
         this.createTrip = this.createTrip.bind(this);
@@ -56,7 +55,6 @@ export default class Trip extends Component {
                 <LoadSave
                     addPlaces={this.props.addPlaces}
                     processRequest={this.processTripRequest}
-                    saveTrip={this.saveTrip}
                     places={this.state.trip.places}
                     ref={SaveLoad =>{
                         this.SaveLoad = SaveLoad;
