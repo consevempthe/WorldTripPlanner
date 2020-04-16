@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 public class TestRequestTrip {
     private RequestTrip test1;
     private RequestTrip test2;
+    private RequestTrip test3;
 
     @Before
     public void populateTests() {
@@ -41,10 +42,14 @@ public class TestRequestTrip {
         places2[3] = new Place("pueblo", "38.3", "-104.6");
         places2[4] = new Place("cheyenne", "41.1", "-104.8");
 
-
-
-
         test2 = new RequestTrip(test2Option, places2);
+
+        Place[] places3 = new Place[3];
+        places3[0] = new Place("fort collins", "40.6", "-105.1");
+        places3[1] = new Place("fort collins", "40.6", "-105.1");
+        places3[2] = new Place("fort collins", "40.6", "-105.1");
+
+        test3 = new RequestTrip(test1Option, places3);
     }
 
     @Test
@@ -69,15 +74,14 @@ public class TestRequestTrip {
         assertEquals(3, testMatrix.length);
         assertEquals(3, testMatrix[0].length);
 
-        assertEquals(0, testMatrix[0][0], 0);
-        assertEquals(0, testMatrix[1][1], 0);
-        assertEquals(0, testMatrix[2][2], 0);
-        assertEquals(30, testMatrix[0][1], 0);
-        assertEquals(62, testMatrix[0][2], 0);
-        assertEquals(30, testMatrix[1][0], 0);
-        assertEquals(44, testMatrix[1][2], 0);
-        assertEquals(62, testMatrix[2][0], 0);
-        assertEquals(44, testMatrix[2][1], 0);
+        Long[][] testZeroMatrix = test3.distanceMatrix();
+
+        for(int i = 0; i < testMatrix.length; i++) {
+            for(int j = 0; j < testMatrix.length; j++) {
+                assertEquals(testMatrix[i][j], testMatrix[j][i]);
+                assertEquals(testZeroMatrix[i][j], testZeroMatrix[j][i]);
+            }
+        }
 
         Integer[] tourIndex = test1.createTourIndexes();
         assertEquals(tourIndex.length, 3);

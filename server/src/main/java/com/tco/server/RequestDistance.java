@@ -46,6 +46,17 @@ public class RequestDistance extends RequestHeader {
 
     Long getDistance() {
         GreatCircleDistance greatCircleDistance = new GreatCircleDistance(place1, place2, earthRadius);
+        if(sameLocation()) {
+            return 0L;
+        }
         return greatCircleDistance.calculateDistance();
+    }
+
+    public boolean sameLocation() {
+        if(place1.get("latitude").equals(place2.get("latitude"))) {
+            return place1.get("longitude").equals(place2.get("longitude"));
+        }
+
+        return false;
     }
 }

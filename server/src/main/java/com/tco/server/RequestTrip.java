@@ -70,9 +70,7 @@ public class RequestTrip extends RequestHeader {
 
         for (int i = 0; i < places.length; i++) {
             for (int j = 0; j < places.length; j++) {
-                if(i == j) {
-                    table[i][j] = 0L;
-                } else if(table[i][j] == null) {
+                if(table[i][j] == null) {
                     RequestDistance distance = new RequestDistance(places[i], places[j], getEarthRadius());
                     table[i][j] = distance.getDistance();
                     table[j][i] = table[i][j];
