@@ -21,6 +21,7 @@ export default class Trip extends Component {
         this.changeRadius = this.changeRadius.bind(this);
         this.createTrip = this.createTrip.bind(this);
         this.setOptimization = this.setOptimization.bind(this);
+        this.resetTrip = this.resetTrip.bind(this);
 
         this.state = {
             trip: {
@@ -30,9 +31,9 @@ export default class Trip extends Component {
                     title: '',
                     earthRadius: '3959.0',
                     optimization: {
-                        response: '',       // response time 0 - 60
-                        construction: '',   // is either ["none","one","some"]
-                        improvement: ''    // is either ["none","2opt","3opt"]
+                        response: '1',       // response time 0 - 60
+                        construction: 'none',   // is either ["none","one","some"]
+                        improvement: 'none'    // is either ["none","2opt","3opt"]
                     }
                 },
                 places: [],
@@ -217,10 +218,7 @@ export default class Trip extends Component {
     }
 
     resetTrip() {
-        let {trip} = Object.assign(this.state);
-        trip.places = [];
-        trip.distances = [];
-        this.setState({trip});
+        this.setState({trip: {places: [], distances: []}});
     }
 
     setOptimization(response, construction, improvement) {
