@@ -53,10 +53,21 @@ export default class ServerConfig extends Component
                             <td>supportedRequests</td>
                             <td>{supported_requests[0] + ", " + supported_requests[1] + ", " + supported_requests[2]}</td>
                         </tr>
+                        {this.renderOptimizations()}
                     </tbody>
                 </Table>
             </ModalBody>
         );
+    }
+
+    renderOptimizations() {
+        const optimization = this.props.optimization;
+        return(
+            <tr>
+                <td>Optimizations:</td>
+                <td>{optimization.construction + " " + optimization.improvement}</td>
+            </tr>
+        )
     }
 
 }

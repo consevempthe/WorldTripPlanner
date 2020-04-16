@@ -1,7 +1,7 @@
 import './enzyme.config';
 import './setupJest';
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {mount} from 'enzyme';
 import CreateTripModal from '../src/components/Atlas/CreateTripModal';
 
 function testRender() {

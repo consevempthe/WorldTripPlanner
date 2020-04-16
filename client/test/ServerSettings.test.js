@@ -112,6 +112,7 @@ function testServerConfig() {
         requestType={"config"}
         requestVersion={3}
         supportedRequests={['hi', 'hello', 'ok']}
+        optimization={"construction"}
     />);
 
     expect(config.state().isOpen).toEqual(false);

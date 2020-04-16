@@ -24,7 +24,7 @@ public class RequestConfig extends RequestHeader {
   private String serverName;
   protected List<String> supportedRequests = Arrays.asList("config", "distance", "trip");
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
-  protected Object optimization;
+  protected OptimizationConfig optimization;
 
   RequestConfig() {
     this.requestType = "config";
