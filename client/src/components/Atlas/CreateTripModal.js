@@ -57,7 +57,7 @@ export default class CreateTripModal extends Component {
     renderFooter() {
         return(
             <ModalFooter>
-                {this.renderButton(this.createTrip, "Create Trip")}
+                <Button disabled={this.state.title.length === 0} onClick={ () => this.createTrip()}>Create Trip</Button>
                 {this.renderButton(this.props.toggleModal,"Cancel")}
             </ModalFooter>
         )
