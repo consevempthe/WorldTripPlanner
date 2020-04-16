@@ -23,8 +23,13 @@ function testInitialState() {
     const initial = shallow(<Trip/>);
     const expectedState = {
         requestType: "trip",
+        Pom-xml-update
         requestVersion: 4,
         options: {title: "", earthRadius: '3959.0', optimization: {response: '', construction: '', improvement: ''}},
+
+        requestVersion: 4,
+        options: {title: "", earthRadius: '3959.0', optimization: {response: '1', construction: 'none', improvement: 'none'}},
+        master
         places: [],
         distances: []
     };
