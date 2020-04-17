@@ -223,9 +223,8 @@ export default class Trip extends Component {
 
     setOptimization(response, construction, improvement) {
         let {trip} = Object.assign(this.state);
-        trip.options.optimization.response = response.toString();
-        trip.options.optimization.construction = construction;
-        trip.options.optimization.improvement = improvement;
+        const optimization = {response: response.toString(), construction: construction, improvement: improvement};
+        trip.options.optimization = optimization;
         this.setState({trip});
     }
 }
