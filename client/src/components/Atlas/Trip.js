@@ -225,10 +225,12 @@ export default class Trip extends Component {
         if(action === "up" && index !== places.length - 1) {
             this.moveArrayItem(places, index, index + 1);
             this.moveArrayItem(distances, index, index + 1);
+            this.props.moveMarkerPosition(action,index);
         }
         else if(action === "down" && index !== 0) {
             this.moveArrayItem(places, index, index - 1);
             this.moveArrayItem(distances, index, index - 1);
+            this.props.moveMarkerPosition(action,index);
         }
         this.setState({trip: {places: places, distances: distances}});
     }

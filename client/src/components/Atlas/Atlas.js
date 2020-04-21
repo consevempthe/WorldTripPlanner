@@ -38,6 +38,7 @@ export default class Atlas extends Component {
         this.renderLine = this.renderLine.bind(this);
         this.addMarker = this.addMarker.bind(this);
         this.addNewStart = this.addNewStart.bind(this);
+        this.moveMarkerPosition = this.moveMarkerPosition.bind(this);
 
         this.state = {
             mapBounds: null,
@@ -95,6 +96,7 @@ export default class Atlas extends Component {
                     toggle={(modal= !this.state.modal) => this.setState({modal: modal})}
                     addPlaces={this.addPlacesFromFileUpload}
                     deleteMarkerPosition={this.deleteMarkerPosition}
+                    moveMarkerPosition={this.moveMarkerPosition}
                     ref={Trip => {
                         this.Trip = Trip;
                     }}
@@ -230,6 +232,17 @@ export default class Atlas extends Component {
             const position2 = this.getMarkerPosition(this.state.markerPositions[length - 1]);
             this.distance.distanceOnClick(position1, position2);
         }
+    }
+
+    moveMarkerPosition(action,index) {
+        let markerPositions = Object.assign(this.state.markerPositions);
+        if(action == "up") {
+            this.Trip.moveArrayItem(markerPositions, index, index + 1);
+        }
+        else {
+            this.Trip.moveArrayItem(markerPositions,index, index - 1);
+        }
+        this.setState({markerPositions});
     }
 
     deleteMarkerPosition(index){
