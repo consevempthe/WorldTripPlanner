@@ -74,6 +74,7 @@ export default class Trip extends Component {
                 <Table size={"sm"} responsive className={'tableBlockScroll'}>
                     <thead>
                     <tr>
+                        <th></th>
                         <th> Place</th>
                         <th style={{textAlign: 'right'}}>Leg dist.</th>
                         <th style={{textAlign: 'right'}}>Cumulative dist.</th>
@@ -98,6 +99,7 @@ export default class Trip extends Component {
 
             body.push(
                 <tr key={name}>
+                    <td><span>&#x2B06;</span><span>&#x2B07;</span></td>
                     <td>{name}</td>
                     <td style={{textAlign: 'right'}}>{legLength.toString()}</td>
                     <td style={{textAlign: 'right'}}>{runningTotalLeg.toString()}</td>
