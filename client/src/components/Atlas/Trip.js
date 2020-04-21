@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
 import {
-    Table, Button, ButtonGroup, UncontrolledAlert,
-    UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem,
+    Button,
+    ButtonGroup,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Table,
+    UncontrolledAlert,
+    UncontrolledButtonDropdown,
 } from 'reactstrap';
 import LoadSave from "./LoadSave";
 import './Resources/tripTable.css'
@@ -57,9 +63,6 @@ export default class Trip extends Component {
                 <LoadSave
                     processRequest={this.processTripRequest}
                     places={this.state.trip.places}
-                    ref={SaveLoad =>{
-                        this.SaveLoad = SaveLoad;
-                    }}
                 />
                 {this.renderTable()}
                 {this.renderCreateTripModal()}
@@ -174,7 +177,7 @@ export default class Trip extends Component {
     }
 
     createTrip() {
-        if(this.state.trip.options.title && this.state.trip.places) {
+        if(this.state.trip.places.length > 1) {
             sendServerRequestWithBody('trip', this.state.trip, this.props.serverPort).then(trip => {
                 this.processTripRequest(trip);
             });
@@ -198,14 +201,14 @@ export default class Trip extends Component {
     addPlace(place) {
         let {trip} = Object.assign(this.state);
         trip["places"].push(createPlace(place));
-        this.setState({trip});
+        this.setState({trip}, this.createTrip);
     }
 
     //destroy defaults to 1 meaning that it will change the start place, set it to 0 and it will merely append it.
     changeStartPlace(place, destroy=1) {
         let {places} = Object.assign(this.state.trip);
         places.splice(0, destroy, createPlace(place));
-        this.setState({places});
+        this.setState({places}, this.createTrip);
     }
 
     deleteItem(index){
@@ -223,8 +226,11 @@ export default class Trip extends Component {
 
     setOptimization(response, construction, improvement) {
         let {trip} = Object.assign(this.state);
-        const optimization = {response: response.toString(), construction: construction, improvement: improvement};
-        trip.options.optimization = optimization;
+        trip.options.optimization = {
+            response: response.toString(),
+            construction: construction,
+            improvement: improvement
+        };
         this.setState({trip});
     }
 }
