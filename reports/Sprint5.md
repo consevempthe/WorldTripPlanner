@@ -12,7 +12,7 @@
 * The design document is updated (`design.md`).
 * The completed metrics are captured below.
 * The scrums completed during each lecture are captured below.
-* The sprint review and restrospective are captured below.
+* The sprint review and retrospective are captured below.
 
 
 ## Policies
@@ -20,6 +20,7 @@
 ### Mobile First Design
 * Design for mobile, tablet, laptop, desktop in that order.
 * Use ReactStrap and ReactLeaflet for a consistent user experience (no HTML, CSS, style, etc.).
+* No more modals...
 
 ### Clean Code
 * Code Climate maintainability of A (technical debt ratio <= 5).
@@ -35,6 +36,8 @@
 * All pull request builds and tests are successful on Travis-CI.
 * All dependencies managed using Maven, npm, and WebPack.
 * GitHub etiquette is followed always.
+* Commits are done incrementally to development standards and work is done on a weekly basis
+* After a task has been completed, that person will check out another task to show what they will be working on.
 
 
 ## Planned Epics
