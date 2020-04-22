@@ -189,3 +189,27 @@ We anticipate minor changes to this design but believe the simplicity of utilizi
 
 The changes to the user interface are shown in the above diagram in blue and green, while our previous design is in black. As seen, we anticipate minimal changes in order to keep the layout clean and easy to use on mobile without sacraficing usability.
 # Sprint 5
+### Changes to Client-Side and Server-Side
+1. **Client-Side:**
+     *Known bugs will be fixed this sprint; particularly, the Trip not becoming a complete round trip as well as some other small bugs such as our App displaying 'NaN' to the user.*
+2. **Client-Side/Server-Side:**
+     *More optimization features (Some, 2-opt). We did not get the chance to implement some and 2-opt to the app. A slider was implemented to the create trip button but we only had the first 'one' phase of the optimization. new server responses will be made to handle some and 2-opt*
+3. **Server-Side:**
+     *A new JSON schema and server request/response will be available: Find. This will allow users to find a certain location in their trip by sorting by municipality, region, country, etc.*
+4. **Client-Side:**
+     *A search bar will be added to our client application. This will allow users to search for a point in their trip as well as filter their points by their choosing*
+5. **Client-Side:**
+      *Along with the search bar, users will be able to find a point in their long itineraries by typing a small segment of text and the app will display points matching the sub-string*
+      
+### Photo from our discussion meeting:
+![Sprint5Discussion](images/Sprint5Plan1.JPG)
+![Sprint5Discussion1](images/Sprint5Plan2.JPG)
+
+### Client Component UI Layout
+[!Sprint5UILayout](images/UI_Sprint5_Final.png)
+
+### Client Component Hierarchy
+[!Sprint5CliCompHierarchy](images/Client_Component_Sprint5.png)
+
+### Class Diagram
+[!Sprint5ServerClassDiagram](images/Server_Config_Sprint_5.png)
