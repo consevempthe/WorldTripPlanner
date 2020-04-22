@@ -236,13 +236,33 @@ export default class Atlas extends Component {
 
     moveMarkerPosition(action,index) {
         let markerPositions = Object.assign(this.state.markerPositions);
-        if(action == "up") {
-            this.Trip.moveArrayItem(markerPositions, index, index + 1);
+        if(action === "up") {
+            this.updateMarkerPositionsArray(markerPositions,index, index + 1)
         }
         else {
-            this.Trip.moveArrayItem(markerPositions,index, index - 1);
+            this.updateMarkerPositionsArray(markerPositions,index, index - 1)
         }
-        this.setState({markerPositions});
+    }
+
+    updateMarkerPositionsArray(positions, origin, dest) {
+        const originObj = positions[origin];
+        const destObj = positions[dest];
+        this.setState(state => {
+            const markerPositions = state.markerPositions.map((item, j) => {
+                if(j === dest) {
+                    return originObj;
+                }
+                else if(j === origin) {
+                    return destObj;
+                }
+                else {
+                    return item;
+                }
+            });
+            return {
+                markerPositions,
+            };
+        });
     }
 
     deleteMarkerPosition(index){
