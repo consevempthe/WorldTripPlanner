@@ -1,5 +1,3 @@
-import {isJsonResponseValid} from "../../../utils/restfulAPI";
-import {HTTP_OK} from "../../Constants";
 import log from "../../../utils/globals";
 import {Input} from "reactstrap";
 import React from "react";
@@ -24,14 +22,6 @@ export function validateName(event) {
 
 export function createPlace(point) {
     return {name: point.name, latitude: point.lat.toString(), longitude: point.lng.toString()}
-}
-
-export function processProtocolResponse(response, schema) {
-    if(!isJsonResponseValid(response.body, schema)) {
-
-    } else if(response.statusCode === HTTP_OK) {
-        return response.body;
-    }
 }
 
 export function geolocationAvailable() {

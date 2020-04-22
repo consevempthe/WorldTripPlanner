@@ -160,7 +160,6 @@ export default class Atlas extends Component {
 
         let place = {name: name, lat: mapClickInfo.latlng.lat, lng: mapClickInfo.latlng.lng};
         this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
-        this.getDistanceOnMapClick();
 
         this.Trip.addPlace(place);
     }
@@ -223,15 +222,6 @@ export default class Atlas extends Component {
 
     setMapBounds() {
         this.setState({mapBounds: L.latLngBounds(this.state.markerPositions)});
-    }
-
-    getDistanceOnMapClick() {
-        if(this.state.markerPositions.length > 1) {
-            const length = this.state.markerPositions.length;
-            const position1 = this.getMarkerPosition(this.state.markerPositions[length - 2]);
-            const position2 = this.getMarkerPosition(this.state.markerPositions[length - 1]);
-            this.distance.distanceOnClick(position1, position2);
-        }
     }
 
     moveMarkerPosition(action,index) {

@@ -4,9 +4,7 @@ import {UncontrolledAlert} from 'reactstrap';
 import {Form, FormGroup, FormFeedback, FormText, InputGroup} from 'reactstrap';
 
 import {COORDINATE, PROTOCOL_VERSION} from "../Constants";
-import {sendServerRequestWithBody} from "../../utils/restfulAPI";
-import * as distanceSchema from "../../../schemas/TIPDistanceResponseSchema";
-import {numberToString, processProtocolResponse, validateName, renderInput} from "./Resources/HelpfulAPI";
+import {numberToString, validateName, renderInput} from "./Resources/HelpfulAPI";
 
 export default class Distance extends Component {
 
@@ -85,21 +83,6 @@ export default class Distance extends Component {
         this.props.changeRadius(unit.toString());
 
         this.setState({distance});
-    }
-
-    getDistance() {
-        sendServerRequestWithBody('distance', this.state.distance, this.props.serverPort).then( distance => {
-            this.setState({distance: processProtocolResponse(distance, distanceSchema)})
-        });
-    }
-
-    distanceOnClick(marker1, marker2) {
-        const position1 = new COORDINATE(marker1);
-        const position2 = new COORDINATE(marker2);
-        this.addPlace("place1", position1);
-        this.addPlace("place2", position2);
-
-        this.getDistance();
     }
 
     renderRadiusButton() {
