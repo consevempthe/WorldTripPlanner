@@ -189,3 +189,35 @@ We anticipate minor changes to this design but believe the simplicity of utilizi
 
 The changes to the user interface are shown in the above diagram in blue and green, while our previous design is in black. As seen, we anticipate minimal changes in order to keep the layout clean and easy to use on mobile without sacraficing usability.
 # Sprint 5
+### Changes to Client-Side and Server-Side
+1. **Client-Side:**
+     *Known bugs will be fixed this sprint; particularly, the Trip not becoming a complete round trip as well as some other small bugs such as our App displaying 'NaN' to the user.*
+2. **Client-Side/Server-Side:**
+     *More optimization features (Some, 2-opt). We did not get the chance to implement some and 2-opt to the app. A slider was implemented to the create trip button but we only had the first 'one' phase of the optimization. new server responses will be made to handle some and 2-opt*
+3. **Server-Side:**
+     *A new JSON schema and server request/response will be available: Find. This will allow users to find a certain location in their trip by sorting by municipality, region, country, etc.*
+4. **Client-Side:**
+     *A search bar will be added to our client application. This will allow users to search for a point in their trip as well as filter their points by their choosing*
+5. **Client-Side:**
+      *Along with the search bar, users will be able to find a point in their long itineraries by typing a small segment of text and the app will display points matching the sub-string*
+      
+### Photo from our discussion meeting:
+![Sprint5Discussion](images/Sprint5Plan1.JPG)
+![Sprint5Discussion1](images/Sprint5Plan2.JPG)
+
+### Client Component UI Layout
+![Sprint5UILayout](images/UI_Sprint5_Final.png)
+
+UI Changes this sprint:
+1) *Load and Save are now combined into one 'File' dropdown button. Clicking file-save will open a modal which prompts the user for a file name, if empty the user will not be able to save the file. There are two options with the File->Save method, either to save the map itself as a .KML file, or to save the trip itinerary as a .JSON file both neatly organized in its own modal. As for load, when the user clicks File->Load, a different modal pops up allowing the user to browse for a .JSON file on their computer and upload it*
+2) *Filter button allows the user to filter their itinerary by a number of different ways either by municipality, country, city etc.*
+3) *Search itinerary allows the user to search their itinerary for a name of a city matching their input.*
+
+### Client Component Hierarchy
+![Sprint5CliCompHierarchy](images/Client_Component_Sprint5.png)
+
+Client Component Hierarchy Description:
+* Everything in the app begins with App.js which does all the rendering of the page. Atlas is the entry point into our Application's main functionality and allows the user to add points to the map by clicking on it. Atlas contains an array which is passed from component to component which contains the points on the map. This array is passed to StartModal.js which allows the user to switch the starting point of their trip via input. Distance.js Also takes the last two points of the array and calculates the distance between the points. Trip.js uses the entire array and formats it into a JSON object to pass to the server to create a trip with a name as well as a round trip distance. Trip utilizes a modal under CreateTripModal.js which allows the user to apply a name to their trip as well as create a JSON trip object which can then be saved. LoadSave.js Inherits that JSON trip object and allows the user to save it to their computer to share with their friends. They can also save the map as a KML file *
+
+### Class Diagram
+![Sprint5ServerClassDiagram](images/Server_Config_Sprint_5.png)
