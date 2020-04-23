@@ -221,3 +221,15 @@ function testMoveItem() {
 }
 
 test("Testing Trip's Move Item", testMoveItem);
+
+function testSetOptimization() {
+    let trip = mount(<Trip/>);
+
+    trip.instance().setOptimization(1, 'none', 'none');
+
+    expect(trip.state().trip.options.optimization.response).toEqual('1');
+    expect(trip.state().trip.options.optimization.construction).toEqual('none');
+    expect(trip.state().trip.options.optimization.improvement).toEqual('none');
+}
+
+test("Testing Trip's Set Optimization", testSetOptimization);
