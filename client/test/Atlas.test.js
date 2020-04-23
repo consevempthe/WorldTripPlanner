@@ -49,6 +49,20 @@ function renderTest() {
 
 test("Testing Atlas' Render:", renderTest);
 
+function testRenderOtherMarkers() {
+    const atlas = mount(<Atlas/>);
+
+    let place1 = {name: "Las Vegas", lat: 36.17, lng: -115.14};
+    let place2 = {name: "Daytona Beach", lat: 29.21, lng: -81.02};
+    let place3 = {name: "Cancun", lat: 21.16, lng: -86.85};
+    let places = [place1, place2, place3];
+
+    let expectedMarkerPositionsSize = atlas.instance().renderOtherMarkers(places).length;
+    expect(expectedMarkerPositionsSize).toEqual(3);
+}
+
+test("Testing Atlas' Render Other Marker Positions", testRenderOtherMarkers);
+
 function testChangeRadius() {
     const radius = mount(<Atlas/>);
 
@@ -170,3 +184,18 @@ function testDeleteMarkerPosition() {
 
 test("Testing Atlas' Delete Marker Position:", testDeleteMarkerPosition);
 
+function testChangeOrigin() {
+    const atlas = mount(<Atlas/>);
+
+    let place1 = {name: "Las Vegas", lat: 36.17, lng: -115.14};
+    let place2 = {name: "Daytona Beach", lat: 29.21, lng: -81.02};
+    let place3 = {name: "Cancun", lat: 21.16, lng: -86.85};
+
+    atlas.instance().addPlaceToArray(place1);
+    atlas.instance().addPlaceToArray(place2);
+    atlas.instance().changeOrigin(place3);
+
+    expect(atlas.state().markerPositions[0]).toEqual(place3);
+}
+
+test("Testing Atlas' Change Origin", testChangeOrigin);
