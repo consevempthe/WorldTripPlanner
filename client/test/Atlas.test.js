@@ -199,3 +199,50 @@ function testChangeOrigin() {
 }
 
 test("Testing Atlas' Change Origin", testChangeOrigin);
+
+function testUpdateMarkerPositionsArray() {
+    const atlas = mount(<Atlas/>);
+
+    let place1 = {name: "Las Vegas", lat: 36.17, lng: -115.14};
+    let place2 = {name: "Daytona Beach", lat: 29.21, lng: -81.02};
+    let place3 = {name: "Cancun", lat: 21.16, lng: -86.85};
+
+    atlas.instance().addPlaceToArray(place1);
+    atlas.instance().addPlaceToArray(place2);
+    atlas.instance().addPlaceToArray(place3);
+
+    const positions = atlas.state().markerPositions;
+    atlas.instance().updateMarkerPositionsArray(positions,0,1);
+
+    expect(atlas.state().markerPositions[0].name).toEqual("Daytona Beach");
+    expect(atlas.state().markerPositions[1].name).toEqual("Las Vegas");
+    expect(atlas.state().markerPositions[2].name).toEqual("Cancun");
+}
+
+test("Testing Atlas' Update Marker Positions Array", testUpdateMarkerPositionsArray);
+
+function testMoveMarkerPosition() {
+    const atlas = mount(<Atlas/>);
+
+    let place1 = {name: "Las Vegas", lat: 36.17, lng: -115.14};
+    let place2 = {name: "Daytona Beach", lat: 29.21, lng: -81.02};
+    let place3 = {name: "Cancun", lat: 21.16, lng: -86.85};
+
+    atlas.instance().addPlaceToArray(place1);
+    atlas.instance().addPlaceToArray(place2);
+    atlas.instance().addPlaceToArray(place3);
+
+    atlas.instance().moveMarkerPosition("up",0);
+
+    expect(atlas.state().markerPositions[0].name).toEqual("Daytona Beach");
+    expect(atlas.state().markerPositions[1].name).toEqual("Las Vegas");
+    expect(atlas.state().markerPositions[2].name).toEqual("Cancun");
+
+    atlas.instance().moveMarkerPosition("down", 2);
+
+    expect(atlas.state().markerPositions[0].name).toEqual("Daytona Beach");
+    expect(atlas.state().markerPositions[1].name).toEqual("Cancun");
+    expect(atlas.state().markerPositions[2].name).toEqual("Las Vegas");
+}
+
+test("Testing Atlas' Move Marker Position", testMoveMarkerPosition);
