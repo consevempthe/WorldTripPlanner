@@ -160,13 +160,14 @@ export default class LoadSave extends Component {
             case ".JSON":
                 let requestType = "{\"requestType\":\"trip\",";
                 let requestVersion = "\"requestVersion\": 3,";
-                let options = "\"options\":{\"earthRadius\":\"3959.0\"},";
+                let options = "\"options\":" + JSON.stringify(this.props.options) + ",";
                 let places = "\"places\":" + JSON.stringify(this.props.places) + "}";
                 let dataStr = requestType + requestVersion + options + places;
                 this.downloadFile('json', this.state.fileName + '.json', dataStr);
                 break;
             case ".CSV":
                 console.log(".CSV not supported yet");
+
                 break;
             case ".SVG":
                 console.log(".SVG not supported yet");
