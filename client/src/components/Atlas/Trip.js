@@ -77,6 +77,7 @@ export default class Trip extends Component {
                 <Table size={"sm"} responsive className={'tableBlockScroll'}>
                     <thead>
                     <tr>
+                        <th></th>
                         <th> Place</th>
                         <th style={{textAlign: 'right'}}>Leg dist.</th>
                         <th style={{textAlign: 'right'}}>Cumulative dist.</th>
@@ -101,6 +102,7 @@ export default class Trip extends Component {
 
             body.push(
                 <tr key={name}>
+                    <td><span onClick={() => this.moveItem("down",i)}>&#x2B06;</span><span onClick={() => this.moveItem("up", i)}>&#x2B07;</span></td>
                     <td>{name}</td>
                     <td style={{textAlign: 'right'}}>{legLength.toString()}</td>
                     <td style={{textAlign: 'right'}}>{runningTotalLeg.toString()}</td>
@@ -218,6 +220,28 @@ export default class Trip extends Component {
         tempDistances.splice(index,1);
         this.setState({trip: {places: tempPlaces, distances: tempDistances}});
         this.props.deleteMarkerPosition(index);
+    }
+
+    moveItem(action, index) {
+        let places = Object.assign(this.state.trip.places);
+        let distances = Object.assign(this.state.trip.distances);
+        if(action === "up" && index !== places.length - 1) {
+            this.moveArrayItem(places, index, index + 1);
+            this.moveArrayItem(distances, index, index + 1);
+            this.props.moveMarkerPosition(action,index);
+        }
+        else if(action === "down" && index !== 0) {
+            this.moveArrayItem(places, index, index - 1);
+            this.moveArrayItem(distances, index, index - 1);
+            this.props.moveMarkerPosition(action,index);
+        }
+        this.setState({trip: {places: places, distances: distances}});
+    }
+
+    moveArrayItem(arr, origin, dest) {
+        let temp = arr[dest];
+        arr[dest] = arr[origin];
+        arr[origin] = temp;
     }
 
     resetTrip() {

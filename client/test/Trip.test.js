@@ -6,7 +6,8 @@ import {shallow, mount} from 'enzyme';
 import Trip from '../src/components/Atlas/Trip';
 
 const startProperties = {
-    deleteMarkerPosition: () => ""
+    deleteMarkerPosition: () => "",
+    moveMarkerPosition: () => ""
 };
 
 function testRender() {
@@ -178,3 +179,45 @@ function testReset() {
 }
 
 test("Testing Trip reset", testReset);
+
+function testMoveArrayItem() {
+    const trip = mount(<Trip/>);
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'las vegas', lat: 36, lng: -115};
+    const place3 = {name: 'daytona beach', lat: 29.21, lng: -81.02};
+    let places = [place1, place2, place3];
+
+    trip.instance().moveArrayItem(places, 0, 1);
+
+    expect(places[0].name).toEqual('las vegas');
+    expect(places[1].name).toEqual('fort collins');
+    expect(places[2].name).toEqual('daytona beach');
+}
+
+test("Testing Trip's Move Array Item", testMoveArrayItem);
+
+function testMoveItem() {
+    const trip = mount(<Trip
+        moveMarkerPosition={startProperties.moveMarkerPosition}
+    />);
+    const place1 = {name: 'fort collins', lat: 40, lng: -105};
+    const place2 = {name: 'las vegas', lat: 36, lng: -115};
+    const place3 = {name: 'daytona beach', lat: 29.21, lng: -81.02};
+
+    trip.instance().addPlace(place1);
+    trip.instance().addPlace(place2);
+    trip.instance().addPlace(place3);
+    trip.instance().moveItem("up", 0);
+
+    expect(trip.state().trip.places[0].name).toEqual('las vegas');
+    expect(trip.state().trip.places[1].name).toEqual('fort collins');
+    expect(trip.state().trip.places[2].name).toEqual('daytona beach');
+
+    trip.instance().moveItem("down", 2);
+
+    expect(trip.state().trip.places[0].name).toEqual('las vegas');
+    expect(trip.state().trip.places[1].name).toEqual('daytona beach');
+    expect(trip.state().trip.places[2].name).toEqual('fort collins');
+}
+
+test("Testing Trip's Move Item", testMoveItem);

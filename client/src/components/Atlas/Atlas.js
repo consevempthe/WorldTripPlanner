@@ -38,6 +38,7 @@ export default class Atlas extends Component {
         this.renderLine = this.renderLine.bind(this);
         this.addMarker = this.addMarker.bind(this);
         this.addNewStart = this.addNewStart.bind(this);
+        this.moveMarkerPosition = this.moveMarkerPosition.bind(this);
 
         this.state = {
             mapBounds: null,
@@ -95,6 +96,7 @@ export default class Atlas extends Component {
                     toggle={(modal= !this.state.modal) => this.setState({modal: modal})}
                     addPlaces={this.addPlacesFromFileUpload}
                     deleteMarkerPosition={this.deleteMarkerPosition}
+                    moveMarkerPosition={this.moveMarkerPosition}
                     ref={Trip => {
                         this.Trip = Trip;
                     }}
@@ -220,6 +222,37 @@ export default class Atlas extends Component {
 
     setMapBounds() {
         this.setState({mapBounds: L.latLngBounds(this.state.markerPositions)});
+    }
+
+    moveMarkerPosition(action,index) {
+        let markerPositions = Object.assign(this.state.markerPositions);
+        if(action === "up") {
+            this.updateMarkerPositionsArray(markerPositions,index, index + 1)
+        }
+        else {
+            this.updateMarkerPositionsArray(markerPositions,index, index - 1)
+        }
+    }
+
+    updateMarkerPositionsArray(positions, origin, dest) {
+        const originObj = positions[origin];
+        const destObj = positions[dest];
+        this.setState(state => {
+            const markerPositions = state.markerPositions.map((item, j) => {
+                if(j === dest) {
+                    return originObj;
+                }
+                else if(j === origin) {
+                    return destObj;
+                }
+                else {
+                    return item;
+                }
+            });
+            return {
+                markerPositions,
+            };
+        });
     }
 
     deleteMarkerPosition(index){
