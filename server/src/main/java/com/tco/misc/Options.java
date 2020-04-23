@@ -1,6 +1,7 @@
 package com.tco.misc;
 
 public class Options {
+    public String title;
     public String earthRadius;
     public Optimizations optimization;
 

@@ -63,6 +63,7 @@ export default class Trip extends Component {
                 <LoadSave
                     processRequest={this.processTripRequest}
                     places={this.state.trip.places}
+                    options={this.state.trip.options}
                 />
                 {this.renderTable()}
                 {this.renderCreateTripModal()}
@@ -77,8 +78,8 @@ export default class Trip extends Component {
                 <Table size={"sm"} responsive className={'tableBlockScroll'}>
                     <thead>
                     <tr>
-                        <th></th>
-                        <th> Place</th>
+                        <th>Move</th>
+                        <th>Place</th>
                         <th style={{textAlign: 'right'}}>Leg dist.</th>
                         <th style={{textAlign: 'right'}}>Cumulative dist.</th>
                         <th style={{textAlign: 'right'}}>Actions</th>
