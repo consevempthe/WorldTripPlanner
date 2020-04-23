@@ -19,7 +19,6 @@ test("Testing Create Trip Modal's Initial State", testInitalState);
 function testRender() {
     const createTripModal = mount(<CreateTripModal/>);
     expect(createTripModal.find('Modal').length).toEqual(1);
-    expect(createTripModal.find(''))
 }
 
 test("Testing Create Trip Modal's render", testRender);
