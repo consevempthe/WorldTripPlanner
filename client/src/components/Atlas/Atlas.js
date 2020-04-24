@@ -137,9 +137,15 @@ export default class Atlas extends Component {
     renderLine() {
         if(this.state.markerPositions.length > 1) {
             return (
-                <Polyline
+                [
+                    <Polyline
                     positions={this.state.markerPositions}
+                />,
+                <Polyline
+                    positions={[this.state.markerPositions[0], this.state.markerPositions[this.state.markerPositions.length - 1]]}
+                    color={'green'}
                 />
+                ]
             );
         }
     }
