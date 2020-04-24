@@ -33,7 +33,7 @@ public class RequestTrip extends RequestHeader {
         //One optimizations
         if(Optimizations.Constructions.one.equals(this.options.optimization.construction)) {
             Integer[] optimizedPlaces = this.options.optimization.nearestNeighbor(0, distanceMatrix);
-            this.reorderPlaces(optimizedPlaces);
+            this.places = this.reorderPlaces(optimizedPlaces);
             this.distances = this.getTripDistances();
         //Some optimization occurs -- IMPLEMENT
         }
@@ -89,7 +89,7 @@ public class RequestTrip extends RequestHeader {
         return table;
     }
 
-    public void reorderPlaces(Integer[] optimizedPlaces) {
+    public Place[] reorderPlaces(Integer[] optimizedPlaces) {
         Place[] reorderedPlaces = new Place[this.places.length];
 
         for(int i = 0; i < optimizedPlaces.length; i++) {
@@ -97,7 +97,7 @@ public class RequestTrip extends RequestHeader {
             reorderedPlaces[i] = this.places[placeTemp];
         }
 
-        this.places = reorderedPlaces;
+        return reorderedPlaces;
     }
 
 }
