@@ -69,7 +69,6 @@ public class RequestTrip extends RequestHeader {
         for(Long distance : distances) {
             total += distance;
         }
-
         return total;
     }
 

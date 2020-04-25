@@ -95,7 +95,8 @@ public class TestRequestTrip {
         test2.optimizer();
 
         Long totalNew = test2.roundTripDistance(test2.distances);
-
+        assertEquals(Long.valueOf(481), totalOG);
+        assertEquals(Long.valueOf(449), totalNew);
         assertNotEquals(totalNew, totalOG);
 
         Long[] originalDistance2 = test1.getTripDistances();
