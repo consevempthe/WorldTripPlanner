@@ -61,12 +61,12 @@ public class TestRequestTrip {
     @Test
     public void testingTrip() {
         //Test the getDistances function --> used to find a normal round trip distance
-        test1.getTripDistances();
+        Long[] testingTripDistance = test1.getTripDistances();
 
-        assertEquals(3, test1.distances.length, 0);
-        assertEquals(30, test1.distances[0], 0);
-        assertEquals(44, test1.distances[1], 0);
-        assertEquals(62, test1.distances[2], 0);
+        assertEquals(3, testingTripDistance.length, 0);
+        assertEquals(30, testingTripDistance[0], 0);
+        assertEquals(44, testingTripDistance[1], 0);
+        assertEquals(62, testingTripDistance[2], 0);
 
         //Tests the distanceMatrix function
         Long[][] testMatrix = test1.distanceMatrix();
@@ -83,40 +83,27 @@ public class TestRequestTrip {
             }
         }
 
-        Integer[] tourIndex = test1.createTourIndexes();
-        assertEquals(tourIndex.length, 3);
-
     }
 
     @Test
     public void testNearestNeighbor() {
 
-        test2.getTripDistances();
+        Long[] originalDistance1 = test2.getTripDistances();
 
-        Long[] originalDistances = test2.distances;
+        Long totalOG = test2.roundTripDistance(originalDistance1);
 
         test2.optimizer();
 
-        Long totalOG = 0L;
-        for(Long i : originalDistances) {
-            totalOG += i;
-        }
-
-
-        Long totalNew = 0L;
-        for(Long i : test2.distances) {
-            totalNew += i;
-        }
-
+        Long totalNew = test2.roundTripDistance(test2.distances);
+        assertEquals(Long.valueOf(481), totalOG);
+        assertEquals(Long.valueOf(449), totalNew);
         assertNotEquals(totalNew, totalOG);
 
-        test1.getTripDistances();
-
-        Long[] originalDistance = test1.distances;
+        Long[] originalDistance2 = test1.getTripDistances();
 
         test1.optimizer();
 
-        assertArrayEquals(originalDistance, test1.distances);
+        assertArrayEquals(originalDistance2, test1.distances);
 
     }
 }

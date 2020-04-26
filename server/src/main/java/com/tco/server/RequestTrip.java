@@ -12,13 +12,12 @@ public class RequestTrip extends RequestHeader {
     public RequestTrip(Options o, Place[] p) {
         this.options = o;
         this.places = p;
-
     }
 
     @Override
     public void buildResponse() {
         if(this.options.optimization == null) {
-            this.getTripDistances();
+            this.distances = this.getTripDistances();
         } else {
             this.optimizer();
         }
@@ -34,8 +33,8 @@ public class RequestTrip extends RequestHeader {
         //One optimizations
         if(Optimizations.Constructions.one.equals(this.options.optimization.construction)) {
             Integer[] optimizedPlaces = this.options.optimization.nearestNeighbor(0, distanceMatrix);
-            this.reorderPlaces(optimizedPlaces);
-            this.getTripDistances();
+            this.places = this.reorderPlaces(optimizedPlaces);
+            this.distances = this.getTripDistances();
         //Some optimization occurs -- IMPLEMENT
         }
         else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
@@ -44,11 +43,11 @@ public class RequestTrip extends RequestHeader {
 
         }
         else { //If None or no construction just get the distance
-            this.getTripDistances();
+            this.distances = this.getTripDistances();
         }
     }
 
-    public void getTripDistances()
+    public Long[] getTripDistances()
     {
         Long[] distances = new Long[this.places.length];
 
@@ -62,7 +61,15 @@ public class RequestTrip extends RequestHeader {
             }
         }
 
-        this.distances = distances;
+        return distances;
+    }
+
+    public Long roundTripDistance(Long[] distances) {
+        Long total = 0L;
+        for(Long distance : distances) {
+            total += distance;
+        }
+        return total;
     }
 
     public Long[][] distanceMatrix() {
@@ -81,17 +88,7 @@ public class RequestTrip extends RequestHeader {
         return table;
     }
 
-    public Integer[] createTourIndexes() {
-        Integer[] tour = new Integer[this.places.length];
-
-        for(int i = 0; i < this.places.length; i++) {
-            tour[i] = i;
-        }
-
-        return tour;
-    }
-
-    public void reorderPlaces(Integer[] optimizedPlaces) {
+    public Place[] reorderPlaces(Integer[] optimizedPlaces) {
         Place[] reorderedPlaces = new Place[this.places.length];
 
         for(int i = 0; i < optimizedPlaces.length; i++) {
@@ -99,7 +96,7 @@ public class RequestTrip extends RequestHeader {
             reorderedPlaces[i] = this.places[placeTemp];
         }
 
-        this.places = reorderedPlaces;
+        return reorderedPlaces;
     }
 
 }
