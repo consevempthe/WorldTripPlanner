@@ -12,6 +12,7 @@
 | ---- | ---- |
 | Ethan Liem | 30 minutes |
 | Brandon Vasquez | 30 minutes |
+| Axel Wahlstrom | 30 minutes |
 
 ### Problems found
 
@@ -22,6 +23,9 @@
 | Trip.js:229,234 | the logic on the if statements is backwards, "up" really means going farther back in the list. | medium | Brandon Vasquez | btvasque |
 | Trip.js:217 | delete place could probably use the array.filter method instead of spliceing and replacing the array. | medium | Brandon Vasquez | btvasque |
 | Trip.js:148 | we may consider using something other than an alert here, when using our application, if the alert is ever removed from the page once, it will take a page refresh to get it back | low | Brandon Vasquez | btvasque |
+| Trip.js:106 | &#x2B06 Unicode Hex Character should be stored in a constant somewhere for readability. |  low | Axel Wahlstrom | rwahlst |
+| Trip.js:110 | &times; could also benefit being stored in a constant for readability. | low | Axel Wahlstrom | rwahlst |
+|  | | | | |
 |  | | | | |
 |  | | | | |
 |  | | | | |
