@@ -162,12 +162,19 @@ export default class Atlas extends Component {
     }
 
     addMarker(mapClickInfo) {
-        let name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
+        let name = "";
+        name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
 
-        let place = {name: name, lat: mapClickInfo.latlng.lat, lng: mapClickInfo.latlng.lng};
-        this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
+        if(name === null) {
+            // do nothing here - user hit cancel;
+            return;
+        }
+        if(name.length !== 0) {
+            let place = {name: name, lat: mapClickInfo.latlng.lat, lng: mapClickInfo.latlng.lng};
+            this.setState({markerPositions: this.state.markerPositions.concat(place)}, this.setMapBounds);
 
-        this.Trip.addPlace(place);
+            this.Trip.addPlace(place);
+        }
     }
 
     getMarkerPosition(position) {
