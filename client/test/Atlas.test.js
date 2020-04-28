@@ -76,9 +76,15 @@ function testChangeRadius() {
 
 test("Testing changing of earth radius", testChangeRadius);
 
-function addMarkerTest() {
-    window.prompt = () => {return "hello"};
+function addMarkerTestHelper(UserInput) {
+    if(UserInput === null) {
+        window.confirm = jest.fn(() => false); // if user input is null then simulate cancel button
+    } else {
+        window.prompt = () => {return UserInput}; // otherwise simulate a user text input
+    }
     const atlas = mount(<Atlas/>);
+
+    atlas.setState({markerPositions: [{name: "test", lat: 55.68, lng: 86.98}]});
 
 
     // placeholder dummy map click info for addMarker
@@ -86,10 +92,29 @@ function addMarkerTest() {
 
     atlas.instance().addMarker(dummyMapClickInfo);
 
-    let predicate = atlas.state().markerPositions !== 0;
+    let predicateNullOrEmpty = atlas.state().markerPositions.length === 1;
+    let predicateValid = atlas.state().markerPositions.length === 2;
 
-    expect(predicate).toEqual(true);
+    if(UserInput !== null) {
+        if (UserInput.length === 0) {
+            expect(predicateNullOrEmpty).toEqual(true);
+            expect(predicateValid).toEqual(false);
+        }
+        else if(UserInput.length !== 0) {
+            expect(predicateValid).toEqual(true);
+            expect(predicateNullOrEmpty).toEqual(false);
+        }
+    } else {
+        expect(predicateNullOrEmpty).toEqual(true);
+        expect(predicateValid).toEqual(false);
+    }
 
+}
+
+function addMarkerTest() {
+    addMarkerTestHelper("hello"); // simulate valid name entry
+    addMarkerTestHelper(""); // simulate no name entry
+    addMarkerTestHelper(null);
 }
 
 test("Testing Atlas' Add Marker:", addMarkerTest);
