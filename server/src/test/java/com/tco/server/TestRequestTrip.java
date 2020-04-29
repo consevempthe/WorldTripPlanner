@@ -8,7 +8,6 @@ import com.tco.misc.Place;
 
 
 import com.tco.misc.Options;
-import org.omg.CORBA.OBJECT_NOT_EXIST;
 
 import static org.junit.Assert.*;
 
