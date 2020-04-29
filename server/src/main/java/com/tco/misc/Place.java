@@ -24,9 +24,6 @@ public class Place {
     }
 
     public boolean equals(Object anObject) {
-        if(this == anObject) {
-            return true;
-        }
         if(anObject instanceof Place) {
             Place otherPlace = (Place)anObject;
             return this.name.equals(otherPlace.name) &&
