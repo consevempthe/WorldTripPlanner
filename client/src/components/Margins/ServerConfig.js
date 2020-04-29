@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from "reactstrap";
-import {PROTOCOL_VERSION} from "../Constants";
 
 export default class ServerConfig extends Component
 {
@@ -8,10 +7,6 @@ export default class ServerConfig extends Component
     constructor(props)
     {
         super(props);
-
-        this.state = {
-            isOpen: false
-        }
     }
 
     render()
@@ -39,7 +34,7 @@ export default class ServerConfig extends Component
                         {this.renderServer()}
                         <tr>
                             <td>requestVersion</td>
-                            <td>{PROTOCOL_VERSION}</td>
+                            <td>{this.props.requestVersion}</td>
                         </tr>
                         <tr>
                             <td>requestType</td>
@@ -47,6 +42,7 @@ export default class ServerConfig extends Component
                         </tr>
                         {this.renderSupportedRequests()}
                         {this.renderOptimizations()}
+                        {this.renderFilter()}
                     </tbody>
                 </Table>
             </ModalBody>
@@ -67,7 +63,7 @@ export default class ServerConfig extends Component
         return(
             <tr>
                 <td>supportedRequests</td>
-                <td>{supported_requests[0] + ", " + supported_requests[1] + ", " + supported_requests[2]}</td>
+                <td>{supported_requests[0] + ", " + supported_requests[1] + ", " + supported_requests[2] + ', ' + supported_requests[3]}</td>
             </tr>
         )
     }
@@ -78,6 +74,16 @@ export default class ServerConfig extends Component
             <tr>
                 <td>Optimizations:</td>
                 <td>{optimization.construction + " " + optimization.improvement}</td>
+            </tr>
+        )
+    }
+
+    renderFilter() {
+        const filter = this.props.filter;
+        return(
+            <tr>
+                <td>Filter:</td>
+                <td>{filter.type + " "}</td>
             </tr>
         )
     }

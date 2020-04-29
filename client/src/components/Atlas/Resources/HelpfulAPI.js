@@ -20,6 +20,13 @@ export function validateName(event) {
     }
 }
 
+export function getMarkerPosition(position) {
+    let markerPosition = '';
+    if(position)
+        markerPosition = position.lat.toFixed(2) + ', ' + position.lng.toFixed(2);
+    return markerPosition;
+}
+
 export function createPlace(point) {
     return {name: point.name, latitude: point.lat.toString(), longitude: point.lng.toString()}
 }

@@ -8,7 +8,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import Distance from "./Distance";
 import Trip from "../Atlas/Trip";
-import {geolocationAvailable, getClientLocation} from "./Resources/HelpfulAPI";
+import {geolocationAvailable, getClientLocation, getMarkerPosition} from "./Resources/HelpfulAPI";
 import StartModal from "./StartModal";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
@@ -85,9 +85,7 @@ export default class Atlas extends Component {
                     addPoint={this.addPlaceToArray}
                     changeRadius={this.changeEarthRadius}
                     serverPort={this.props.serverPort}
-                    ref={distance => {
-                        this.distance = distance;
-                    }}
+                    ref={distance => { this.distance = distance; }}
                 />
                 <Trip
                     serverPort={this.props.serverPort}
@@ -97,9 +95,7 @@ export default class Atlas extends Component {
                     addPlaces={this.addPlacesFromFileUpload}
                     deleteMarkerPosition={this.deleteMarkerPosition}
                     moveMarkerPosition={this.moveMarkerPosition}
-                    ref={Trip => {
-                        this.Trip = Trip;
-                    }}
+                    ref={Trip => { this.Trip = Trip; }}
                 />
             </div>
         )
@@ -155,7 +151,7 @@ export default class Atlas extends Component {
             let markers = [];
             //This will be use full for displaying more than two markers.
             for (let i = 0; i < otherMarkers.length; i++) {
-                markers.push(this.getMarker(this.getMarkerPosition(otherMarkers[i]), otherMarkers[i]));
+                markers.push(this.getMarker(getMarkerPosition(otherMarkers[i]), otherMarkers[i]));
             }
             return markers;
         }
@@ -175,13 +171,6 @@ export default class Atlas extends Component {
 
             this.Trip.addPlace(place);
         }
-    }
-
-    getMarkerPosition(position) {
-        let markerPosition = '';
-        if (position)
-            markerPosition = position.lat.toFixed(2) + ', ' + position.lng.toFixed(2);
-        return markerPosition
     }
 
     getMarker(bodyJSX, position) {
