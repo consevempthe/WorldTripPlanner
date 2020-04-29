@@ -15,6 +15,7 @@ public class TestRequestTrip {
     private RequestTrip test1;
     private RequestTrip test2;
     private RequestTrip test3;
+    private RequestTrip test4;
 
     @Before
     public void populateTests() {
@@ -50,6 +51,25 @@ public class TestRequestTrip {
         places3[2] = new Place("fort collins", "40.6", "-105.1");
 
         test3 = new RequestTrip(test1Option, places3);
+
+        //Testing for "some"
+        Options testSomeOption = new Options("3959.0");
+        testSomeOption.optimization = new Optimizations("1", Optimizations.Improvements.none, Optimizations.Constructions.some);
+
+        Place[] places4 = new Place[3];
+        places4[0] = new Place("boulder", "40.0", "-105.4");
+        places4[1] = new Place("denver", "39.7", "-105.0");
+        places4[2] = new Place("fort collins", "40.6", "-105.1");
+
+        test4 = new RequestTrip(testSomeOption, places4);
+    }
+
+    @Test
+    public void voidTestSomeOption() {
+        Place[] ogPlaces = test4.places;
+        test4.optimizer();
+        Place[] newPlaces = test4.places;
+        assertNotEquals(ogPlaces, newPlaces);
     }
 
     @Test
