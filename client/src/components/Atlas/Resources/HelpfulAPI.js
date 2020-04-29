@@ -1,6 +1,7 @@
 import log from "../../../utils/globals";
 import {Input} from "reactstrap";
 import React from "react";
+import {Polyline} from "react-leaflet";
 
 let place = {name: "home", lat:0, lng:0};
 
@@ -67,4 +68,25 @@ export function getClientLocation(updateLocation) {
         navigator.geolocation.getCurrentPosition((position) =>
         processGeolocation(position, updateLocation), processErrorGeolocation);
     }
+}
+
+export function polyLineWrap(marker1, marker2) {
+    if (Math.abs(marker1.lng - marker2.lng) > 180) {
+        let coordinate1 = {lat: marker1.lat, lng: coordinate360(marker1.lng)};
+        let coordinate2 = {lat: marker2.lat, lng: coordinate360(marker2.lng)};
+
+        return (
+            [
+            <Polyline positions={[marker1, coordinate2]}/>, <Polyline positions={[marker2, coordinate1]}/>
+            ]
+        )
+    } else {
+        return (
+            <Polyline positions={[marker1, marker2]}/>
+        )
+    }
+}
+
+export function coordinate360(number) {
+    return number > 0 ? number - 360 : number + 360;
 }

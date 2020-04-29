@@ -1,14 +1,19 @@
 import React, {Component} from 'react';
 import {Col, Container, Row} from 'reactstrap';
 import {Button} from 'reactstrap';
-import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
+import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import Distance from "./Distance";
 import Trip from "../Atlas/Trip";
-import {geolocationAvailable, getClientLocation, getMarkerPosition} from "./Resources/HelpfulAPI";
+import {
+    geolocationAvailable,
+    getClientLocation,
+    getMarkerPosition,
+    polyLineWrap,
+} from "./Resources/HelpfulAPI";
 import StartModal from "./StartModal";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
@@ -35,7 +40,6 @@ export default class Atlas extends Component {
         this.changeOrigin = this.changeOrigin.bind(this);
         this.deleteMarkerPosition = this.deleteMarkerPosition.bind(this);
         this.markClientLocation = this.markClientLocation.bind(this);
-        this.renderLine = this.renderLine.bind(this);
         this.addMarker = this.addMarker.bind(this);
         this.addNewStart = this.addNewStart.bind(this);
         this.moveMarkerPosition = this.moveMarkerPosition.bind(this);
@@ -125,31 +129,29 @@ export default class Atlas extends Component {
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 {this.renderOtherMarkers(this.state.markerPositions)}
-                {this.renderLine()}
+                {this.renderPolyline(this.state.markerPositions)}
             </Map>
         )
     }
 
-    renderLine() {
-        if(this.state.markerPositions.length > 1) {
-            return (
-                [
-                    <Polyline
-                    positions={this.state.markerPositions}
-                />,
-                <Polyline
-                    positions={[this.state.markerPositions[0], this.state.markerPositions[this.state.markerPositions.length - 1]]}
-                    color={'green'}
-                />
-                ]
-            );
+    renderPolyline(markerPositions) {
+        let lines = [];
+        if (markerPositions.length > 1) {
+            for(let i = 0; i < markerPositions.length; i++) {
+                if(i === markerPositions.length - 1) {
+                        lines.push(polyLineWrap(markerPositions[0],markerPositions[markerPositions.length - 1]));
+                } else {
+                        lines.push(polyLineWrap(markerPositions[i], markerPositions[i + 1]));
+                }
+            }
+
+            return lines;
         }
     }
 
     renderOtherMarkers(otherMarkers) {
         if (otherMarkers.length !== 0) {
             let markers = [];
-            //This will be use full for displaying more than two markers.
             for (let i = 0; i < otherMarkers.length; i++) {
                 markers.push(this.getMarker(getMarkerPosition(otherMarkers[i]), otherMarkers[i]));
             }
@@ -158,7 +160,7 @@ export default class Atlas extends Component {
     }
 
     addMarker(mapClickInfo) {
-        let name = "";
+        let name;
         name = prompt("You clicked on the map! We need you to enter a name to log your trip information: ");
 
         if(name === null) {
