@@ -108,18 +108,20 @@ test('onClick event for Save Button should update server port in App component',
 
 function testServerConfig() {
     const config = mount(<ServerConfig
+        isOpen={startProperties.isOpen}
+        toggleOpen={startProperties.toggleOpen}
         serverName={"something"}
         requestType={"config"}
         requestVersion={3}
         supportedRequests={['hi', 'hello', 'ok']}
         optimization={"construction"}
+        filter={"blah"}
     />);
-
-    expect(config.state().isOpen).toEqual(false);
+    config.find('Modal').at(0).simulate('click');
+    expect(config.find("Table").length).toEqual(1);
+    expect(config.find("Button").length).toEqual(1);
+    config.find('Button').at(0).simulate('click');
     expect(config.find("Modal").length).toEqual(1);
-
-    config.setState({isOpen: true});
-    expect(config.state().isOpen).toEqual(true);
 
 }
 

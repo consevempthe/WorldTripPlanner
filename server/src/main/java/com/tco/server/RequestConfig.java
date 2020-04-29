@@ -1,4 +1,5 @@
 package com.tco.server;
+import com.tco.misc.FilterConfig;
 import com.tco.misc.OptimizationConfig;
 
 import org.slf4j.Logger;
@@ -22,11 +23,12 @@ import java.util.List;
  */
 public class RequestConfig extends RequestHeader {
   private String serverName;
-  protected List<String> supportedRequests = Arrays.asList("config", "distance", "trip");
+  protected List<String> supportedRequests = Arrays.asList("config", "distance", "trip", "find");
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
   protected OptimizationConfig optimization;
+  protected FilterConfig filter;
 
-  RequestConfig() {
+  public RequestConfig() {
     this.requestType = "config";
     this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
   }
@@ -37,6 +39,7 @@ public class RequestConfig extends RequestHeader {
     this.serverName = "T03 Hugh-Lit Pack-Herd";
     log.trace("buildResponse -> {}", this);
     this.optimization = new OptimizationConfig();
+    this.filter = new FilterConfig();
   }
 
 
