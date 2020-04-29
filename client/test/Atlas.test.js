@@ -4,6 +4,7 @@ import {shallow, mount} from 'enzyme'
 
 import Atlas from "../src/components/Atlas/Atlas";
 import Distance from "../src/components/Atlas/Distance";
+import {getMarkerPosition} from "../src/components/Atlas/Resources/HelpfulAPI";
 
 function testInitialAppState() {
     const atlas = shallow(<Atlas/>);
@@ -111,11 +112,10 @@ test("Testing adding a new start", testAddNewStart);
 
 function testGetMarkerPosition() {
 
-    const atlas = mount(<Atlas/>);
     let positions = [{lat: 54.56148, lng: 98.56484, name: "Marker1"}, {lat: 105.55, lng: 65.54, name: "Marker2"}];
-    let Pos1 = atlas.instance().getMarkerPosition(positions[0]);
+    let Pos1 = getMarkerPosition(positions[0]);
     expect(Pos1).toEqual("54.56, 98.56");
-    let Pos2 = atlas.instance().getMarkerPosition(positions[1]);
+    let Pos2 = getMarkerPosition(positions[1]);
     expect(Pos2).toEqual("105.55, 65.54");
 
 }
