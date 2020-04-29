@@ -38,12 +38,23 @@ public class RequestTrip extends RequestHeader {
         //Some optimization occurs -- IMPLEMENT
         }
         else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
+
+            Place[] bestRoute  = null;
+            Long[] bestDistances = null;
+            Long bestDistance    = Long.MAX_VALUE;
+
             for(int i = 0; i < places.length; i++) {
                 Integer[] optimizedRoute = this.options.optimization.nearestNeighbor(i, this.distanceMatrix());
                 //Compare distances here before reinitializing the distances array.
                 this.distances = this.getTripDistances();
-                this.places = this.reorderPlaces(optimizedRoute);
+                Long roundTrip = roundTripDistance(this.distances);
+                if(roundTrip < bestDistance) {
+                    bestDistances = this.distances;
+                    bestRoute = this.reorderPlaces(optimizedRoute);
+                }
             }
+            this.distances = bestDistances;
+            this.places = bestRoute;
         }
         else { //If None or no construction just get the distance
             this.distances = this.getTripDistances();
