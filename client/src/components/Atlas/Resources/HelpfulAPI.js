@@ -72,15 +72,12 @@ export function getClientLocation(updateLocation) {
 
 export function polyLineWrap(marker1, marker2) {
     if (Math.abs(marker1.lng - marker2.lng) > 180) {
-        let coordinate1 = {lat: marker1.lat, lng: 0};
-        let coordinate2 = {lat: marker2.lat, lng: 0};
-        coordinate1.lng = marker1.lng > 0 ? marker1.lng - 360 : marker1.lng + 360;
-        coordinate2.lng = marker2.lng > 0 ? marker2.lng - 360 : marker2.lng + 360;
+        let coordinate1 = {lat: marker1.lat, lng: coordinate360(marker1.lng)};
+        let coordinate2 = {lat: marker2.lat, lng: coordinate360(marker2.lng)};
 
         return (
             [
-            <Polyline positions={[marker1, coordinate2]}/>,
-            <Polyline positions={[marker2, coordinate1]}/>
+            <Polyline positions={[marker1, coordinate2]}/>, <Polyline positions={[marker2, coordinate1]}/>
             ]
         )
     } else {
@@ -88,4 +85,8 @@ export function polyLineWrap(marker1, marker2) {
             <Polyline positions={[marker1, marker2]}/>
         )
     }
+}
+
+export function coordinate360(number) {
+    return number > 0 ? number - 360 : number + 360;
 }

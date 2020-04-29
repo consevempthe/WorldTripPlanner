@@ -129,19 +129,19 @@ export default class Atlas extends Component {
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 {this.renderOtherMarkers(this.state.markerPositions)}
-                {this.renderPolyline()}
+                {this.renderPolyline(this.state.markerPositions)}
             </Map>
         )
     }
 
-    renderPolyline() {
+    renderPolyline(markerPositions) {
         let lines = [];
-        if (this.state.markerPositions.length > 1) {
-            for(let i = 0; i < this.state.markerPositions.length; i++) {
-                if(i === this.state.markerPositions.length - 1) {
-                        lines.push(polyLineWrap(this.state.markerPositions[0],this.state.markerPositions[this.state.markerPositions.length - 1]));
+        if (markerPositions.length > 1) {
+            for(let i = 0; i < markerPositions.length; i++) {
+                if(i === markerPositions.length - 1) {
+                        lines.push(polyLineWrap(markerPositions[0],markerPositions[markerPositions.length - 1]));
                 } else {
-                        lines.push(polyLineWrap(this.state.markerPositions[i], this.state.markerPositions[i + 1]));
+                        lines.push(polyLineWrap(markerPositions[i], markerPositions[i + 1]));
                 }
             }
 

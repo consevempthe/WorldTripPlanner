@@ -6,7 +6,7 @@ import {
     numberToString,
     validateName,
     createPlace,
-
+    coordinate360
 } from '../src/components/Atlas/Resources/HelpfulAPI'
 
 function testVarious() {
@@ -38,6 +38,13 @@ function testVarious() {
     expect(createPlace(point)).toEqual(expected);
 
     //--------------------------------------------------
+
+    let negative = -105;
+    let positive = 100;
+
+    expect(coordinate360(negative)).toEqual(255);
+    expect(coordinate360(positive)).toEqual(-260);
+
 }
 
 test("testing various functions", testVarious);
