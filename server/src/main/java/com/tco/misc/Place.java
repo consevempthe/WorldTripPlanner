@@ -22,4 +22,18 @@ public class Place {
     public String getLongitude() {
         return longitude;
     }
+
+    public boolean equals(Object anObject) {
+        if(this == anObject) {
+            return true;
+        }
+        if(anObject instanceof Place) {
+            Place otherPlace = (Place)anObject;
+            return this.name.equals(otherPlace.name) &&
+                    this.latitude.equals(otherPlace.latitude) &&
+                    this.longitude.equals(otherPlace.longitude);
+        }
+        return false;
+    }
+
 }

@@ -16,6 +16,7 @@ public class TestRequestTrip {
     private RequestTrip test2;
     private RequestTrip test3;
     private RequestTrip test4;
+    private RequestTrip test5;
 
     @Before
     public void populateTests() {
@@ -56,12 +57,23 @@ public class TestRequestTrip {
         Options testSomeOption = new Options("3959.0");
         testSomeOption.optimization = new Optimizations("1", Optimizations.Improvements.none, Optimizations.Constructions.some);
 
-        Place[] places4 = new Place[3];
-        places4[0] = new Place("boulder", "40.0", "-105.4");
-        places4[1] = new Place("denver", "39.7", "-105.0");
-        places4[2] = new Place("fort collins", "40.6", "-105.1");
+        Place[] places4 = new Place[5];
+        places4[4] = new Place("colorado", "40.0", "-105.4");
+        places4[1] = new Place("kansas", "38.55", "-98.041");
+        places4[3] = new Place("nevada", "39.63", "-117.42");
+        places4[2] = new Place("montana", "47.21", "-110.30");
+        places4[0] = new Place("texas", "31.31", "-98.96");
 
         test4 = new RequestTrip(testSomeOption, places4);
+
+        Place[] places5 = new Place[5];
+        places5[0] = new Place("colorado", "40.0", "-105.4");
+        places5[1] = new Place("kansas", "38.55", "-98.041");
+        places5[2] = new Place("nevada", "39.63", "-117.42");
+        places5[3] = new Place("montana", "47.21", "-110.30");
+        places5[4] = new Place("texas", "31.31", "-98.96");
+
+        test5 = new RequestTrip(testSomeOption, places5);
     }
 
     @Test
@@ -69,7 +81,20 @@ public class TestRequestTrip {
         Place[] ogPlaces = test4.places;
         test4.optimizer();
         Place[] newPlaces = test4.places;
+        Long[] distancesTest4 = test4.distances;
+
+
+        Place[] ogPlaces2 = test5.places;
+        test5.optimizer();
+        Place[] newPlaces2 = test5.places;
+        Long[] distancesTest5 = test5.distances;
+
+        assertEquals(test4.roundTripDistance(test4.distances), test5.roundTripDistance(test5.distances));
+        assertArrayEquals(test4.places, test5.places);
+
         assertNotEquals(ogPlaces, newPlaces);
+        assertNotEquals(ogPlaces2, newPlaces2);
+
     }
 
     @Test
