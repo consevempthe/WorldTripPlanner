@@ -60,6 +60,7 @@ class  MicroServer {
     Spark.post("/api/config", this::processPostConfigRequest);
     Spark.post( "/api/distance", this::processDistanceRequest);
     Spark.post("/api/trip", this::processTripRequest);
+    Spark.post("/api/find", this::processFindRequest);
   }
 
   private String processConfigRequest(Request request, Response response) {
@@ -75,6 +76,11 @@ class  MicroServer {
   private String processTripRequest(Request request, Response response){
     logRequest(request);
     return processHttpRequest(RequestTrip.class, request.body(), response);
+  }
+
+  private String processFindRequest(Request request, Response response){
+    logRequest(request);
+    return processHttpRequest(RequestFind.class, request.body(), response);
   }
 
   private String processPostConfigRequest(Request request, Response response) {
