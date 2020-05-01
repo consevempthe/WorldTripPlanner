@@ -18,11 +18,13 @@
     "jquery": "^3.4.1",
     "leaflet": "^1.4.0",
     "react": "^16.7.0",
+    "react-bootstrap": "^1.0.1",
     "react-bootstrap-range-slider": "^0.3.1",
     "react-dom": "^16.7.0",
     "react-leaflet": "^2.2.0",
     "reactstrap": "^7.0.2",
     "style-loader": "^0.23.1",
+    "theme-provider": "^1.0.8",
     "ulog": "^1.1.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
