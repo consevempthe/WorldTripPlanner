@@ -15,6 +15,7 @@ import {
     polyLineWrap,
 } from "./Resources/HelpfulAPI";
 import StartModal from "./StartModal";
+import SearchBar from "./SearchBar";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
@@ -60,6 +61,10 @@ export default class Atlas extends Component {
             <Container>
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}} lg={{size: 5}}>
+                        <SearchBar
+                            text={"Enter a query to begin your search..."}
+                            //clickFunction={} use this for button submission.
+                        />
                         {this.renderLeafletMap()}
                         {this.renderWhereAmIButton()}
                         {this.renderChildren()}
