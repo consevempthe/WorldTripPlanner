@@ -16,7 +16,8 @@ public class TestRequestTrip {
     private RequestTrip test2;
     private RequestTrip test3;
     private RequestTrip test4;
-    private RequestTrip test5;
+    private RequestTrip test5;  // // Some -> no improvements
+    private RequestTrip test6;  // Some -> 2Opt
 
     @Before
     public void populateTests() {
@@ -74,6 +75,17 @@ public class TestRequestTrip {
         places5[4] = new Place("texas", "31.31", "-98.96");
 
         test5 = new RequestTrip(testSomeOption, places5);
+
+        // Testing for "some" - 2opt
+        Options test2Opt = new Options("3959.0");
+        test2Opt.optimization = new Optimizations("1", Optimizations.Improvements.twoOpt, Optimizations.Constructions.some);
+        Place[] places6 = new Place[5];
+        places6[0] = new Place("colorado", "40.0", "-105.4");
+        places6[1] = new Place("kansas", "38.55", "-98.041");
+        places6[2] = new Place("nevada", "39.63", "-117.42");
+        places6[3] = new Place("montana", "47.21", "-110.30");
+        places6[4] = new Place("texas", "31.31", "-98.96");
+        test6 = new RequestTrip(test2Opt, places6);
     }
 
     @Test
