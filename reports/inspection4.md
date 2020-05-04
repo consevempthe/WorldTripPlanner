@@ -11,7 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Ethan Liem | 30 minutes |
-|  |  |
+| Winter Meng | 1 hour |
 
 ### Problems found
 
@@ -20,7 +20,7 @@
 | RequestTrip.java:30 | optimizer function more than 25 lines | med | ethan liem | |
 | RequestTrip.java:109 | function should check that the array has elements | low | ethan liem | |
 | RequestTrip.java:85 | function should check that the array has elements | low | ethan liem | |
-|  | | | | |
+| RequestTrip.java:42-44 | Place and Long variables should be declared outside the optimization loop to allow reuse and more flexibility. | med | Winter Meng | qm3 |
 |  | | | | |
 |  | | | | |
 |  | | | | |
