@@ -46,7 +46,7 @@ public class RequestTrip extends RequestHeader {
                 Integer[] optimizedRoute = this.options.optimization.nearestNeighbor(i, this.distanceMatrix());
                 // If improvements were set to 2opt, use the result from nearest neighbor to calculate 2opt.
                 if(Optimizations.Improvements.twoOpt.equals((this.options.optimization.improvement))) {
-                    this.options.optimization.twoOptOptimize(optimizedRoute);
+                    this.options.optimization.twoOptOptimize(optimizedRoute, false);
                 }
                 //Compare distances here before reinitializing the distances array.
                 this.places = reorderPlaces(optimizedRoute);

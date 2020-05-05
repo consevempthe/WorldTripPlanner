@@ -76,9 +76,38 @@ public class Optimizations {
 
         return index;
     }
-
-    public void twoOptOptimize(Integer[] optimizedRoute) {
-
+    /*
+    improvement = true
+            while improvement {
+        improvement = false
+        for (i = 0; i <= n-3; i++) {  // assert n>4
+            for (k = i + 2; k <= n-1; k++) {
+                delta = -dis(route,i,i+1)-dis(route,k,k+1)+dis(route,i,k)+dis(route,i+1,k+1)
+                if (delta < 0) { //improvement?
+                    2optReverse(route, i+1, k)
+                    improvement = true
+                }
+            }
+        }
+    }
+    */
+    public void twoOptOptimize(Integer[] optimizedRoute, boolean improvement) {
+        improvement = false;
+        int routeLen = optimizedRoute.length;
+        for(int i = 0; i <= routeLen - 3; i++) {
+            for(int k = i + 2; k <= routeLen - 1; k++) {
+                int delta;
+                int dis1 = optimizedRoute[i + 1] - optimizedRoute[i];
+                int dis2 = optimizedRoute[k + 1] - optimizedRoute[k];
+                int dis3 = optimizedRoute[k] - optimizedRoute[i];
+                int dis4 = optimizedRoute[k + 1] - optimizedRoute[i + 1];
+                delta = -dis1 - dis2 + dis3 + dis4;
+                if(delta < 0) {
+                    twoOptReverse(optimizedRoute, i + 1, k);
+                    improvement = true;
+                }
+            }
+        }
     }
 
     // Reverse the matrix.
