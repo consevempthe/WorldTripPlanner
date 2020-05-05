@@ -61,7 +61,7 @@ public class TestRequestFind {
         Integer query_count = test.getCOUNT();
         Integer expected_Count = isTravis ? 0 : 30;
         assertEquals(expected_Count, query_count);
-        int expected_Size = isTravis ? 0 : 30;
+        int expected_Size = isTravis ? 40 : 30;
         assertEquals(expected_Size, query_result.length);
 
 //        for(Place location : query_result) {
@@ -79,7 +79,7 @@ public class TestRequestFind {
         assertEquals(expected, actual_count);
 
         Place[] actual_places = test_query.getPlaces();
-        int length = isTravis ? 0 : 4;
+        int length = isTravis ? 10 : 4;
         assertEquals(length, actual_places.length);
 
         Place[] expected_places = new Place[actual_places.length];
