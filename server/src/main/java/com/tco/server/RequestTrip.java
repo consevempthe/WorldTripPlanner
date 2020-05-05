@@ -30,14 +30,11 @@ public class RequestTrip extends RequestHeader {
     public void optimizer() {
         Long[][] distanceMatrix = this.distanceMatrix();
 
-        //One optimizations
         if(Optimizations.Constructions.one.equals(this.options.optimization.construction)) {
             Integer[] optimizedPlaces = this.options.optimization.nearestNeighbor(0, distanceMatrix);
             this.places = this.reorderPlaces(optimizedPlaces);
             this.distances = this.getTripDistances();
-        //Some optimization occurs -- IMPLEMENT
-        }
-        else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
+        } else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
 
             Place[] bestRoute    = null;
             Long[] bestDistances = null;
@@ -45,7 +42,6 @@ public class RequestTrip extends RequestHeader {
 
             for(int i = 0; i < places.length; i++) {
                 Integer[] optimizedRoute = this.options.optimization.nearestNeighbor(i, this.distanceMatrix());
-                //Compare distances here before reinitializing the distances array.
 
                 this.places = reorderPlaces(optimizedRoute);
                 this.distances = this.getTripDistances();
@@ -59,8 +55,7 @@ public class RequestTrip extends RequestHeader {
             }
             this.distances = bestDistances;
             this.places = bestRoute;
-        }
-        else { //If None or no construction just get the distance
+        } else { //If None or no construction just get the distance
             this.distances = this.getTripDistances();
         }
     }

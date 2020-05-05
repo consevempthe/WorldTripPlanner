@@ -101,8 +101,6 @@ public class TestRequestTrip {
         Place[] newPlaces2 = test5.places;
         Long[] distancesTest5 = test5.distances;
 
-        System.out.println(test4.places[0].name + " " + test5.places[0].name);
-
         assertEquals(test4.roundTripDistance(test4.distances), test5.roundTripDistance(test5.distances));
         assertArrayEquals(test4.places, test5.places);
 
