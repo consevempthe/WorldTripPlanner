@@ -46,6 +46,7 @@ public class Database {
         ) {
             int query_count = setCount(results, limit);
             PLACES = new Place[query_count];
+
             int count=0;
             while(results.next()) {
                 if(count < query_count) {
@@ -68,14 +69,15 @@ public class Database {
     public int setCount(ResultSet result, Integer limit) throws SQLException {
         result.last();
         COUNT = result.getRow();
+        result.beforeFirst();
+
         if(limit == 0) {
             return 20;
         } else if(COUNT < limit) {
             return COUNT;
+        } else {
+            return limit;
         }
-        result.beforeFirst();
-
-        return limit;
     }
 
     public Integer getCOUNT() {
