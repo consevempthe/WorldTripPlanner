@@ -84,8 +84,10 @@ public class RequestTrip extends RequestHeader {
 
     public Long roundTripDistance(Long[] distances) {
         Long total = 0L;
-        for(Long distance : distances) {
-            total += distance;
+        if(distances != null) {
+            for (Long distance : distances) {
+                total += distance;
+            }
         }
         return total;
     }
@@ -95,11 +97,9 @@ public class RequestTrip extends RequestHeader {
 
         for (int i = 0; i < places.length; i++) {
             for (int j = 0; j < places.length; j++) {
-                if(table[i][j] == null) {
-                    RequestDistance distance = new RequestDistance(places[i], places[j], getEarthRadius());
-                    table[i][j] = distance.getDistance();
-                    table[j][i] = table[i][j];
-                }
+                RequestDistance distance = new RequestDistance(places[i], places[j], getEarthRadius());
+                table[i][j] = distance.getDistance();
+                table[j][i] = table[i][j];
             }
         }
 
@@ -109,9 +109,11 @@ public class RequestTrip extends RequestHeader {
     public Place[] reorderPlaces(Integer[] optimizedPlaces) {
         Place[] reorderedPlaces = new Place[this.places.length];
 
-        for(int i = 0; i < optimizedPlaces.length; i++) {
-            Integer placeTemp = optimizedPlaces[i];
-            reorderedPlaces[i] = this.places[placeTemp];
+        if(optimizedPlaces != null) {
+            for (int i = 0; i < optimizedPlaces.length; i++) {
+                Integer placeTemp = optimizedPlaces[i];
+                reorderedPlaces[i] = this.places[placeTemp];
+            }
         }
 
         return reorderedPlaces;
