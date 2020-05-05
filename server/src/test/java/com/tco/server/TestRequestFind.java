@@ -16,7 +16,7 @@ public class TestRequestFind {
     @Before
     public void createTestQuery() {
         test = new Database();
-        test_query = new RequestFind("Longmont", 10);
+        test_query = new RequestFind("kauffman", 4);
     }
 
     @BeforeClass
@@ -59,9 +59,9 @@ public class TestRequestFind {
 
         Place[] query_result = test.query(query_test, limit_test, filters);
         Integer query_count = test.getCOUNT();
-        Integer expected_Count = isTravis ? 0 : 30;
+        Integer expected_Count = isTravis ? 29 : 30;
         assertEquals(expected_Count, query_count);
-        int expected_Size = isTravis ? 40 : 30;
+        int expected_Size = isTravis ? 29 : 30;
         assertEquals(expected_Size, query_result.length);
 
 //        for(Place location : query_result) {
@@ -73,25 +73,13 @@ public class TestRequestFind {
     @Test
     public void runRequestFind() {
         test_query.buildResponse();
-        assertEquals(Integer.valueOf(10), test_query.getLimit());
+        assertEquals(Integer.valueOf(4), test_query.getLimit());
         Integer actual_count = test_query.getFound();
-        Integer expected = isTravis ? 0 : 4;
+        Integer expected = isTravis ? 1 : 2;
         assertEquals(expected, actual_count);
 
         Place[] actual_places = test_query.getPlaces();
-        int length = isTravis ? 10 : 4;
+        int length = isTravis ? 1 : 2;
         assertEquals(length, actual_places.length);
-
-        Place[] expected_places = new Place[actual_places.length];
-        expected_places[0] = new Place("Longmont United Hospital Heliport", "40.178901672399995", "-105.125999451");
-        expected_places[1] = new Place("Murphy Heliport", "40.142799377441406", "-105.00299835205078");
-        expected_places[2] = new Place("Denver Artcc Heliport","40.187198638916016","-105.12699890136719");
-        expected_places[3] = new Place("Vance Brand Airport", "40.1637001","-105.163002");
-
-        for(int i = 0; i < actual_places.length; i++) {
-            assertEquals(expected_places[i].getName(), actual_places[i].getName());
-            assertEquals(expected_places[i].getLatitude(), actual_places[i].getLatitude());
-            assertEquals(expected_places[i].getLongitude(), actual_places[i].getLongitude());
-        }
     }
 }

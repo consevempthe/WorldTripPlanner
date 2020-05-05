@@ -85,7 +85,6 @@ public class Database {
     }
 
     public String generateSQL(String query, Narrow narrow) {
-
         return String.format("SELECT * FROM continent" +
                 " INNER JOIN country ON continent.id = country.continent" +
                 " INNER JOIN region ON country.id = region.iso_country" +
