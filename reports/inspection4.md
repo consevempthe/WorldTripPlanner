@@ -12,6 +12,7 @@
 | ---- | ---- |
 | Ethan Liem | 30 minutes |
 | Winter Meng | 1 hour |
+| Axel Wahlstrom | 30 minutes |
 
 ### Problems found
 
@@ -21,6 +22,6 @@
 | RequestTrip.java:109 | function should check that the array has elements | low | ethan liem | |
 | RequestTrip.java:85 | function should check that the array has elements | low | ethan liem | |
 | RequestTrip.java:42-44 | Place and Long variables should be declared outside the optimization loop to allow reuse and more flexibility. | med | Winter Meng | qm3 |
-|  | | | | |
+| RequestTrip.java:General | remove TODO/IMPLEMENT comments, and document functions with purposeful comments for better communication. | low | Axel Wahlstrom | rwahlst |
 |  | | | | |
 |  | | | | |
