@@ -29,7 +29,6 @@ public class RequestTrip extends RequestHeader {
 
     public void optimizer() {
         Long[][] distanceMatrix = this.distanceMatrix();
-
         //One optimizations
         if(Optimizations.Constructions.one.equals(this.options.optimization.construction)) {
             Integer[] optimizedPlaces = this.options.optimization.nearestNeighbor(0, distanceMatrix);
@@ -39,19 +38,23 @@ public class RequestTrip extends RequestHeader {
         }
         else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
 
-            Place[] bestRoute    = null;
+            Place[] bestRoute = null;
             Long[] bestDistances = null;
-            Long bestDistance    = Long.MAX_VALUE;
+            Long bestDistance = Long.MAX_VALUE;
 
-            for(int i = 0; i < places.length; i++) {
+            for (int i = 0; i < places.length; i++) {
                 Integer[] optimizedRoute = this.options.optimization.nearestNeighbor(i, this.distanceMatrix());
+                // If improvements were set to 2opt, use the result from nearest neighbor to calculate 2opt.
+                if(Optimizations.Improvements.twoOpt.equals((this.options.optimization.improvement))) {
+                    this.options.optimization.twoOptOptimize(optimizedRoute);
+                }
                 //Compare distances here before reinitializing the distances array.
-
                 this.places = reorderPlaces(optimizedRoute);
                 this.distances = this.getTripDistances();
                 Long currRoundTrip = roundTripDistance(this.distances);
 
-                if(currRoundTrip <= bestDistance) {
+
+                if (currRoundTrip <= bestDistance) {
                     bestDistance = currRoundTrip;
                     bestRoute = this.places;
                     bestDistances = this.distances;
@@ -59,8 +62,8 @@ public class RequestTrip extends RequestHeader {
             }
             this.distances = bestDistances;
             this.places = bestRoute;
-        }
-        else { //If None or no construction just get the distance
+
+        } else { //If None or no construction just get the distance
             this.distances = this.getTripDistances();
         }
     }
