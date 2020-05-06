@@ -29,14 +29,14 @@ public class RequestTrip extends RequestHeader {
 
     public void optimizer() {
         Long[][] distanceMatrix = this.distanceMatrix();
+
         //One optimizations
+
         if(Optimizations.Constructions.one.equals(this.options.optimization.construction)) {
             Integer[] optimizedPlaces = this.options.optimization.nearestNeighbor(0, distanceMatrix);
             this.places = this.reorderPlaces(optimizedPlaces);
             this.distances = this.getTripDistances();
-        //Some optimization occurs -- IMPLEMENT
-        }
-        else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
+        } else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
 
             Place[] bestRoute = null;
             Long[] bestDistances = null;
@@ -44,11 +44,15 @@ public class RequestTrip extends RequestHeader {
 
             for (int i = 0; i < places.length; i++) {
                 Integer[] optimizedRoute = this.options.optimization.nearestNeighbor(i, this.distanceMatrix());
+
+
+
                 // If improvements were set to 2opt, use the result from nearest neighbor to calculate 2opt.
                 if(Optimizations.Improvements.twoOpt.equals((this.options.optimization.improvement))) {
                     this.options.optimization.twoOptOptimize(optimizedRoute);
                 }
                 //Compare distances here before reinitializing the distances array.
+
                 this.places = reorderPlaces(optimizedRoute);
                 this.distances = this.getTripDistances();
                 Long currRoundTrip = roundTripDistance(this.distances);
@@ -62,7 +66,7 @@ public class RequestTrip extends RequestHeader {
             }
             this.distances = bestDistances;
             this.places = bestRoute;
-
+          
         } else { //If None or no construction just get the distance
             this.distances = this.getTripDistances();
         }
@@ -87,8 +91,10 @@ public class RequestTrip extends RequestHeader {
 
     public Long roundTripDistance(Long[] distances) {
         Long total = 0L;
-        for(Long distance : distances) {
-            total += distance;
+        if(distances != null) {
+            for (Long distance : distances) {
+                total += distance;
+            }
         }
         return total;
     }
@@ -98,11 +104,9 @@ public class RequestTrip extends RequestHeader {
 
         for (int i = 0; i < places.length; i++) {
             for (int j = 0; j < places.length; j++) {
-                if(table[i][j] == null) {
-                    RequestDistance distance = new RequestDistance(places[i], places[j], getEarthRadius());
-                    table[i][j] = distance.getDistance();
-                    table[j][i] = table[i][j];
-                }
+                RequestDistance distance = new RequestDistance(places[i], places[j], getEarthRadius());
+                table[i][j] = distance.getDistance();
+                table[j][i] = table[i][j];
             }
         }
 
@@ -112,9 +116,11 @@ public class RequestTrip extends RequestHeader {
     public Place[] reorderPlaces(Integer[] optimizedPlaces) {
         Place[] reorderedPlaces = new Place[this.places.length];
 
-        for(int i = 0; i < optimizedPlaces.length; i++) {
-            Integer placeTemp = optimizedPlaces[i];
-            reorderedPlaces[i] = this.places[placeTemp];
+        if(optimizedPlaces != null) {
+            for (int i = 0; i < optimizedPlaces.length; i++) {
+                Integer placeTemp = optimizedPlaces[i];
+                reorderedPlaces[i] = this.places[placeTemp];
+            }
         }
 
         return reorderedPlaces;

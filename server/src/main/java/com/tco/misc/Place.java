@@ -1,9 +1,9 @@
 package com.tco.misc;
 
 public class Place {
-    public final String name;
-    public final String latitude;
-    public final String longitude;
+    public String name;
+    public String latitude;
+    public String longitude;
 
     public Place(String n, String lat, String lng) {
         this.name = n;
@@ -21,6 +21,10 @@ public class Place {
 
     public String getLongitude() {
         return longitude;
+    }
+
+    public String getPlace() {
+        return name + " " + latitude + " " + longitude;
     }
 
     public boolean equals(Object anObject) {
