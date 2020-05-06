@@ -103,17 +103,6 @@ public class Database {
 
         return sql;
 
-
-
-//        return String.format("SELECT * FROM continent" +
-//                " INNER JOIN country ON continent.id = country.continent" +
-//                " INNER JOIN region ON country.id = region.iso_country" +
-//                " INNER JOIN world ON region.id = world.iso_region" +
-//                " WHERE country.name LIKE '%%%1$s%%'" +
-//                " OR region.name LIKE '%%%1$s%%'" +
-//                " OR world.name LIKE '%%%1$s%%'" +
-//                " OR world.municipality LIKE '%%%1$s%%'" +
-//                ";", query);
     }
 
 }
