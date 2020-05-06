@@ -94,9 +94,14 @@ public class Optimizations {
     public void twoOptOptimize(Integer[] optimizedRoute, boolean improvement) {
         improvement = false;
         int routeLen = optimizedRoute.length;
+        // rl = 5
+        assert(routeLen > 4);
         for(int i = 0; i <= routeLen - 3; i++) {
             for(int k = i + 2; k <= routeLen - 1; k++) {
                 int delta;
+                if(k + 1 > (routeLen - 1)) {
+                    break;
+                }
                 int dis1 = optimizedRoute[i + 1] - optimizedRoute[i];
                 int dis2 = optimizedRoute[k + 1] - optimizedRoute[k];
                 int dis3 = optimizedRoute[k] - optimizedRoute[i];

@@ -118,17 +118,28 @@ public class TestOptimizations {
     @Test
     public void testTwoOpt() {
         Integer[] routeTest = new Integer[5];
-        routeTest[0] = 23;  // i
-        routeTest[1] = 15;  // i + 1
-        routeTest[2] = 3;   // k
-        routeTest[3] = 9;   // k + 1
-        routeTest[4] = 2;
+        routeTest[0] = 23;  //
+        routeTest[1] = 15;  // i
+        routeTest[2] = 3;   // i + 1
+        routeTest[3] = 9;   // k
+        routeTest[4] = 2;   // k + 1
         Integer[] routeTest2 = new Integer[5];
         routeTest2 = routeTest;
+        // First round:
         // i -> i + 1 = 8, k -> k + 1 = 6, sum = -14
         // i -> k = 20, i + 1 -> k + 1 = 6, sum = 26
         // delta > 0 -> no Optimization required.
+        // Second round:
+        // i = 1, i -> i + 1 = 12, k -> k + 1 = 7, i -> k = 6, i + 1 -> k + 1 = 1
+        // delta = 7 - 19 = -12
+        // delta < 0 -> Optimization = true!!!
+        // swap: 15, 9, 3, 2
+        // Final: 23, 3, 9, 15, 2
         twoOpt.twoOptOptimize(routeTest, false);
-
+        assertEquals(routeTest[0], Integer.valueOf(23));
+        assertEquals(routeTest[1], Integer.valueOf(3));
+        assertEquals(routeTest[2], Integer.valueOf(9));
+        assertEquals(routeTest[3], Integer.valueOf(15));
+        assertEquals(routeTest[4], Integer.valueOf(2));
     }
 }
