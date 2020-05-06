@@ -98,10 +98,13 @@ public class TestRequestFind {
 
         RequestFind test3 = new RequestFind(query, limit, filter);
         test3.buildResponse();
-        Integer expected_count = test3.getFound();
-        Place[] expected_place = test3.getPlaces();
-        System.out.println(expected_count);
-        System.out.println(expected_place.length);
+        Integer actual_count = test3.getFound();
+        Place[] actual_place = test3.getPlaces();
+        Integer expected_count = isTravis ? 197 : 202;
+        int expected_length = 20;
+
+        assertEquals(expected_count, actual_count);
+        assertEquals(expected_length, actual_place.length);
 
     }
 
