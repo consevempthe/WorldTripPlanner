@@ -77,4 +77,18 @@ public class Optimizations {
         return index;
     }
 
+    public void twoOptOptimize(Integer[] optimizedRoute) {
+
+    }
+
+    // Reverse the matrix.
+    public void twoOptReverse(Integer[] route, int a, int b) {
+        while(a < b) {
+            int temp = route[a];
+            route[a] = route[b];
+            route[b] = temp;
+            a++;
+            b--;
+        }
+    }
 }
