@@ -14,6 +14,13 @@ public class RequestFind extends RequestHeader {
     public RequestFind(String s, Integer l) {
         this.match = s;
         this.limit = l;
+        this.narrow = new Narrow();
+    }
+
+    public RequestFind(String s, Integer l, Narrow n) {
+        this.match = s;
+        this.limit = l;
+        this.narrow =n;
     }
 
     public Place[] getPlaces() {
