@@ -107,11 +107,16 @@ export default class CreateTripModal extends Component {
     }
 
     setTripOptimization(optLevel) {
-        if(optLevel > 0) {
-            this.props.setTripOptimization(optLevel,"one","none");
+
+        if(optLevel === 0) {
+            this.props.setTripOptimization(optLevel, "none", "none");
+        } else if (optLevel > 0 && optLevel <= 3) {
+            this.props.setTripOptimization(optLevel, "one", "none");
+        } else if (optLevel > 3 && optLevel <= 50) {
+            this.props.setTripOptimization(optLevel, "some", "2opt");
+        } else {
+            this.props.setTripOptimization(optLevel, "some", "none");
         }
-        else {
-            this.props.setTripOptimization(1, "none", "none");
-        }
+
     }
 }

@@ -38,7 +38,7 @@ public class RequestTrip extends RequestHeader {
             this.distances = this.getTripDistances();
         } else if(Optimizations.Constructions.some.equals(this.options.optimization.construction)) {
 
-            Place[] bestRoute = null;
+            Integer[] bestRoute = null;
             Long[] bestDistances = null;
             Long bestDistance = Long.MAX_VALUE;
 
@@ -60,12 +60,12 @@ public class RequestTrip extends RequestHeader {
 
                 if (currRoundTrip <= bestDistance) {
                     bestDistance = currRoundTrip;
-                    bestRoute = this.places;
+                    bestRoute = optimizedRoute;
                     bestDistances = this.distances;
                 }
             }
             this.distances = bestDistances;
-            this.places = bestRoute;
+            this.places = reorderPlaces(bestRoute);
           
         } else { //If None or no construction just get the distance
             this.distances = this.getTripDistances();
