@@ -2,7 +2,7 @@ import './enzyme.config.js'
 import React from 'react'
 
 import SearchBar from "../src/components/Atlas/SearchBar";
-import {mount} from 'enzyme';
+import {mount, shallow} from 'enzyme';
 
 function testInitialAppState() {
 
@@ -10,9 +10,17 @@ function testInitialAppState() {
 
     const boxContent = "";
     const valid = "";
+    const filters = [
+        {id: "Municipality", active: false},
+        {id: "Region", active: false},
+        {id: "Country", active: false}
+    ];
+    const dropDownOpen = false;
 
     expect(search.state().boxContent).toEqual(boxContent);
     expect(search.state().valid).toEqual(valid);
+    expect(search.state().filters).toEqual(filters);
+    expect(search.state().dropDownOpen).toEqual(dropDownOpen);
 
 }
 
@@ -29,3 +37,43 @@ function testChangeEvent() {
 }
 
 test("Testing SearchBar.js state after change:", testChangeEvent);
+
+function testFilterClick() {
+
+    const search = shallow(<SearchBar/>);
+
+    search.find('ButtonDropdown').at(0).prop('toggle')();
+
+    expect(search.state().dropDownOpen).toEqual(true);
+    expect(search.find('DropdownItem').length).toEqual(3);
+
+    for(let i = 0; i < search.state().filters.length; i++) {
+        search.find('DropdownItem').at(i).simulate('click');
+        expect(search.state().filters[i].active).toEqual(true);
+    }
+
+}
+
+test("Testing SearchBar.js filter button click:", testFilterClick);
+
+function testApplyFilter() {
+
+    const search = mount(<SearchBar/>);
+    search.instance().applyFilter(0);
+    expect(search.instance().isActive(0)).toEqual(true);
+
+}
+
+test("Testing SearchBar.js applyFilter method:", testApplyFilter);
+
+function testToggleDropdown() {
+
+    const search = mount(<SearchBar/>);
+    search.instance().toggleDropdown();
+    expect(search.state().dropDownOpen).toEqual(true);
+    search.instance().toggleDropdown();
+    expect(search.state().dropDownOpen).toEqual(false);
+
+}
+
+test("Testing SearchBar.js toggleDropdown function:", testToggleDropdown);
