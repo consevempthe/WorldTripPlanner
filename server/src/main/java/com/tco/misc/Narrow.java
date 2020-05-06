@@ -12,6 +12,11 @@ public class Narrow {
         where = "";
     }
 
+    public Narrow(Types[] type, String where) {
+        this.type = type;
+        this.where = where;
+    }
+
     public boolean typeIsEmpty() {
         return type.length == 0;
     }

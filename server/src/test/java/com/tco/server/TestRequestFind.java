@@ -16,7 +16,8 @@ public class TestRequestFind {
     @Before
     public void createTestQuery() {
         test = new Database();
-        test_query = new RequestFind("kauffman", 4);
+        Narrow n = new Narrow();
+        test_query = new RequestFind("kauffman", 4, n);
     }
 
     @BeforeClass
@@ -65,11 +66,11 @@ public class TestRequestFind {
         Narrow filters = new Narrow();
 
         String query = test.generateSQL(query_test, filters);
-        String query_actual = String.format("Select * FROM world" +
-                " WHERE name LIKE '%%%1$s%%'" +
+        String query_actual = String.format("Select name, latitude, longitude FROM world" +
+                " WHERE (name LIKE '%%%1$s%%'" +
                 " OR iso_region LIKE '%%%1$s%%'" +
                 " OR iso_country LIKE '%%%1$s%%'" +
-                " OR municipality LIKE '%%%1$s%%';", query_test);
+                " OR municipality LIKE '%%%1$s%%');", query_test);
 
         assertEquals(query, query_actual);
 
@@ -83,6 +84,24 @@ public class TestRequestFind {
 //        for(Place location : query_result) {
 //            System.out.println(location.getPlace());
 //        }
+
+    }
+
+    @Test
+    public void testNarrow() {
+        Narrow.Types[] testType = new Narrow.Types[]{Narrow.Types.heliport};
+        String testWhere = "";
+
+        Narrow filter = new Narrow(testType, testWhere);
+        String query = "us-co";
+        Integer limit = 20;
+
+        RequestFind test3 = new RequestFind(query, limit, filter);
+        test3.buildResponse();
+        Integer expected_count = test3.getFound();
+        Place[] expected_place = test3.getPlaces();
+        System.out.println(expected_count);
+        System.out.println(expected_place.length);
 
     }
 

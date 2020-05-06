@@ -85,15 +85,24 @@ public class Database {
     }
 
     public String generateSQL(String query, Narrow narrow) {
-        if(narrow.typeIsEmpty() && narrow.whereIsEmpty()) {
-            return String.format("Select * FROM world" +
-                    " WHERE name LIKE '%%%1$s%%'" +
-                    " OR iso_region LIKE '%%%1$s%%'" +
-                    " OR iso_country LIKE '%%%1$s%%'" +
-                    " OR municipality LIKE '%%%1$s%%';", query);
-        } else {
-            return "string";
+        String sql = String.format("Select name, latitude, longitude FROM world" +
+                " WHERE (name LIKE '%%%1$s%%'" +
+                " OR iso_region LIKE '%%%1$s%%'" +
+                " OR iso_country LIKE '%%%1$s%%'" +
+                " OR municipality LIKE '%%%1$s%%')", query);
+        if(!narrow.typeIsEmpty()){
+            StringBuilder string = new StringBuilder(" AND (type LIKE ");
+            for(Narrow.Types type : narrow.type) {
+                string.append(String.format("'%%%1$s%%' OR type LIKE ", type));
+            }
+            string.delete(string.length()-14, string.length());
+            sql += string + ")";
         }
+
+        sql += ";";
+
+        return sql;
+
 
 
 //        return String.format("SELECT * FROM continent" +
