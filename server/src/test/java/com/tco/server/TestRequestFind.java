@@ -45,10 +45,17 @@ public class TestRequestFind {
         Narrow filters = new Narrow();
 
         Place[] results = test.query(query, limit_test, filters);
-
+        Integer count = test.getCOUNT();
+        System.out.println(count);
         for (Place location : results) {
             System.out.println(location.getPlace());
         }
+
+        test_query.buildResponse();
+        Place[] kauffman = test_query.getPlaces();
+        Integer countIsOne = test_query.getFound();
+        System.out.println(kauffman[0].getPlace());
+        System.out.println(countIsOne);
     }
 
 //    @Test
