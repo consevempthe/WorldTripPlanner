@@ -44,7 +44,7 @@ export default class SearchBar extends Component {
     renderFilterDropdown() {
         return (
             <InputGroupAddon addonType={"prepend"}>
-                <ButtonDropdown toggle={this.toggleDropdown} isOpen={this.state.dropDownOpen} direction={'right'}>
+                <ButtonDropdown isOpen={this.state.dropDownOpen} direction={'right'} toggle={this.toggleDropdown}>
                     <DropdownToggle caret>
                         Filter
                     </DropdownToggle>
