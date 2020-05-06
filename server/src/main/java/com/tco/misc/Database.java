@@ -85,15 +85,26 @@ public class Database {
     }
 
     public String generateSQL(String query, Narrow narrow) {
-        return String.format("SELECT * FROM continent" +
-                " INNER JOIN country ON continent.id = country.continent" +
-                " INNER JOIN region ON country.id = region.iso_country" +
-                " INNER JOIN world ON region.id = world.iso_region" +
-                " WHERE country.name LIKE '%%%1$s%%'" +
-                " OR region.name LIKE '%%%1$s%%'" +
-                " OR world.name LIKE '%%%1$s%%'" +
-                " OR world.municipality LIKE '%%%1$s%%'" +
-                ";", query);
+        if(narrow.typeIsEmpty() && narrow.whereIsEmpty()) {
+            return String.format("Select * FROM world" +
+                    " WHERE name LIKE '%%%1$s%%'" +
+                    " OR iso_region LIKE '%%%1$s%%'" +
+                    " OR iso_country LIKE '%%%1$s%%'" +
+                    " OR municipality LIKE '%%%1$s%%';", query);
+        } else {
+            return "string";
+        }
+
+
+//        return String.format("SELECT * FROM continent" +
+//                " INNER JOIN country ON continent.id = country.continent" +
+//                " INNER JOIN region ON country.id = region.iso_country" +
+//                " INNER JOIN world ON region.id = world.iso_region" +
+//                " WHERE country.name LIKE '%%%1$s%%'" +
+//                " OR region.name LIKE '%%%1$s%%'" +
+//                " OR world.name LIKE '%%%1$s%%'" +
+//                " OR world.municipality LIKE '%%%1$s%%'" +
+//                ";", query);
     }
 
 }
