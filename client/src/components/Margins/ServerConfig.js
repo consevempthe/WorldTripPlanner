@@ -73,7 +73,7 @@ export default class ServerConfig extends Component
         return(
             <tr>
                 <td>Optimizations:</td>
-                <td>{optimization.construction + " " + optimization.improvement}</td>
+                <td>{optimization.construction + " "}</td>
             </tr>
         )
     }

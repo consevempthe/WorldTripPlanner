@@ -1,5 +1,5 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
 
 /*
  * This is a Webpack configuration file. Webpack is a module bundler, and is
@@ -91,4 +91,4 @@ module.exports = {
       }
     ]
   }
-}
+};

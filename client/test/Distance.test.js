@@ -5,6 +5,7 @@ import {shallow, mount} from 'enzyme';
 const Coordinate = require('coordinate-parser');
 
 import Distance from '../src/components/Atlas/Distance';
+import {PROTOCOL_VERSION} from "../src/components/Constants";
 
 const startProperties = {
     changeRadius: () => ""
@@ -30,7 +31,7 @@ function testInitialAppState() {
     let actualDistance = app.state().distance;
     let expectedDistance = {
         requestType: "distance",
-        requestVersion: 4, // This needs to be changed anytime we change version.
+        requestVersion: PROTOCOL_VERSION, // This needs to be changed anytime we change version.
         place1: {
             latitude: '',
             longitude: '',

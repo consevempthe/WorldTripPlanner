@@ -4,6 +4,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 
 import Trip from '../src/components/Atlas/Trip';
+import {PROTOCOL_VERSION} from "../src/components/Constants";
 
 const startProperties = {
     deleteMarkerPosition: () => "",
@@ -14,7 +15,7 @@ function testRender() {
     const trip = mount(<Trip/>);
 
     expect(trip.find('Modal').length).toEqual(3);
-    expect(trip.find('Button').length).toEqual(3);
+    expect(trip.find('Button').length).toEqual(4);
 
 }
 
@@ -24,7 +25,7 @@ function testInitialState() {
     const initial = shallow(<Trip/>);
     const expectedState = {
         requestType: "trip",
-        requestVersion: 4,
+        requestVersion: PROTOCOL_VERSION,
         options: {title: "", earthRadius: '3959.0', optimization: {response: '1', construction: 'none', improvement: 'none'}},
         places: [],
         distances: []
