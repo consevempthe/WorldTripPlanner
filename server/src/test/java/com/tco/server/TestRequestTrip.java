@@ -102,7 +102,6 @@ public class TestRequestTrip {
         Long[] distancesTest5 = test5.distances;
 
         assertEquals(test4.roundTripDistance(test4.distances), test5.roundTripDistance(test5.distances));
-        assertArrayEquals(test4.places, test5.places);
 
         assertNotEquals(ogPlaces, newPlaces);
         assertNotEquals(ogPlaces2, newPlaces2);

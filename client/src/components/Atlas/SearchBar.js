@@ -27,33 +27,42 @@ export default class SearchBar extends Component {
 
     render() {
 
-        return(
-            <div>
-                <InputGroup>
-                    {this.renderFilterDropdown()}
-                    {renderInput("searchBar", this.props.text, this.state.valid, this.handleChange)}
-                    <InputGroupAddon addonType="append">
-                        <Button /*onClick={this.props.clickFunction}*/ disabled={this.state.valid !== 'success'}>Submit</Button>
-                    </InputGroupAddon>
-                </InputGroup>
-            </div>
-        );
+        if(this.props.visible) {
+            return(
+                <div>
+                    <InputGroup>
+                        {this.renderFilterDropdown()}
+                        {renderInput("searchBar", this.props.text, this.state.valid, this.handleChange)}
+                        <InputGroupAddon addonType="append">
+                            <Button /*onClick={this.props.clickFunction}*/ disabled={this.state.valid !== 'success'}>Submit</Button>
+                        </InputGroupAddon>
+                    </InputGroup>
+                </div>
+            );
+        } else {
+            return null;
+        }
 
     }
 
     renderFilterDropdown() {
-        return (
-            <InputGroupAddon addonType={"prepend"}>
-                <ButtonDropdown isOpen={this.state.dropDownOpen} direction={'right'} toggle={this.toggleDropdown}>
-                    <DropdownToggle caret>
-                        Filter
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {this.renderDropdownItems()}
-                    </DropdownMenu>
-                </ButtonDropdown>
-            </InputGroupAddon>
-        );
+        if(this.props.filter) {
+            return (
+                <InputGroupAddon addonType={"prepend"}>
+                    <ButtonDropdown isOpen={this.state.dropDownOpen} direction={'right'} toggle={this.toggleDropdown}>
+                        <DropdownToggle caret>
+                            Filter
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            {this.renderDropdownItems()}
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                </InputGroupAddon>
+            );
+        } else {
+            return null;
+        }
+
     }
 
     renderDropdownItems() {
