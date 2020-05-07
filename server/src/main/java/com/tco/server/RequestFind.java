@@ -38,11 +38,9 @@ public class RequestFind extends RequestHeader {
     @Override
     public void buildResponse() {
         Database db = new Database();
-
         if(limit == null) {
             limit = 0;
         }
-
         this.places = db.query(sanitizeMatch(), this.limit, narrow).clone();
         this.found = db.getCOUNT();
     }

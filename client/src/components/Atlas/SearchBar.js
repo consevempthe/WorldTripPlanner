@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
-import { InputGroup, InputGroupAddon, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { InputGroup, InputGroupAddon, UncontrolledAlert, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {renderInput, validateName} from "./Resources/HelpfulAPI";
+import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
+import * as findSchema from "../../../schemas/TIPFindResponseSchema";
+import {HTTP_OK} from "../Constants";
 
 export default class SearchBar extends Component {
 
@@ -16,7 +19,9 @@ export default class SearchBar extends Component {
                 {id: "Municipality", active: false},
                 {id: "Region", active: false},
                 {id: "Country", active: false}
-            ]
+            ],
+            query: [],
+            found: 0
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -33,12 +38,21 @@ export default class SearchBar extends Component {
                     {this.renderFilterDropdown()}
                     {renderInput("searchBar", this.props.text, this.state.valid, this.handleChange)}
                     <InputGroupAddon addonType="append">
-                        <Button /*onClick={this.props.clickFunction}*/ disabled={this.state.valid !== 'success'}>Submit</Button>
+                        <Button disabled={this.state.valid !== 'success'} onClick={ () => this.query()}>Submit</Button>
                     </InputGroupAddon>
                 </InputGroup>
+                {this.resultsFound()}
             </div>
         );
 
+    }
+
+    resultsFound() {
+        if(this.state.found !== 0) {
+            return(
+                <UncontrolledAlert>Results: {this.state.found}</UncontrolledAlert>
+            )
+        }
     }
 
     renderFilterDropdown() {
@@ -77,6 +91,31 @@ export default class SearchBar extends Component {
         return (
             <i>&#x2713;</i>
         );
+    }
+
+    query() {
+        let query = this.createQuery();
+        sendServerRequestWithBody('find', query, this.props.serverPort).then(find => {
+            this.processFindRequest(find);
+        })
+    }
+
+    createQuery() {
+        return  find = {
+            requestType : "find",
+            requestVersion : 5,
+            match : this.state.boxContent,
+            narrow : {type:[], where:"i"},
+            limit : 10
+        }
+    }
+
+    processFindRequest(findResponse) {
+        if(!isJsonResponseValid(findResponse.body, findSchema)) {
+        } else if(findResponse.statusCode === HTTP_OK) {
+            let query_result = JSON.parse(JSON.stringify(findResponse.body));
+            this.setState({query: query_result.places, found: query_result.found});
+        }
     }
 
     applyFilter(filterNumber) {

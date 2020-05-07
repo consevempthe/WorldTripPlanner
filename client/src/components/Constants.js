@@ -3,7 +3,7 @@ export const CLIENT_TEAM_NAME = "T03 Hugh-Lit Pack-Herd";
 
 export const EARTH_RADIUS_UNITS_DEFAULT = { 'miles': 3959 };
 
-export const PROTOCOL_VERSION = 4;
+export const PROTOCOL_VERSION = 5;
 
 export const HTTP_OK = 200;
 export const HTTP_BAD_REQUEST = 400;

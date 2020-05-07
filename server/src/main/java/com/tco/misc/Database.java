@@ -46,7 +46,6 @@ public class Database {
         ) {
             int query_count = setCount(results, limit);
             PLACES = new Place[query_count];
-
             int count=0;
             while(results.next()) {
                 if(count < query_count) {

@@ -93,26 +93,41 @@
 | *04/27/20* | *343* | *346, 352, 365, 366* |  |
 | *04/29/20* | *346, 352, 365, 366, 335, 338, 347, 373* | *375, 344, 336, 337, 330* |  |
 | *05/04/20* | *375, 379, 331, 336, 337* | *344, 330, 345, 381* | |
-| *date* | *#task, ...* | *#task, ...* |  |
+| *05/04/20* | *330, 344, 332, 382, 345* | *334, 344, 381* |  |
 
 
 ## Review
 
 ### Epics done  
-
+* Finished old epics and bug-fixing : we finished our Modify Itinerary Epic and fixed many of the bugs that became apparent during and after the project.
+* Protocol Version 5 : we implemented the new protocol for the find object and updated our config
+* Optimize : we completed optimize while foregoing the ability to improve with 2opt or 3opt.
 ### Epics not done 
+* Find : we were able to talk to the database from the server side and implemented the ability to filter by type, but we did not get much of that implementation onto the client side.
+* Search : We did not get to itinerary search as that was the lowest priority epic.
 
 ### What went well
+* We learned a lot about SQL and testing a mock database.
+* We learned about spheres and how to get around dateline issues.
 
 ### Problems encountered and resolutions
-
+* Our biggest problem seemed to be the desire to finish up work on the project, there was no final drive to get things done and as such development floundered as the weeks went by.
+* We had to just keep moving along and developing things to the best of our ability, I think we divided tasks up too much and therefore had problems getting everything done.
 
 ## Retrospective
 
 ### What we changed this sprint
+* We made sure that everyone would always have a task out during the sprint so that each person could be held accountable for what they were working on.
 
 ### What went well
+* We met often even if they were not the most productive of meetings, it was good to be able to talk to over what everyone was doing.
+* We held each other accountable as best we could.
+* We did the best we could with only having a four man team.
 
 ### Potential improvements
+* I feel that this sprint went the most poorly because we had so little direction with what we were doing and everyone's performance suffered.
+* Better communication among teammates.
+* Dividing tasks up still seemed to be the most difficult part as we got stuck waiting for others to finish things before we could continue on with our own tasks.
 
 ### What we will change next time
+* Our biggest improvement would be making sure that tasks get done in the order of priority and making sure that we are all on the same page.
