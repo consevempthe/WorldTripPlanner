@@ -45,20 +45,16 @@ public class RequestTrip extends RequestHeader {
             for (int i = 0; i < places.length; i++) {
                 Integer[] optimizedRoute = this.options.optimization.nearestNeighbor(i, this.distanceMatrix());
 
-
-
                 // If improvements were set to 2opt, use the result from nearest neighbor to calculate 2opt.
                 if(Optimizations.Improvements.twoOpt.equals((this.options.optimization.improvement))) {
                     this.options.optimization.twoOptOptimize(optimizedRoute, false);
                 }
                 //Compare distances here before reinitializing the distances array.
 
-                this.places = reorderPlaces(optimizedRoute);
-                this.distances = this.getTripDistances();
+                this.distances = this.getTripDistances(optimizedRoute);
                 Long currRoundTrip = roundTripDistance(this.distances);
 
-
-                if (currRoundTrip <= bestDistance) {
+                if (currRoundTrip < bestDistance) {
                     bestDistance = currRoundTrip;
                     bestRoute = optimizedRoute;
                     bestDistances = this.distances;
@@ -70,6 +66,26 @@ public class RequestTrip extends RequestHeader {
         } else { //If None or no construction just get the distance
             this.distances = this.getTripDistances();
         }
+    }
+
+    public Long[] getTripDistances(Integer[] optimizedPlaces) {
+
+        Long[] distances = new Long[optimizedPlaces.length];
+
+        for(int i = 0; i < optimizedPlaces.length; i++) {
+
+            if(i == optimizedPlaces.length - 1) {
+                RequestDistance distance = new RequestDistance(places[optimizedPlaces[i]], places[optimizedPlaces[0]], getEarthRadius());
+                distances[i] = distance.getDistance();
+            } else {
+                RequestDistance distance = new RequestDistance(places[optimizedPlaces[i]], places[optimizedPlaces[i + 1]], getEarthRadius());
+                distances[i] = distance.getDistance();
+            }
+
+        }
+
+        return distances;
+
     }
 
     public Long[] getTripDistances()
