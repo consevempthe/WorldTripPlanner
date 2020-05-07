@@ -16,7 +16,6 @@ import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfu
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
 import {createPlace} from "./Resources/HelpfulAPI";
 import CreateTripModal from "./CreateTripModal";
-import SearchBar from "./SearchBar";
 
 export default class Trip extends Component {
 
@@ -66,12 +65,6 @@ export default class Trip extends Component {
                         places={this.state.trip.places}
                         options={this.state.trip.options}
                     />
-                    <SearchBar
-                        text={"Search your itinerary here:"}
-                        filter={false}
-                        visible={this.state.trip.places.length > 1}
-                    />
-
                     {this.renderTable()}
                     {this.renderCreateTripModal()}
 
