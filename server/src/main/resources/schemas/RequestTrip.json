@@ -38,7 +38,7 @@
             },
             "improvement": {
               "type": "string",
-              "enum": ["none", "2opt"]
+              "enum": ["none"]
             }
           }
         }

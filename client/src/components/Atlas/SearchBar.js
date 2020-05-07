@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { InputGroup, InputGroupAddon, UncontrolledAlert, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { InputGroup, Table, InputGroupAddon, UncontrolledAlert, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {renderInput, validateName} from "./Resources/HelpfulAPI";
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import * as findSchema from "../../../schemas/TIPFindResponseSchema";
@@ -35,13 +35,14 @@ export default class SearchBar extends Component {
         return(
             <div>
                 <InputGroup>
-                    {this.renderFilterDropdown()}
+                    {/*{this.renderFilterDropdown()}*/}
                     {renderInput("searchBar", this.props.text, this.state.valid, this.handleChange)}
                     <InputGroupAddon addonType="append">
                         <Button disabled={this.state.valid !== 'success'} onClick={ () => this.query()}>Submit</Button>
                     </InputGroupAddon>
                 </InputGroup>
                 {this.resultsFound()}
+                {this.renderResults()}
             </div>
         );
 
@@ -53,6 +54,37 @@ export default class SearchBar extends Component {
                 <UncontrolledAlert>Results: {this.state.found}</UncontrolledAlert>
             )
         }
+    }
+
+    renderResults() {
+        if(this.state.query.length > 0) {
+            return (
+                <Table size={"sm"} responsive>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {this.renderBody()}
+                    </tbody>
+                </Table>
+            )
+        }
+    }
+
+    renderBody() {
+        let body = [];
+        for (let i = 0; i < this.state.query.length; i++) {
+            const name = this.state.query[i].name;
+            body.push(
+                <tr key={name}>
+                    <td>{name}</td>
+                </tr>
+            )
+        }
+
+        return body;
     }
 
     renderFilterDropdown() {
