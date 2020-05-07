@@ -31,7 +31,6 @@ export default class SearchBar extends Component {
     }
 
     render() {
-
         return(
             <div>
                 <InputGroup>
@@ -45,7 +44,6 @@ export default class SearchBar extends Component {
                 {this.renderResults()}
             </div>
         );
-
     }
 
     resultsFound() {
@@ -88,18 +86,23 @@ export default class SearchBar extends Component {
     }
 
     renderFilterDropdown() {
-        return (
-            <InputGroupAddon addonType={"prepend"}>
-                <ButtonDropdown isOpen={this.state.dropDownOpen} direction={'right'} toggle={this.toggleDropdown}>
-                    <DropdownToggle caret>
-                        Filter
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {this.renderDropdownItems()}
-                    </DropdownMenu>
-                </ButtonDropdown>
-            </InputGroupAddon>
-        );
+        if(this.props.filter) {
+            return (
+                <InputGroupAddon addonType={"prepend"}>
+                    <ButtonDropdown isOpen={this.state.dropDownOpen} direction={'right'} toggle={this.toggleDropdown}>
+                        <DropdownToggle caret>
+                            Filter
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            {this.renderDropdownItems()}
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                </InputGroupAddon>
+            );
+        } else {
+            return null;
+        }
+
     }
 
     renderDropdownItems() {

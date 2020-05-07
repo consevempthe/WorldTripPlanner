@@ -64,6 +64,8 @@ export default class Atlas extends Component {
                         <SearchBar
                             text={"Enter a query to begin your search..."}
                             //clickFunction={} use this for button submission.
+                            visible={true}
+                            filter={true}
                         />
                         {this.renderLeafletMap()}
                         {this.renderWhereAmIButton()}

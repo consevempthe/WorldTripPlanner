@@ -6,7 +6,7 @@ import {mount} from 'enzyme';
 
 function testInitialAppState() {
 
-    const search = mount(<SearchBar/>);
+    const search = mount(<SearchBar visible={true} filter={true}/>);
 
     const boxContent = "";
     const valid = "";
@@ -28,7 +28,7 @@ test("Testing initial SearchBar.js state:", testInitialAppState);
 
 function testChangeEvent() {
 
-    const search = mount(<SearchBar/>);
+    const search = mount(<SearchBar visible={true} filter={true}/>);
     const input = search.find('Input').at(0);
     input.simulate('change', {target: {value: "Test"}});
     expect(search.state().valid).toEqual('success');
@@ -56,9 +56,10 @@ test("Testing SearchBar.js state after change:", testChangeEvent);
 //
 // test("Testing SearchBar.js filter button click:", testFilterClick);
 
+
 function testApplyFilter() {
 
-    const search = mount(<SearchBar/>);
+    const search = mount(<SearchBar visible={true} filter={true}/>);
     search.instance().applyFilter(0);
     expect(search.instance().isActive(0)).toEqual(true);
 
@@ -68,7 +69,7 @@ test("Testing SearchBar.js applyFilter method:", testApplyFilter);
 
 function testToggleDropdown() {
 
-    const search = mount(<SearchBar/>);
+    const search = mount(<SearchBar visible={true} filter={true}/>);
     search.instance().toggleDropdown();
     expect(search.state().dropDownOpen).toEqual(true);
     search.instance().toggleDropdown();

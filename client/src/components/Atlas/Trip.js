@@ -16,6 +16,7 @@ import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfu
 import * as tripSchema from "../../../schemas/TIPTripResponseSchema";
 import {createPlace} from "./Resources/HelpfulAPI";
 import CreateTripModal from "./CreateTripModal";
+import SearchBar from "./SearchBar";
 
 export default class Trip extends Component {
 
@@ -50,26 +51,33 @@ export default class Trip extends Component {
     }
 
     render() {
-        return(
-            <div>
-                <h3 align={"right"}>My Trip</h3>
-                {this.renderCumulativeDistance()}
-                <ButtonGroup className={"float-left"}>
-                    <Button onClick={ () => {
-                        this.setState({createTripModalOpen: true});
-                    }}>Create</Button>
-                    {this.renderEditButton()}
-                </ButtonGroup>
-                <LoadSave
-                    processRequest={this.processTripRequest}
-                    places={this.state.trip.places}
-                    options={this.state.trip.options}
-                />
-                {this.renderTable()}
-                {this.renderCreateTripModal()}
-            </div>
+            return(
+                <div>
+                    <h3 align={"right"}>My Trip</h3>
+                    {this.renderCumulativeDistance()}
+                    <ButtonGroup className={"float-left"}>
+                        <Button onClick={ () => {
+                            this.setState({createTripModalOpen: true});
+                        }}>Create</Button>
+                        {this.renderEditButton()}
+                    </ButtonGroup>
+                    <LoadSave
+                        processRequest={this.processTripRequest}
+                        places={this.state.trip.places}
+                        options={this.state.trip.options}
+                    />
+                    <SearchBar
+                        text={"Search your itinerary here:"}
+                        filter={false}
+                        visible={this.state.trip.places.length > 1}
+                    />
 
-        )
+                    {this.renderTable()}
+                    {this.renderCreateTripModal()}
+
+                </div>
+
+            );
     }
 
     renderTable() {
